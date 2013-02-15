@@ -1,0 +1,18 @@
+Player
+Keeps track of the player name and scores in different score cells.
+
+AiPlayer
+
+HumanPlayer
+
+
+GameModel
+Contains players in the game and keeps track of playing turns. Notifies GameView about changes to the game state.
+ 
+GameView
+
+DiceModel
+
+DiceView
+
+MainWindow
