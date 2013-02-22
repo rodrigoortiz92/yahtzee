@@ -20,7 +20,14 @@ public class ScoreColumn {
     }
 
     public ScoreColumn() {
-        pairs = new CellNamePair[]{};
+        pairs = new CellNamePair[]{
+            new CellNamePair(new SumOfKindCell(1), "Ones"),
+            new CellNamePair(new SumOfKindCell(2), "Twos"),
+            new CellNamePair(new SumOfKindCell(3), "Threes"),
+            new CellNamePair(new SumOfKindCell(4), "Fours"),
+            new CellNamePair(new SumOfKindCell(5), "Fives"),
+            new CellNamePair(new SumOfKindCell(6), "Sixes")
+        };
     }
 
     public String[] getCellNames() {
