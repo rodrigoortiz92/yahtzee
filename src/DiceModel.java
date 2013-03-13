@@ -3,18 +3,20 @@ import java.util.Random;
 
 public class DiceModel extends Observable {
 
-  private static final dieLowerBound = 1;
-  private static final dieUpperBound = 6;
-  private static Random rand = new Random(4);
+  private static final int dieLowerBound = 1;
+  private static final int dieUpperBound = 6;
+  private static final int rollsPerTurn = 3;
+  private static final int diceCount = 5;
 
   private DieValues dice;
-  private int rollsTotal;
   private int rolledTimes;
   private boolean locked[];
+  private  Random rand = new Random(4);
 
+  public DiceModel(
 
   public int getDieCount(){
-    return dice.values.length;
+    return diceCount;
   }
 
   public DieValues getDieValues(){
@@ -22,7 +24,7 @@ public class DiceModel extends Observable {
   }
 
   public boolean canDiceBeLocked(){
-    return ((rollsTotal - rolledTimes) > 0);
+    return ((rollsPerTurn - rolledTimes) > 0);
   }
 
   public void setDieLock(int i, boolean state){
@@ -31,14 +33,13 @@ public class DiceModel extends Observable {
 
   public void roll(){
     int i = 0;
-    while (i < dice.values.length){
+    while (i < diceCount){
       if (!locked[i]){
         dice.values[i] = rand.nextInt(dieUpperBound) + dieLowerBound;
       }
       i++;
     }
   }
-
 
   public class DieValues {
 
