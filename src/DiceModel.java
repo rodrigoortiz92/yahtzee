@@ -1,5 +1,6 @@
 import java.util.Observable;
 import java.util.Random;
+import java.util.Arrays;
 
 public class DiceModel extends Observable {
 
@@ -13,7 +14,14 @@ public class DiceModel extends Observable {
   private boolean locked[];
   private  Random rand = new Random(4);
 
-  public DiceModel(
+  public DiceModel(){
+
+    dice = new int[diceCount];
+    locked = new boolean[diceCount];
+    rolledTimes = 0;
+
+    Arrays.fill(locked, false);
+  }
 
   public int getDieCount(){
     return diceCount;
