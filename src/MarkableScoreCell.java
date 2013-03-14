@@ -14,6 +14,8 @@ abstract public class MarkableScoreCell extends ScoreCell {
         // TODO: think about how to handle multiple markings
         if (score == null && player != null && player.isInTurn()) {
             score = new Integer(calculateScore(dieValues));
+            setChanged();
+            notifyObservers(new CellMarkedNotification());
         }
     }
 
