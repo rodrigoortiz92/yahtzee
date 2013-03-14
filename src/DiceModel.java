@@ -16,7 +16,7 @@ public class DiceModel extends Observable {
 
   public DiceModel(){
 
-    dice = new int[diceCount];
+    dice.values = new int[diceCount];
     locked = new boolean[diceCount];
     rolledTimes = 0;
 
@@ -47,6 +47,7 @@ public class DiceModel extends Observable {
       }
       i++;
     }
+    notifyObservers(dice);
   }
 
   public class DieValues {
