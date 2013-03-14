@@ -1,4 +1,8 @@
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Stores the score cells of a player and associates a name with each cell.
  *
@@ -39,21 +43,23 @@ public class ScoreColumn {
         }
     }
 
-    public String[] getCellNames() {
-        String[] names = new String[pairs.length];
+    public List<String> getCellNames() {
+        List<String> names = new ArrayList<>(pairs.length);
 
-        for (int i = 0; i < names.length; ++i)
-            names[i] = pairs[i].name;
+        for (CellNamePair pair : pairs) {
+            names.add(pair.name);
+        }
 
-        return names;
+        return Collections.unmodifiableList(names);
     }
 
-    public ScoreCell[] getCells() {
-        ScoreCell[] cells = new ScoreCell[pairs.length];
+    public List<ScoreCell> getCells() {
+        List<ScoreCell> cells = new ArrayList<>(pairs.length);
 
-        for (int i = 0; i < cells.length; ++i)
-            cells[i] = pairs[i].cell;
+        for (CellNamePair pair : pairs) {
+            cells.add(pair.cell);
+        }
 
-        return cells;
+        return Collections.unmodifiableList(cells);
     }
 }

@@ -9,7 +9,7 @@ public class GameModel extends Observable {
     private List<Player> players;
     private Player currentPlayer;
 
-    public String[] getScoreCellNames() {
+    public List<String> getScoreCellNames() {
         return new ScoreColumn(null).getCellNames();
     }
 
