@@ -19,7 +19,7 @@ public class ScoreColumn {
         }
     }
 
-    public ScoreColumn() {
+    public ScoreColumn(Player player) {
         pairs = new CellNamePair[]{
             new CellNamePair(new SumOfKindCell(1), "Ones"),
             new CellNamePair(new SumOfKindCell(2), "Twos"),
@@ -28,6 +28,15 @@ public class ScoreColumn {
             new CellNamePair(new SumOfKindCell(5), "Fives"),
             new CellNamePair(new SumOfKindCell(6), "Sixes")
         };
+
+        for (CellNamePair cellNamePair : pairs) {
+            ScoreCell cell = cellNamePair.cell;
+
+            if (cell instanceof MarkableScoreCell) {
+                MarkableScoreCell rollable = (MarkableScoreCell) cell;
+                rollable.setPlayer(player);
+            }
+        }
     }
 
     public String[] getCellNames() {

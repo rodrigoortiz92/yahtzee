@@ -73,7 +73,7 @@ public class GameModel extends Observable {
     }
 
     public String[] getScoreCellNames() {
-        return new ScoreColumn().getCellNames();
+        return new ScoreColumn(null).getCellNames();
     }
 
     public void startNewGame(List<Player> players) {

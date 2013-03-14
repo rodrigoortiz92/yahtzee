@@ -4,7 +4,7 @@
  *
  * @author Mikko Paukkonen
  */
-public class SumOfKindCell extends ScoreCell {
+public class SumOfKindCell extends MarkableScoreCell {
 
     private int kind;
 
