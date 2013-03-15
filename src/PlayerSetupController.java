@@ -3,7 +3,11 @@
 *@author Erkki Mattila
 */
 
-class PlayerSetupController implements ActionListener, ItemListener{
+import javax.swing.ActionListener;
+import javax.swing.ItemListener;
+import java.util.Observer;
+
+class PlayerSetupController implements ActionListener, ItemListener, Observer{
 
     PlayerSetupModel model;
     PlayerSetupView view;
