@@ -1,17 +1,22 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
+import java.util.Observable;
 
 /**
  *
  * @author Mikko Paukkonen
  */
-public class DiceModel {
+public class DiceModel extends Observable {
 
     public int[] dieValues = {1, 1, 1, 1, 1};
 
     public int[] getDieValues() {
         return dieValues;
+    }
+
+    public void setDieValues(int[] dieValues) {
+        this.dieValues = dieValues;
+
+        setChanged();
+        notifyObservers();
     }
 }

@@ -73,5 +73,7 @@ public class GameModel extends Observable implements Observer {
     public GameModel(DiceModel diceModel) {
         this.diceModel = diceModel;
         this.players = new LinkedList<>();
+
+        diceModel.addObserver(this);
     }
 }

@@ -35,6 +35,7 @@ public class GameView extends JFrame implements Observer {
         initComponents();
 
         model.addObserver(this);
+        diceModel.addObserver(this);
 
         createComponents();
         updateScores();
