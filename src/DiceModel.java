@@ -47,6 +47,7 @@ public class DiceModel extends Observable {
             }
             i++;
         }
+        setChanged();
         notifyObservers(dice);
     }
 
