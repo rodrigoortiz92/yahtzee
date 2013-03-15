@@ -2,7 +2,6 @@
 import java.util.Observable;
 import java.util.Random;
 import java.util.Arrays;
-import javax.swing.JPanel;
 
 public class DiceModel extends Observable {
 
