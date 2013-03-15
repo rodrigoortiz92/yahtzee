@@ -5,8 +5,8 @@ import java.util.Arrays;
 
 public class DiceModel extends Observable {
 
-    private static final int dieLowerBound = 1;
-    private static final int dieUpperBound = 6;
+    public static final int DIE_MIN_VALUE = 1;
+    public static final int DIE_MAX_VALUE = 6;
     private static final int rollsPerTurn = 3;
     private static final int diceCount = 5;
     private DieValues dice;
@@ -43,7 +43,8 @@ public class DiceModel extends Observable {
         int i = 0;
         while (i < diceCount) {
             if (!locked[i]) {
-                dice.values[i] = rand.nextInt(dieUpperBound) + dieLowerBound;
+                dice.values[i] = rand.nextInt(DIE_MAX_VALUE - DIE_MIN_VALUE + 1)
+                        + DIE_MIN_VALUE;
             }
             i++;
         }
