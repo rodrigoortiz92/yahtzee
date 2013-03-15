@@ -1,93 +1,77 @@
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
+import java.util.Observer;
 
-public class GameModel extends Observable {
+public class GameModel extends Observable implements Observer {
 
     private DiceModel diceModel;
     private List<Player> players;
     private Player currentPlayer;
 
-    public class PlayerColumn {
+    public class TurnChangedNotification {
+    }
 
-        public String name;
-        public boolean isInTurn;
-        public Cell[] cells;
+    @Override
+    public void update(Observable o, Object arg) {
+        if (arg instanceof Player.CellMarkedNotification) {
+            int index = players.indexOf(currentPlayer);
 
-        public class Cell {
-
-            private ScoreCell cell;
-
-            public int getScore() {
-                Integer score = cell.getScore();
-
-                if (score != null)
-                    return score.intValue();
-
-                int[] dieValues = GameModel.this.diceModel.getDieValues();
-
-                return cell.calculateScore(dieValues);
+            if (index == players.size() - 1) {
+                index = 0;
+            } else {
+                index++;
             }
 
-            public boolean isFilled() {
-                return cell.getScore() != null;
-            }
+            currentPlayer = players.get(index);
 
-            public void mark() {
-                int[] dieValues = GameModel.this.diceModel.getDieValues();
-
-                cell.markScore(dieValues);
-            }
-
-            public Cell(ScoreCell cell) {
-                this.cell = cell;
-            }
+            setChanged();
+            notifyObservers(new TurnChangedNotification());
+        } else {
+            setChanged();
+            notifyObservers(new ScoreChangeNotification());
         }
     }
 
-    public PlayerColumn[] getPlayerColumns() {
-        PlayerColumn[] columns = new PlayerColumn[players.size()];
-
-        for (int i = 0; i < players.size(); ++i) {
-            Player player = players.get(i);
-            PlayerColumn column = new PlayerColumn();
-
-            column.name = player.getName();
-            column.isInTurn = (player == currentPlayer);
-
-            ScoreCell[] cells = player.getScoreCells();
-
-            column.cells = new PlayerColumn.Cell[cells.length];
-
-            for (int j = 0; j < cells.length; ++j) {
-                ScoreCell backingCell = cells[j];
-
-                column.cells[j] = column.new Cell(backingCell);
-            }
-
-            columns[i] = column;
-        }
-
-        return columns;
+    Player getCurrentPlayer() {
+        return currentPlayer;
     }
 
-    public String[] getScoreCellNames() {
-        return new ScoreColumn().getCellNames();
+    public class NewGameNotification {
+    }
+
+    public class ScoreChangeNotification {
+    }
+
+    public List<String> getScoreCellNames() {
+        return new ScoreColumn(null).getCellNames();
+    }
+
+    public List<Player> getPlayers() {
+        return Collections.unmodifiableList(players);
     }
 
     public void startNewGame(List<Player> players) {
-        this.players = players;
+        this.players.clear();
+        this.players.addAll(players);
+
+        for (Player player : players) {
+            player.addObserver(this);
+        }
 
         if (players.isEmpty())
             currentPlayer = null;
         else
             currentPlayer = players.get(0);
+
+        setChanged();
+        notifyObservers(new NewGameNotification());
     }
 
     public GameModel(DiceModel diceModel) {
         this.diceModel = diceModel;
-
-        startNewGame(new LinkedList<Player>());
+        this.players = new LinkedList<>();
     }
 }

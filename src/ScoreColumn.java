@@ -1,4 +1,8 @@
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Stores the score cells of a player and associates a name with each cell.
  *
@@ -19,32 +23,82 @@ public class ScoreColumn {
         }
     }
 
-    public ScoreColumn() {
+    public ScoreColumn(Player player) {
+        ScoreCell ones = new SumOfKindCell(1);
+        ScoreCell twos = new SumOfKindCell(2);
+        ScoreCell threes = new SumOfKindCell(3);
+        ScoreCell fours = new SumOfKindCell(4);
+        ScoreCell fives = new SumOfKindCell(5);
+        ScoreCell sixes = new SumOfKindCell(6);
+
+        ScoreCell topSum = new SumCell(ones, twos, threes, fours, fives, sixes);
+
+        ScoreCell topBonus = new BonusCell(topSum, 63, 50);
+
+        ScoreCell pair = new PairCell();
+        ScoreCell twoPairs = new TwoPairsCell();
+        ScoreCell threeOfKind = new CountOfKindCell(3);
+        ScoreCell fourOfKind = new CountOfKindCell(4);
+        ScoreCell smallStraight = new SumOfGivenDiceCell(1, 2, 3, 4, 5);
+        ScoreCell largeStraight = new SumOfGivenDiceCell(2, 3, 4, 5, 6);
+        ScoreCell fullHouse = new FullHouseCell();
+        ScoreCell chance = new SumOfAllDiceCell();
+        ScoreCell yahtzee = new CountOfKindCell(5);
+
+        SumCell bottomSum = new SumCell(pair, twoPairs, threeOfKind, fourOfKind,
+                smallStraight, largeStraight, fullHouse, chance, yahtzee);
+
+        SumCell total = new SumCell(topSum, bottomSum);
+
         pairs = new CellNamePair[]{
-            new CellNamePair(new SumOfKindCell(1), "Ones"),
-            new CellNamePair(new SumOfKindCell(2), "Twos"),
-            new CellNamePair(new SumOfKindCell(3), "Threes"),
-            new CellNamePair(new SumOfKindCell(4), "Fours"),
-            new CellNamePair(new SumOfKindCell(5), "Fives"),
-            new CellNamePair(new SumOfKindCell(6), "Sixes")
+            new CellNamePair(ones, "Ones"),
+            new CellNamePair(twos, "Twos"),
+            new CellNamePair(threes, "Threes"),
+            new CellNamePair(fours, "Fours"),
+            new CellNamePair(fives, "Fives"),
+            new CellNamePair(sixes, "Sixes"),
+            new CellNamePair(topSum, "Top total"),
+            new CellNamePair(topBonus, "Bonus"),
+            new CellNamePair(pair, "Pair"),
+            new CellNamePair(twoPairs, "Two pairs"),
+            new CellNamePair(threeOfKind, "Three of a kind"),
+            new CellNamePair(fourOfKind, "Four of a kind"),
+            new CellNamePair(smallStraight, "Small straight"),
+            new CellNamePair(largeStraight, "Large straight"),
+            new CellNamePair(fullHouse, "Full house"),
+            new CellNamePair(chance, "Chance"),
+            new CellNamePair(yahtzee, "Yahtzee"),
+            new CellNamePair(bottomSum, "Bottom total"),
+            new CellNamePair(total, "Total")
         };
+
+        for (CellNamePair cellNamePair : pairs) {
+            ScoreCell cell = cellNamePair.cell;
+
+            if (cell instanceof MarkableScoreCell) {
+                MarkableScoreCell rollable = (MarkableScoreCell) cell;
+                rollable.setPlayer(player);
+            }
+        }
     }
 
-    public String[] getCellNames() {
-        String[] names = new String[pairs.length];
+    public List<String> getCellNames() {
+        List<String> names = new ArrayList<>(pairs.length);
 
-        for (int i = 0; i < names.length; ++i)
-            names[i] = pairs[i].name;
+        for (CellNamePair pair : pairs) {
+            names.add(pair.name);
+        }
 
-        return names;
+        return Collections.unmodifiableList(names);
     }
 
-    public ScoreCell[] getCells() {
-        ScoreCell[] cells = new ScoreCell[pairs.length];
+    public List<ScoreCell> getCells() {
+        List<ScoreCell> cells = new ArrayList<>(pairs.length);
 
-        for (int i = 0; i < cells.length; ++i)
-            cells[i] = pairs[i].cell;
+        for (CellNamePair pair : pairs) {
+            cells.add(pair.cell);
+        }
 
-        return cells;
+        return Collections.unmodifiableList(cells);
     }
 }
