@@ -15,8 +15,14 @@ public class Main {
 
         @Override
         public void run() {
-            MainView view = new MainView();
-            
+            DiceModel diceModel = new DiceModel();
+
+            GameModel gameModel = new GameModel(diceModel);
+
+            GameView gameView = new GameView(gameModel, diceModel);
+
+            MainView view = new MainView(gameView);
+
             view.setVisible(true);
         }
         
