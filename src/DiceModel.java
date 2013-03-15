@@ -58,5 +58,12 @@ public class DiceModel extends Observable {
     private DieValues(int count){
       values = new int[count];
     }
+
+    public int getValueCount(){
+      return values.length;
+    }
+    public int valueAt(int i){
+      return values[i];
+    }
   }
 }
