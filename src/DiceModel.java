@@ -65,5 +65,17 @@ public class DiceModel extends Observable {
         public int valueAt(int i) {
             return values[i];
         }
+
+        public int countOfValue(int v) {
+            int count = 0;
+
+            for (int i : values) {
+                if (i == v) {
+                    count++;
+                }
+            }
+
+            return count;
+        }
     }
 }
