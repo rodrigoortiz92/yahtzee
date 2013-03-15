@@ -50,6 +50,8 @@ abstract public class MarkableScoreCell extends ScoreCell {
 
         this.player = player;
 
-        addObserver(player);
+        if (this.player != null) {
+            addObserver(this.player);
+        }
     }
 }
