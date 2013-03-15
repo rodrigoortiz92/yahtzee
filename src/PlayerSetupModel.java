@@ -3,7 +3,9 @@
 *@author Erkki Mattila
 */
 
-public PlayerSetupModel {
+import java.util.Observable;
+
+public PlayerSetupModel extends Observable {
     
     String name;
     PlayerType playerType;
