@@ -20,6 +20,7 @@ public class DiceView extends JPanel implements Observer {
     public DiceView(DiceModel model){
         super(new GridBagLayout());
         this.model = model;
+        model.addObserver(this);
         controller = new DiceController(this, model);
         dice = new Die[model.getDieCount()];
         lockButtons = new JToggleButton[model.getDieCount()];
@@ -42,7 +43,10 @@ public class DiceView extends JPanel implements Observer {
         int i = values.getValueCount();
         while (i-- > 0){
             dice[i].setValue(values.valueAt(i));
+            lockButtons[i].setEnabled(controller.isLockable());
         }
+        rollButton.setEnabled(controller.isRollable());
+        System.out.println("?");
     }
 
     private class Die extends JLabel {
@@ -51,7 +55,7 @@ public class DiceView extends JPanel implements Observer {
         //private icon facet[];
 
         public Die(int max){
-            super("1");
+            super("2");
             maxValue = max;
             //facet = new icon[maxValue];
 
