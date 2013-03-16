@@ -43,6 +43,7 @@ public class DiceView extends JPanel implements Observer {
         int i = values.getValueCount();
         while (i-- > 0){
             dice[i].setValue(values.valueAt(i));
+            lockButtons[i].setSelected(controller.isLocked(i));
             lockButtons[i].setEnabled(controller.isLockable());
         }
         rollButton.setEnabled(controller.isRollable());
