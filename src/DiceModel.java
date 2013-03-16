@@ -18,12 +18,14 @@ public class DiceModel extends Observable {
 
         dice = new DieValues(diceCount);
         locked = new boolean[diceCount];
-        clear();
     }
 
     public void clear(){
         rolledTimes = 0;
         Arrays.fill(locked, false);
+        dice.clear();
+        setChanged();
+        notifyObservers(dice);
     }
 
     public int getDieCount() {
@@ -35,7 +37,7 @@ public class DiceModel extends Observable {
     }
 
     public boolean canDiceBeLocked() {
-        return canDiceBeRolled && (rolledTimes > 0);
+        return canDiceBeRolled() && (rolledTimes > 0);
     }
 
     public boolean canDiceBeRolled() {
@@ -65,6 +67,13 @@ public class DiceModel extends Observable {
 
         private DieValues(int count) {
             values = new int[count];
+        }
+
+        private void clear(){
+            int i = getValueCount();
+            while (i-- > 0){
+                values[i] = DiceModel.DIE_MIN_VALUE;
+            }
         }
 
         public int getValueCount() {
