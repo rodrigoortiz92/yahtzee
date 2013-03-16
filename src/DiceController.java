@@ -13,11 +13,11 @@ public class DiceController implements ActionListener {
         this.model = model;
     }
 
-    public boolean lockable(){
+    public boolean isLockable(){
         return model.canDiceBeLocked();
     }
 
-    public  boolean rollable(){
+    public  boolean isRollable(){
         return model.canDiceBeRolled();
     }
 
