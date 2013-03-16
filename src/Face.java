@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 import javax.swing.JComponent;
 import java.awt.Color;
 
-public class Facet extends JComponent {
+public class Face extends JComponent {
 
     private final int SIDE = 64;
     private final int ARC = 8;
@@ -18,7 +18,7 @@ public class Facet extends JComponent {
         g2.fillRoundRect(0, 0, SIDE, SIDE, ARC, ARC);
     }
 
-    public class Facet1 extends Facet {
+    public class Face1 extends Face {
 
         private final int DIA = (int)(SIDE/10);
 
@@ -33,7 +33,7 @@ public class Facet extends JComponent {
         }
     }
 
-    public class Facet2 extends Facet {
+    public class Face2 extends Face {
 
         private final int DIA = (int)(SIDE/10);
 
@@ -51,7 +51,7 @@ public class Facet extends JComponent {
         } 
     }
 
-    public class Facet3 extends Facet2 {
+    public class Face3 extends Face2 {
 
         private final int DIA = (int)(SIDE/10);
 
@@ -66,7 +66,7 @@ public class Facet extends JComponent {
         }
     }
 
-    public class Facet4 extends Facet2 {
+    public class Face4 extends Face2 {
 
         private final int DIA = (int)(SIDE/10);
 
@@ -83,7 +83,7 @@ public class Facet extends JComponent {
         }
     }
 
-    public class Facet5 extends Facet4 {
+    public class Face5 extends Face4 {
 
         private final int DIA = (int)(SIDE/10);
 
@@ -98,7 +98,7 @@ public class Facet extends JComponent {
         }
     }
 
-    public class Facet6 extends Facet4 {
+    public class Face6 extends Face4 {
 
         private final int DIA = (int)(SIDE/10);
 
