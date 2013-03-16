@@ -39,6 +39,11 @@ public class DiceModel extends Observable {
         locked[i] = state;
     }
 
+    public boolean canDiceBeRolled()
+    {
+        return (rolledTimes < rollsPerTurn);
+    }
+
     public void roll() {
         int i = 0;
         while (i < diceCount) {
