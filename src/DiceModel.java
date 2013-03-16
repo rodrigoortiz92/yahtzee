@@ -16,7 +16,7 @@ public class DiceModel extends Observable {
 
     public DiceModel() {
 
-        dice.values = new int[diceCount];
+        dice = new DieValues(diceCount);
         locked = new boolean[diceCount];
         rolledTimes = 0;
 
@@ -44,7 +44,7 @@ public class DiceModel extends Observable {
         while (i < diceCount) {
             if (!locked[i]) {
                 dice.values[i] = rand.nextInt(DIE_MAX_VALUE - DIE_MIN_VALUE + 1)
-                        + DIE_MIN_VALUE;
+                    + DIE_MIN_VALUE;
             }
             i++;
         }
