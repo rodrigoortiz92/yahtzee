@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JToggleButton;
 
 public class DiceController {
 
@@ -44,8 +45,6 @@ public class DiceController {
     }
 
     public class LockAction extends AbstractAction {
-
-        private boolean selected;
         private int dieId;
 
         public LockAction(int dieId){
@@ -53,7 +52,8 @@ public class DiceController {
         }
 
         public void actionPerformed(ActionEvent a){
-            DiceController.this.model.setDieLock(dieId, selected);
+            JToggleButton state = (JToggleButton)a.getSource();
+            DiceController.this.model.setDieLock(dieId, state.isSelected());
         }
     }
 }
