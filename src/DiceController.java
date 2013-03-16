@@ -1,4 +1,5 @@
 import java.util.Observer;
+import java.util.Observable;
 
 public class DiceController implements Observer {
 
@@ -8,5 +9,8 @@ public class DiceController implements Observer {
   public DiceController(DiceView dView, DiceModel dModel){
     view = dView;
     model = dModel;
+  }
+
+  public void update(Observable o, Object arg){
   }
 }
