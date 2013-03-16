@@ -16,17 +16,9 @@ public class SumOfGivenDiceCell extends MarkableScoreCell {
     }
 
     @Override
-    public int calculateScore(int[] dieValues) {
+    public int calculateScore(DiceModel.DieValues dieValues) {
         for (int value : values) {
-            boolean found = false;
-
-            for (int v : dieValues) {
-                if (v == value) {
-                    found = true;
-                }
-            }
-
-            if (!found) {
+            if (dieValues.countOfValue(value) == 0) {
                 return 0;
             }
         }

@@ -7,14 +7,16 @@
  *
  * @author Mikko Paukkonen
  */
-public class SumOfAllDiceCell  extends MarkableScoreCell {
-   @Override
-    public int calculateScore(int[] dieValues) {
+public class SumOfAllDiceCell extends MarkableScoreCell {
+
+    @Override
+    public int calculateScore(DiceModel.DieValues dieValues) {
         int score = 0;
-        
-        for(int value : dieValues)
-            score += value;
-        
+
+        for (int i = 0; i < dieValues.getValueCount(); ++i) {
+            score += dieValues.valueAt(i);
+        }
+
         return score;
     }
 }
