@@ -10,6 +10,12 @@
 public class SumOfAllDiceCell extends MarkableScoreCell {
 
     @Override
+    public Combination getOptimalCombination() {
+        return new Combination(
+                new Requirement(DiceModel.DIE_MAX_VALUE, getDiceModel().getDieCount()));
+    }
+
+    @Override
     public int calculateScore(DiceModel.DieValues dieValues) {
         int score = 0;
 

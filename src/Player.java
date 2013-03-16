@@ -7,7 +7,7 @@ import java.util.Observer;
  *
  * @author Mikko Paukkonen
  */
-public class Player extends Observable implements Observer {
+abstract public class Player extends Observable implements Observer {
 
     private String name;
     private ScoreColumn scoreColumn;
@@ -36,9 +36,14 @@ public class Player extends Observable implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (arg instanceof ScoreCell.CellMarkedNotification) {
+        if (arg instanceof ScoreCell.ScoreChangedNotification) {
             setChanged();
             notifyObservers(new CellMarkedNotification());
+        } else if (arg instanceof GameModel.TurnChangedNotification) {
+            setChanged();
+            notifyObservers(arg);
         }
     }
+
+    abstract void playTurn(DiceModel diceModel);
 }
