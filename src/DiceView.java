@@ -30,7 +30,8 @@ public class DiceView extends JPanel implements Observer {
         EasyGridBagLayout.addToLayout(this, rollButton, i, 0);
         while (i-- > 0){
             dice[i] = new Die(model.DIE_MAX_VALUE);
-            lockButtons[i] = new JToggleButton("Lock");
+            lockButtons[i] = new JToggleButton("lock");
+            lockButtons[i].addActionListener(controller.getLockAction(i));
 
             EasyGridBagLayout.addToLayout(this, dice[i], i, 0);
             EasyGridBagLayout.addToLayout(this, lockButtons[i], i, 1);
