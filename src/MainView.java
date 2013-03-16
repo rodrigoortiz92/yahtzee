@@ -1,5 +1,4 @@
 
-import java.awt.BorderLayout;
 import java.awt.Container;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -14,7 +13,7 @@ public class MainView extends JFrame {
 
     MainController controller;
 
-    public MainView(GameView gameView) {
+    public MainView(GameView gameView, DiceView diceView) {
         super("Yahtzee");
         this.controller = new MainController();
 
@@ -30,7 +29,10 @@ public class MainView extends JFrame {
 
         Container content = getContentPane();
 
-        content.add(gameView, BorderLayout.CENTER);
+        content.setLayout(new EasyGridBagLayout());
+
+        EasyGridBagLayout.addToLayout(this, gameView, 0, 0);
+        EasyGridBagLayout.addToLayout(this, diceView, 0, 1);
 
         pack();
     }

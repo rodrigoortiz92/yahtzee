@@ -21,7 +21,9 @@ public class Main {
 
             GameView gameView = new GameView(gameModel, diceModel);
 
-            MainView view = new MainView(gameView);
+            DiceView diceView = new DiceView(diceModel);
+
+            MainView view = new MainView(gameView, diceView);
 
             view.setVisible(true);
         }
