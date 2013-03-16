@@ -17,15 +17,24 @@ public class DiceController implements ActionListener {
         return model.canDiceBeLocked();
     }
 
-    public  boolean isRollable(){
+    public boolean isRollable(){
         return model.canDiceBeRolled();
     }
 
-    public void actionPerformed(ActionEvent ae){
-
-
+    public boolean isLocked(int i){
+        return model.isDieLocked(i);
     }
 
 
-    public class RollAction extends AbstractAction
+    public Action getRollAction(){
+        return new RollAction();
+    }
+
+
+    public class RollAction extends AbstractAction {
+
+        public void actionPerformed(ActionEvent a){
+            DiceController.this.model.roll();
+        }
+    }
 }
