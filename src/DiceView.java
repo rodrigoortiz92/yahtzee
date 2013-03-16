@@ -21,9 +21,9 @@ public class DiceView extends JPanel implements Observer {
         super(new GridBagLayout());
         this.model = model;
         model.addObserver(this);
-        controller = new DiceController(this, model);
         dice = new Die[model.getDieCount()];
         lockButtons = new JToggleButton[model.getDieCount()];
+        controller = new DiceController(this, model);
         rollButton = new JButton("roll");
         rollButton.addActionListener(controller.getRollAction());
 
