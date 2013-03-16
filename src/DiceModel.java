@@ -12,7 +12,7 @@ public class DiceModel extends Observable {
     private DieValues dice;
     private int rolledTimes;
     private boolean locked[];
-    private Random rand = new Random(4);
+    private Random rand = new Random(3);
 
     public DiceModel() {
 
@@ -61,6 +61,7 @@ public class DiceModel extends Observable {
             }
             i++;
         }
+        rolledTimes++;
         setChanged();
         notifyObservers(dice);
     }
