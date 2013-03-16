@@ -4,12 +4,13 @@
 */
 
 import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.util.Observer;
+import java.util.Observable;
 
 public class SetupController implements Observer, ActionListener {
     
     SetupView view;
-    SetupController controller;
     
     public SetupController(SetupView view) {
         this.view = view;
@@ -21,6 +22,9 @@ public class SetupController implements Observer, ActionListener {
     public void newPlayer() {
     }
     
-    public void update(SetupModel model, Object args){
+    public void update(Observable o, Object args){
+    }
+    
+    public void actionPerformed(ActionEvent e) {
     }
 }

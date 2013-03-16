@@ -5,7 +5,7 @@
 
 import java.util.Observable;
 
-public PlayerSetupModel extends Observable {
+public class PlayerSetupModel extends Observable {
     
     String name;
     PlayerType playerType;
@@ -21,6 +21,7 @@ public PlayerSetupModel extends Observable {
     
     public void setName(String name) {
         name = name;
+        notifyObservers();
     }
     
     public PlayerType getType() {
@@ -29,5 +30,7 @@ public PlayerSetupModel extends Observable {
     
     public void setType(PlayerType type) {
         playerType = type;
+        notifyObservers();
     }
+    
 }

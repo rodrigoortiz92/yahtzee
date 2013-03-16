@@ -3,7 +3,10 @@
 *@author Erkki Mattila
 */
 
-public class SetupModel {
+import java.util.Observable;
+import java.util.List;
+
+public class SetupModel extends Observable {
     List<PlayerType> playerTypes;
     List<PlayerSetupModel> playerSetup;
     
@@ -12,8 +15,10 @@ public class SetupModel {
     }
     
     public void addPlayer(PlayerType type) {
+        notifyObservers();
     }
     
     public void removePlayer(PlayerSetupModel playerSetupModel) {
+        notifyObservers();
     }
 }

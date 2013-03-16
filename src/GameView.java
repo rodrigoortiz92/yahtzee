@@ -131,7 +131,7 @@ public class GameView extends JPanel implements Observer {
 
                 fields[j][i] = field;
 
-                addToLayout(scorePanel, field, i + 1, j + 1);
+                addToLayout(this, field, i + 1, j + 1);
             }
         }
     }
