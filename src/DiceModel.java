@@ -18,8 +18,11 @@ public class DiceModel extends Observable {
 
         dice = new DieValues(diceCount);
         locked = new boolean[diceCount];
-        rolledTimes = 0;
+        clear();
+    }
 
+    public void clear(){
+        rolledTimes = 0;
         Arrays.fill(locked, false);
     }
 
