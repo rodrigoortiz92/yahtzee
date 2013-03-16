@@ -35,7 +35,11 @@ public class DiceModel extends Observable {
     }
 
     public boolean canDiceBeLocked() {
-        return ((rollsPerTurn - rolledTimes) > 0);
+        return canDiceBeRolled && (rolledTimes > 0);
+    }
+
+    public boolean canDiceBeRolled() {
+        return (rollsPerTurn - rolledTimes > 0);
     }
 
     public void setDieLock(int i, boolean state) {
