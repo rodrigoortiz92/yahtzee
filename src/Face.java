@@ -6,7 +6,7 @@ import java.awt.Color;
 
 public class Face extends JComponent {
 
-    private final int SIDE = 64;
+    private final int SIDE = 32;
     private final int ARC = 8;
 
     protected void paintComponent(Graphics g){
