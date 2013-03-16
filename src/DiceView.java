@@ -15,6 +15,7 @@ public class DiceView extends JPanel implements Observer {
     private Die dice[];
 
     private JButton rollButton;
+    private JToggleButton lockButtons[];
 
     public DiceView(DiceModel model){
         super(new GridBagLayout());
@@ -25,6 +26,10 @@ public class DiceView extends JPanel implements Observer {
         int i = dice.length;
         while (i-- > 0){
             dice[i] = new Die(model.DIE_MAX_VALUE);
+            lockButtons[i] = new JToggleButton("Lock");
+
+            EasyGridBagLayout.addToLayout(this, dice[i], i, 0);
+            EasyGridBagLayout.addToLayout(this, lockButtons[i], i, 1);
         }
     }
 
@@ -34,7 +39,6 @@ public class DiceView extends JPanel implements Observer {
         int i = values.getValueCount();
         while (i-- > 0){
             dice[i].setValue(values.valueAt(i));
-            EasyGridBagLayout.addToLayout(this, dice[i], i, 0);
         }
     }
 
