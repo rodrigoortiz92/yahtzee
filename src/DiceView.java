@@ -25,6 +25,7 @@ public class DiceView extends JPanel implements Observer {
         dice = new Die[model.getDieCount()];
         lockButtons = new JToggleButton[model.getDieCount()];
         rollButton = new JButton("roll");
+        rollButton.addActionListener(controller.getRollAction());
 
         int i = dice.length;
         EasyGridBagLayout.addToLayout(this, rollButton, i, 0);
@@ -48,7 +49,6 @@ public class DiceView extends JPanel implements Observer {
             lockButtons[i].setEnabled(controller.isLockable());
         }
         rollButton.setEnabled(controller.isRollable());
-        System.out.println("?");
     }
 
     private class Die extends JLabel {
