@@ -8,9 +8,9 @@ abstract public class MarkableScoreCell extends ScoreCell {
     private boolean hasBeenRolled = false;
     private Player player = null;
 
-    public abstract int calculateScore(int[] dieValues);
+    public abstract int calculateScore(DiceModel.DieValues dieValues);
 
-    public void markScore(int[] dieValues) {
+    public void markScore(DiceModel.DieValues dieValues) {
         // TODO: think about how to handle multiple markings
         if (score == null && player != null && player.isInTurn()) {
             score = new Integer(calculateScore(dieValues));
@@ -24,7 +24,7 @@ abstract public class MarkableScoreCell extends ScoreCell {
      * cell. The cell is considered applying if the calculated score for this
      * cell for the set of values is greater than zero.
      */
-    public void markAsRolled(int[] dieValues) {
+    public void markAsRolled(DiceModel.DieValues dieValues) {
         if (calculateScore(dieValues) != 0) {
             hasBeenRolled = true;
         }
