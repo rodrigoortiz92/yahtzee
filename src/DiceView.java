@@ -22,8 +22,11 @@ public class DiceView extends JPanel implements Observer {
         this.model = model;
         controller = new DiceController(this, model);
         dice = new Die[model.getDieCount()];
+        lockButtons = new JToggleButton[model.getDieCount()];
+        rollButton = new JButton("roll");
 
         int i = dice.length;
+        EasyGridBagLayout.addToLayout(this, rollButton, i, 0);
         while (i-- > 0){
             dice[i] = new Die(model.DIE_MAX_VALUE);
             lockButtons[i] = new JToggleButton("Lock");
@@ -53,9 +56,9 @@ public class DiceView extends JPanel implements Observer {
             //facet = new icon[maxValue];
 
             int i = 0;
-            while (i <= maxValue){
-                //facet[i] = new ImageIcon("images/facet" + (i + 1) + ".png");
-            }
+            /*while (i-- <= maxValue){
+                facet[i] = new ImageIcon("images/facet" + (i + 1) + ".png");
+            }*/
         }
 
         public void setValue(int v){
