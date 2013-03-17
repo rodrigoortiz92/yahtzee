@@ -18,7 +18,12 @@ public class PlayerSetupView extends JPanel implements Observer {
     JComboBox typeSelection;
     
     public PlayerSetupView(PlayerSetupModel model) {
+        super(new GridBagLayout()); 
         this.model = model;
+        controller = new PlayerSetupController(this, model);
+
+        EasyGridBagLayout.addToLayout(this, typeSelection, 0, 0);
+        EasyGridBagLayout.addToLayout(this, typeSelection, 0, 1);
     }
     
     public void update(Observable o, Object arg) {
