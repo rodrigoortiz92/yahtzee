@@ -32,6 +32,11 @@ public class MainView extends JFrame {
         gameMenu.add(new JMenuItem(controller.getNewGameAction()));
         gameMenu.add(new JMenuItem(controller.getExitAction()));
 
+         JMenu helpMenu = new JMenu("Help");
+        menu.add(helpMenu);
+
+        helpMenu.add(new JMenuItem(controller.getAboutAction()));
+
         setJMenuBar(menu);
 
         Container content = getContentPane();
