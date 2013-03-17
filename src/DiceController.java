@@ -39,7 +39,11 @@ public class DiceController {
 
     public class RollAction extends AbstractAction {
 
-        public void actionPerformed(ActionEvent a){
+        public RollAction() {
+            super("Roll");
+        }
+
+        public void actionPerformed(ActionEvent a) {
             DiceController.this.model.roll();
         }
     }
@@ -48,6 +52,8 @@ public class DiceController {
         private int dieId;
 
         public LockAction(int dieId){
+            super("Lock");
+
             this.dieId = dieId;
         }
 
