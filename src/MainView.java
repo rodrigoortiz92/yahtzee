@@ -1,5 +1,6 @@
 
 import java.awt.Container;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -17,6 +18,8 @@ public class MainView extends JFrame {
     public MainView(GameView gameView, DiceView diceView, SetupView setupView) {
         super("Yahtzee");
         this.controller = new MainController(setupView.controller);
+
+        setIconImage(new ImageIcon(getClass().getResource("/images/icon.png")).getImage());
 
         JMenuBar menu = new JMenuBar();
 
