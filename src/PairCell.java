@@ -19,7 +19,7 @@ public class PairCell extends MarkableScoreCell {
 
     @Override
     public int calculateScore(DiceModel.DieValues dieValues) {
-        for (int i = DiceModel.DIE_MAX_VALUE; i >= DiceModel.DIE_MIN_VALUE; ++i) {
+        for (int i = DiceModel.DIE_MAX_VALUE; i >= DiceModel.DIE_MIN_VALUE; --i) {
             int countOfKind = dieValues.countOfValue(i);
 
             if (countOfKind >= 2) {
