@@ -1,3 +1,5 @@
+
+import java.awt.GridBagConstraints;
 import java.util.Observer;
 import java.util.Observable;
 import javax.swing.JPanel;
@@ -7,6 +9,7 @@ import javax.swing.Icon;
 import javax.swing.JToggleButton;
 import javax.swing.BoxLayout;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import javax.swing.JComponent;
 
 public class DiceView extends JPanel implements Observer {
@@ -35,8 +38,17 @@ public class DiceView extends JPanel implements Observer {
             dice[i] = face.getFace(1);
             lockButtons[i] = new JToggleButton(controller.getLockAction(i));
 
-            EasyGridBagLayout.addToLayout(this, dice[i], i, 0);
-            EasyGridBagLayout.addToLayout(this, lockButtons[i], i, 1);
+            GridBagConstraints c = new GridBagConstraints(i, 0, 1, 1, 1, 1,
+                    GridBagConstraints.NORTH, GridBagConstraints.NONE,
+                    new Insets(5, 5, 5, 5), 0, 0);
+            add(dice[i], c);
+
+            GridBagConstraints c2 = new GridBagConstraints(i, 1, 1, 1, 1, 1,
+                    GridBagConstraints.NORTH, GridBagConstraints.NONE,
+                    new Insets(5, 5, 5, 5), 0, 0);
+            add(lockButtons[i], c2);
+
+
         }
 
         update();

@@ -1,5 +1,7 @@
 
 import java.awt.Container;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -35,8 +37,15 @@ public class MainView extends JFrame {
 
         content.setLayout(new EasyGridBagLayout());
 
-        EasyGridBagLayout.addToLayout(this, gameView, 0, 0);
-        EasyGridBagLayout.addToLayout(this, diceView, 0, 1);
+        GridBagConstraints c = new GridBagConstraints(0, 0, 1, 1, 1, 1,
+                GridBagConstraints.FIRST_LINE_START, GridBagConstraints.HORIZONTAL,
+                new Insets(5, 5, 5, 5), 0, 0);
+        add(gameView, c);
+
+        GridBagConstraints c2 = new GridBagConstraints(0, 1, 1, 1, 1, 1,
+                GridBagConstraints.SOUTH, GridBagConstraints.NONE,
+                new Insets(5, 5, 5, 5), 0, 0);
+        add(diceView, c2);
 
         pack();
 
