@@ -24,8 +24,26 @@ public class Face extends JComponent {
         return new Dimension(SIDE,SIDE);
     }
 
-    public class Face1 extends Face {
+    public Face getFace(int i){
 
+        switch (i){
+            case 1:
+                return new Face1();
+            case 2:
+                return new Face2();
+            case 3:
+                return new Face3();
+            case 4:
+                return new Face4();
+            case 5:
+                return new Face5();
+            case 6:
+                return new Face6();
+        }
+        return null;
+    }
+
+    public class Face1 extends Face {
 
         protected void paintComponent(Graphics g){
 
