@@ -1,4 +1,6 @@
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Random;
 import java.util.Arrays;
@@ -9,23 +11,37 @@ public class DiceModel extends Observable {
     public static final int DIE_MAX_VALUE = 6;
     private static final int rollsPerTurn = 3;
     private static final int diceCount = 5;
-    private DieValues dice;
+    private DieValues dice = null;
     private int rolledTimes;
     private boolean locked[];
     private Random rand = new Random(3);
 
-    public DiceModel() {
+    public class RollNotification {
 
-        dice = new DieValues(diceCount);
+        DieValues values;
+        List<Integer> rolledDice;
+
+        public RollNotification(DieValues values, List<Integer> rolledDice) {
+            this.values = values;
+            this.rolledDice = rolledDice;
+        }
+    }
+
+    public class ResetNotification {
+    }
+
+    public DiceModel() {
         locked = new boolean[diceCount];
     }
 
-    public void clear(){
+    public void clear() {
         rolledTimes = 0;
         Arrays.fill(locked, false);
-        dice.clear();
+
+        dice = null;
+
         setChanged();
-        notifyObservers(dice);
+        notifyObservers(new ResetNotification());
     }
 
     public int getDieCount() {
@@ -41,11 +57,13 @@ public class DiceModel extends Observable {
     }
 
     public boolean canDiceBeRolled() {
-        return (rollsPerTurn - rolledTimes > 0);
+        return (rolledTimes < rollsPerTurn);
     }
 
     public void setDieLock(int i, boolean state) {
-        locked[i] = state;
+        if (canDiceBeLocked()) {
+            locked[i] = state;
+        }
     }
 
     public boolean isDieLocked(int i){
@@ -53,17 +71,28 @@ public class DiceModel extends Observable {
     }
 
     public void roll() {
+        if (dice == null) {
+            dice = new DieValues(diceCount);
+        }
+
+        List<Integer> rolledDice = new LinkedList<>();
+
         int i = 0;
         while (i < diceCount) {
             if (!locked[i]) {
-                dice.values[i] = rand.nextInt(DIE_MAX_VALUE - DIE_MIN_VALUE + 1)
-                    + DIE_MIN_VALUE;
+                int value = rand.nextInt(DIE_MAX_VALUE - DIE_MIN_VALUE + 1)
+                        + DIE_MIN_VALUE;
+
+                dice.values[i] = value;
+
+                rolledDice.add(value);
             }
             i++;
         }
         rolledTimes++;
+
         setChanged();
-        notifyObservers(dice);
+        notifyObservers(new RollNotification(dice, rolledDice));
     }
 
     public class DieValues {

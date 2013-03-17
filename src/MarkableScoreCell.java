@@ -41,7 +41,7 @@ abstract public class MarkableScoreCell extends ScoreCell implements Observer {
     public abstract Combination getOptimalCombination();
 
     public boolean isMarkable() {
-        return (score == null && player != null && player.isInTurn());
+        return (score == null && player != null && player.isInTurn() && diceModel.getDieValues() != null);
     }
 
     public void markScore() {
@@ -56,8 +56,12 @@ abstract public class MarkableScoreCell extends ScoreCell implements Observer {
         }
     }
 
-    public int getMarkableScore() {
-        return calculateScore(getDiceModel().getDieValues());
+    public Integer getMarkableScore() {
+        if (diceModel.getDieValues() != null) {
+            return calculateScore(getDiceModel().getDieValues());
+        }
+
+        return null;
     }
 
     /**

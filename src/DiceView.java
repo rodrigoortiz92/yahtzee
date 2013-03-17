@@ -39,16 +39,26 @@ public class DiceView extends JPanel implements Observer {
         }
     }
 
-    public void update(Observable o, Object arg){
-        DiceModel.DieValues values = (DiceModel.DieValues)arg;
+    public void update(Observable o, Object arg) {
+        if (arg instanceof DiceModel.RollNotification) {
+            DiceModel.RollNotification n = (DiceModel.RollNotification) arg;
+            DiceModel.DieValues values = n.values;
 
-        int i = values.getValueCount();
-        while (i-- > 0){
-            dice[i].setValue(values.valueAt(i));
-            lockButtons[i].setSelected(controller.isLocked(i));
-            lockButtons[i].setEnabled(controller.isLockable());
+            int i = values.getValueCount();
+            while (i-- > 0) {
+                dice[i].setValue(values.valueAt(i));
+                lockButtons[i].setSelected(controller.isLocked(i));
+                lockButtons[i].setEnabled(controller.isLockable());
+            }
+            rollButton.setEnabled(controller.isRollable());
         }
-        rollButton.setEnabled(controller.isRollable());
+        if (arg instanceof DiceModel.ResetNotification) {
+            for (int i = 0; i < model.getDieCount(); ++i) {
+                lockButtons[i].setSelected(controller.isLocked(i));
+                lockButtons[i].setEnabled(controller.isLockable());
+            }
+            rollButton.setEnabled(controller.isRollable());
+        }
     }
 
     private class Die extends JLabel {

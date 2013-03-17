@@ -45,11 +45,10 @@ public class AiPlayer extends Player {
 
     @Override
     void playTurn(DiceModel diceModel) {
-        DiceModel.DieValues values = diceModel.getDieValues();
-
         while (diceModel.canDiceBeRolled()) {
 
             if (diceModel.canDiceBeLocked()) {
+                DiceModel.DieValues values = diceModel.getDieValues();
 
                 boolean[] bestLocks = new boolean[diceModel.getDieCount()];
 
@@ -80,7 +79,7 @@ public class AiPlayer extends Player {
         }
 
         MarkableScoreCell bestCell = null;
-
+        DiceModel.DieValues values = diceModel.getDieValues();
 
         for (ScoreCell cell : getScoreCells()) {
             if (!(cell instanceof MarkableScoreCell)) {
