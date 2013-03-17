@@ -16,4 +16,9 @@ public class HumanPlayer extends Player {
     @Override
     void playTurn(DiceModel diceModel) {
     }
+
+    @Override
+    boolean acceptsUiInput() {
+        return true;
+    }
 }

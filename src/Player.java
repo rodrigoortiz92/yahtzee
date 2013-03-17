@@ -57,4 +57,5 @@ abstract public class Player extends Observable implements Observer {
     }
 
     abstract void playTurn(DiceModel diceModel);
+    abstract boolean acceptsUiInput();
 }
