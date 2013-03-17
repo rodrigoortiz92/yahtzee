@@ -68,10 +68,17 @@ public class GameView extends JPanel implements Observer {
 
         fields = new JButton[scoreCellNames.size()][players.size()];
 
-        for (int i = 0; i < players.size(); i++) {
-            for (int j = 0; j < players.get(i).getScoreCells().size(); j++) {
-                ScoreCell cell = players.get(i).getScoreCells().get(j);
-                CellView view = new CellView(cell);
+        final int MAX_PLAYERS = 10;
+
+        for (int i = 0; i < MAX_PLAYERS; i++) {
+            for (int j = 0; j < scoreCellNames.size(); j++) {
+                ScoreCell cell = null;
+
+                if (i < players.size()) {
+                    cell = players.get(i).getScoreCells().get(j);
+                }
+
+                CellView view = new CellView(cell, (j % 2) == 1);
 
                 addToLayout(this, view, i + 1, j + 1);
             }

@@ -3,7 +3,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.BorderFactory;
 import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 /*
  * To change this template, choose Tools | Templates
@@ -15,12 +19,16 @@ import javax.swing.JTextField;
  */
 public class CellView extends JTextField implements Observer {
 
-    ScoreCell scoreCell;
-    CellController controller;
+    private ScoreCell scoreCell;
+    private CellController controller;
 
     public CellView(ScoreCell scoreCell) {
         this.scoreCell = scoreCell;
-        controller = new CellController(this, scoreCell);
+
+        if (scoreCell != null) {
+            scoreCell.addObserver(this);
+            controller = new CellController(this, scoreCell);
+        }
 
         this.addMouseListener(controller);
 
@@ -29,7 +37,6 @@ public class CellView extends JTextField implements Observer {
         setBackground(Color.white);
         setFocusable(false);
 
-        scoreCell.addObserver(this);
     }
 
     @Override
