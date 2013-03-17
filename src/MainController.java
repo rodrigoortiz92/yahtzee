@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 import javax.swing.AbstractAction;
+import javax.swing.KeyStroke;
 
 /*
  * To change this template, choose Tools | Templates
@@ -53,6 +54,8 @@ public class MainController implements WindowListener {
 
         public NewGameAction() {
             super("New Game");
+
+            putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke("F2"));
         }
 
         @Override
@@ -66,6 +69,8 @@ public class MainController implements WindowListener {
 
         public ExitAction() {
             super("Exit");
+
+            putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke("alt F4"));
         }
 
         @Override
