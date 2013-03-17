@@ -1,4 +1,7 @@
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -38,8 +41,11 @@ public class Main {
             MainView view = new MainView(gameView, diceView, setupView);
 
             view.setVisible(true);
-        }
 
+            List<Player> p = Arrays.asList(new HumanPlayer(gameModel, diceModel, "Player"), new AiPlayer(gameModel, diceModel, "Ai"), new AiPlayer(gameModel, diceModel, "Ai"), new AiPlayer(gameModel, diceModel, "Ai"), new AiPlayer(gameModel, diceModel, "Ai"));
+
+            gameModel.startNewGame(p);
+        }
     }
 
     public static void main(String[] args)
