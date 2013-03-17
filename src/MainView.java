@@ -19,7 +19,8 @@ public class MainView extends JFrame {
 
     public MainView(GameView gameView, DiceView diceView, SetupView setupView) {
         super("Yahtzee");
-        this.controller = new MainController(setupView.controller);
+        this.controller = new MainController(this, setupView.controller);
+        addWindowListener(controller);
 
         setIconImage(new ImageIcon(getClass().getResource("/images/icon.png")).getImage());
 
