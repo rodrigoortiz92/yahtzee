@@ -1,3 +1,4 @@
+
 import java.util.Observer;
 import java.util.Observable;
 import java.awt.event.ActionListener;
@@ -11,29 +12,28 @@ public class DiceController {
     private DiceModel model;
     private DiceView view;
 
-    public DiceController(DiceView view, DiceModel model){
+    public DiceController(DiceView view, DiceModel model) {
         this.view = view;
         this.model = model;
     }
 
-    public boolean isLockable(){
+    public boolean isLockable() {
         return model.canDiceBeLocked();
     }
 
-    public boolean isRollable(){
+    public boolean isRollable() {
         return model.canDiceBeRolled();
     }
 
-    public boolean isLocked(int i){
+    public boolean isLocked(int i) {
         return model.isDieLocked(i);
     }
 
-
-    public Action getRollAction(){
+    public Action getRollAction() {
         return new RollAction();
     }
 
-    public Action getLockAction(int dieId){
+    public Action getLockAction(int dieId) {
         return new LockAction(dieId);
     }
 
@@ -49,16 +49,17 @@ public class DiceController {
     }
 
     public class LockAction extends AbstractAction {
+
         private int dieId;
 
-        public LockAction(int dieId){
+        public LockAction(int dieId) {
             super("Lock");
 
             this.dieId = dieId;
         }
 
-        public void actionPerformed(ActionEvent a){
-            JToggleButton state = (JToggleButton)a.getSource();
+        public void actionPerformed(ActionEvent a) {
+            JToggleButton state = (JToggleButton) a.getSource();
             DiceController.this.model.setDieLock(dieId, state.isSelected());
         }
     }

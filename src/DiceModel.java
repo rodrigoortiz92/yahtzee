@@ -66,7 +66,7 @@ public class DiceModel extends Observable {
         }
     }
 
-    public boolean isDieLocked(int i){
+    public boolean isDieLocked(int i) {
         return locked[i];
     }
 
@@ -103,9 +103,9 @@ public class DiceModel extends Observable {
             values = new int[count];
         }
 
-        private void clear(){
+        private void clear() {
             int i = getValueCount();
-            while (i-- > 0){
+            while (i-- > 0) {
                 values[i] = DiceModel.DIE_MIN_VALUE;
             }
         }
@@ -116,6 +116,10 @@ public class DiceModel extends Observable {
 
         public int valueAt(int i) {
             return values[i];
+        }
+
+        public void valueAt(int i, int v) {
+            values[i] = v;
         }
 
         public int countOfValue(int v) {
