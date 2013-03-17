@@ -40,13 +40,20 @@ public class DiceView extends JPanel implements Observer {
             EasyGridBagLayout.addToLayout(this, dice[i], i, 0);
             EasyGridBagLayout.addToLayout(this, lockButtons[i], i, 1);
         }
+
+        update();
     }
 
-    public void update(Observable o, Object arg) {
-        if (arg instanceof DiceModel.RollNotification) {
-            DiceModel.RollNotification n = (DiceModel.RollNotification) arg;
-            DiceModel.DieValues values = n.values;
+    private void update() {
+        for (int i = 0; i < model.getDieCount(); ++i) {
+            lockButtons[i].setSelected(controller.isLocked(i));
+            lockButtons[i].setEnabled(controller.isLockable());
+        }
+        rollButton.setEnabled(controller.isRollable());
 
+        DiceModel.DieValues values = model.getDieValues();
+
+        if (values != null) {
             int i = values.getValueCount();
             while (i-- > 0) {
                 remove(dice[i]);
@@ -58,18 +65,16 @@ public class DiceView extends JPanel implements Observer {
                 dice[i] = face.getFace(values.valueAt(i));
 
                 EasyGridBagLayout.addToLayout(this, dice[i], i, 0);
-                lockButtons[i].setSelected(controller.isLocked(i));
-                lockButtons[i].setEnabled(controller.isLockable());
             }
-            rollButton.setEnabled(controller.isRollable());
+
             validate();
         }
-        if (arg instanceof DiceModel.ResetNotification) {
-            for (int i = 0; i < model.getDieCount(); ++i) {
-                lockButtons[i].setSelected(controller.isLocked(i));
-                lockButtons[i].setEnabled(controller.isLockable());
-            }
-            rollButton.setEnabled(controller.isRollable());
+    }
+
+    public void update(Observable o, Object arg) {
+        if (arg instanceof DiceModel.RollNotification
+                || arg instanceof DiceModel.ResetNotification) {
+            update();
         }
     }
 }
