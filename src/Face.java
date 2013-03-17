@@ -7,10 +7,10 @@ import javax.swing.JComponent;
 
 public class Face extends JComponent {
 
-    private final int SIDE = 32;
-    private final int ARC = 12;
-    private final int DIA = 6;
-    private final int OFFSET = 6;
+    private final int SIDE = (32*4)/3;
+    private final int ARC = (12*4)/3;
+    private final int DIA = (6*4)/3;
+    private final int OFFSET = (6*3)/2;
     private final Color BORDER = Color.black;
     private final Color SURFACE = Color.white;
     private final Color DOT = Color.black;
@@ -24,8 +24,12 @@ public class Face extends JComponent {
         g2.fillRoundRect(1, 1, SIDE-1, SIDE-2, ARC, ARC);
     }
 
+    public Dimension getMinimumSize(){
+        return new Dimension(SIDE+1,SIDE+1);
+    }
+
     public Dimension getPreferredSize(){
-        return new Dimension(SIDE,SIDE+1);
+        return new Dimension(SIDE+1,SIDE+1);
     }
 
     public Face getFace(int i){
