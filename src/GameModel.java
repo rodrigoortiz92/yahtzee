@@ -11,12 +11,30 @@ public class GameModel extends Observable implements Observer {
     private List<Player> players;
     private Player currentPlayer;
 
-    public class TurnChangedNotification {
+    public class TurnEndNotification {
+
+        public Player player;
+
+        public TurnEndNotification(Player player) {
+            this.player = player;
+        }
+    }
+
+    public class TurnBeginNotification {
+
+        public Player player;
+
+        public TurnBeginNotification(Player player) {
+            this.player = player;
+        }
     }
 
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof Player.CellMarkedNotification) {
+            setChanged();
+            notifyObservers(new TurnEndNotification(currentPlayer));
+
             int index = players.indexOf(currentPlayer);
 
             if (index == players.size() - 1) {
@@ -26,9 +44,13 @@ public class GameModel extends Observable implements Observer {
             }
 
             currentPlayer = players.get(index);
+            diceModel.clear();
 
             setChanged();
-            notifyObservers(new TurnChangedNotification());
+            notifyObservers(new TurnBeginNotification(currentPlayer));
+
+            currentPlayer.playTurn(diceModel);
+
         } else {
             setChanged();
             notifyObservers(new ScoreChangeNotification());
@@ -46,7 +68,7 @@ public class GameModel extends Observable implements Observer {
     }
 
     public List<String> getScoreCellNames() {
-        return new ScoreColumn(null).getCellNames();
+        return new ScoreColumn(null, null).getCellNames();
     }
 
     public List<Player> getPlayers() {

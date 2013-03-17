@@ -1,14 +1,11 @@
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,9 +30,9 @@ public class GameView extends JPanel implements Observer {
         this.diceModel = diceModel;
 
         model.addObserver(this);
+        diceModel.addObserver(this);
 
         createComponents();
-        updateScores();
     }
 
     private void addToLayout(Container container, Component c, int x, int y) {
@@ -47,50 +44,6 @@ public class GameView extends JPanel implements Observer {
         constraints.fill = GridBagConstraints.HORIZONTAL;
 
         container.add(c, constraints);
-    }
-
-    private void updateScores() {
-        List<Player> playerColumns = model.getPlayers();
-
-        int x = 0;
-
-        for (Player player : model.getPlayers()) {
-            int y = 0;
-
-            for (ScoreCell cell : player.getScoreCells()) {
-                JButton field = fields[y][x];
-
-                String text = " ";
-
-                if (cell.getScore() != null) {
-                    text = String.valueOf(cell.getScore());
-                } else if (player == model.getCurrentPlayer()) {
-                    if (cell instanceof MarkableScoreCell) {
-                        MarkableScoreCell rollableCell = (MarkableScoreCell) cell;
-                        text = String.valueOf(rollableCell.calculateScore(diceModel.getDieValues()));
-                    }
-                }
-
-                field.setText(text);
-
-                Font currentFont = field.getFont();
-                Color color;
-
-                if (cell.getScore() != null) {
-                    currentFont = currentFont.deriveFont(Font.PLAIN);
-                    color = new Color(0, 0, 0);
-                } else {
-                    currentFont = currentFont.deriveFont(Font.ITALIC);
-                    color = new Color(0.5f, 0.5f, 0.5f);
-                }
-
-                field.setForeground(color);
-                field.setFont(currentFont);
-
-                y++;
-            }
-            x++;
-        }
     }
 
     private void createComponents() {
@@ -118,20 +71,9 @@ public class GameView extends JPanel implements Observer {
         for (int i = 0; i < players.size(); i++) {
             for (int j = 0; j < players.get(i).getScoreCells().size(); j++) {
                 ScoreCell cell = players.get(i).getScoreCells().get(j);
-                JButton field = new JButton();
+                CellView view = new CellView(cell);
 
-                field.setBackground(Color.white);
-                field.setFocusable(false);
-
-                if (cell instanceof MarkableScoreCell) {
-                    MarkableScoreCell rollableCell = (MarkableScoreCell) cell;
-                    Action action = controller.getMarkAction(rollableCell);
-                    field.setAction(action);
-                }
-
-                fields[j][i] = field;
-
-                addToLayout(this, field, i + 1, j + 1);
+                addToLayout(this, view, i + 1, j + 1);
             }
         }
     }
@@ -140,12 +82,6 @@ public class GameView extends JPanel implements Observer {
     public void update(Observable o, Object arg) {
         if (arg instanceof GameModel.NewGameNotification) {
             createComponents();
-            updateScores();
-        } else if (arg instanceof GameModel.ScoreChangeNotification) {
-            updateScores();
-        } else if (arg instanceof GameModel.TurnChangedNotification) {
-            updateScores();
         }
-        updateScores();
     }
 }

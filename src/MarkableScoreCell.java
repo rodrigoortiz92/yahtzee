@@ -40,12 +40,19 @@ abstract public class MarkableScoreCell extends ScoreCell implements Observer {
 
     public abstract Combination getOptimalCombination();
 
-    public void markScore(DiceModel.DieValues dieValues) {
+    public boolean isMarkable() {
+        return (score == null && player != null && player.isInTurn());
+    }
+
+    public void markScore() {
         // TODO: think about how to handle multiple markings
         if (score == null && player != null && player.isInTurn()) {
-            score = new Integer(calculateScore(dieValues));
+            score = new Integer(calculateScore(diceModel.getDieValues()));
+            setChanged();
+            notifyObservers(new MarkableChangeNotification());
             setChanged();
             notifyObservers(new ScoreChangedNotification());
+
         }
     }
 
@@ -107,7 +114,13 @@ abstract public class MarkableScoreCell extends ScoreCell implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (arg instanceof GameModel.TurnChangedNotification) {
+        if (score == null || arg instanceof GameModel.TurnEndNotification) {
+            setChanged();
+            notifyObservers(new MarkableChangeNotification());
+        } else if (arg instanceof GameModel.TurnBeginNotification && isMarkable()) {
+            setChanged();
+            notifyObservers(new MarkableChangeNotification());
+        } else if (o instanceof DiceModel && isMarkable()) {
             setChanged();
             notifyObservers(new MarkableChangeNotification());
         }
