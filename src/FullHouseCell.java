@@ -10,6 +10,14 @@ import java.util.List;
  */
 public class FullHouseCell extends MarkableScoreCell {
 
+    @Override
+    public Combination getOptimalCombination() {
+        return new Combination(
+                new Requirement(DiceModel.DIE_MAX_VALUE, 3),
+                new Requirement(DiceModel.DIE_MAX_VALUE - 1, 2)
+                );
+    }
+
     private class Pair {
 
         int kind;

@@ -11,6 +11,13 @@ import java.util.LinkedList;
  */
 public class TwoPairsCell extends MarkableScoreCell {
 
+     @Override
+    public Combination getOptimalCombination() {
+        return new Combination(
+                new Requirement(DiceModel.DIE_MAX_VALUE, 2),
+                new Requirement(DiceModel.DIE_MAX_VALUE - 1, 2));
+    }
+
     @Override
     public int calculateScore(DiceModel.DieValues dieValues) {
         LinkedList<Integer> pairs = new LinkedList<>();

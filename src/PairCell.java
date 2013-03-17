@@ -9,6 +9,14 @@
  */
 public class PairCell extends MarkableScoreCell {
 
+     @Override
+    public Combination getOptimalCombination() {
+        return new Combination(
+                new Requirement(DiceModel.DIE_MAX_VALUE, 2)
+                );
+    }
+
+
     @Override
     public int calculateScore(DiceModel.DieValues dieValues) {
         for (int i = DiceModel.DIE_MAX_VALUE; i >= DiceModel.DIE_MIN_VALUE; ++i) {

@@ -9,6 +9,12 @@
  */
 public class SumOfGivenDiceCell extends MarkableScoreCell {
 
+    @Override
+    public Combination getOptimalCombination() {
+        return new Combination(
+                new Requirement(DiceModel.DIE_MAX_VALUE, 3),
+                new Requirement(DiceModel.DIE_MAX_VALUE - 1, 2));
+    }
     int[] values;
 
     public SumOfGivenDiceCell(int... values) {
