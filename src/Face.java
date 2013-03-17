@@ -8,8 +8,9 @@ import javax.swing.JComponent;
 public class Face extends JComponent {
 
     private final int SIDE = 32;
-    private final int ARC = 8;
-    private final int DIA = (int)(SIDE/10);
+    private final int ARC = 12;
+    private final int DIA = 6;
+    private final int OFFSET = 6;
     private final Color BORDER = Color.black;
     private final Color SURFACE = Color.white;
     private final Color DOT = Color.black;
@@ -67,12 +68,12 @@ public class Face extends JComponent {
             Graphics2D g2 = (Graphics2D)g;
 
             g2.setColor(DOT);
-            g2.drawOval(SIDE/9, SIDE/9, DIA, DIA);
-            g2.fillOval(SIDE/9, SIDE/9, DIA, DIA);
-            g2.drawOval(SIDE - SIDE/9 - DIA, SIDE - SIDE/9 - DIA, DIA, DIA);
-            g2.fillOval(SIDE - SIDE/9 - DIA, SIDE - SIDE/9 - DIA, DIA, DIA);
+            g2.drawOval(SIDE/OFFSET, SIDE/OFFSET, DIA, DIA);
+            g2.fillOval(SIDE/OFFSET, SIDE/OFFSET, DIA, DIA);
+            g2.drawOval(SIDE - SIDE/OFFSET - DIA, SIDE - SIDE/OFFSET - DIA, DIA, DIA);
+            g2.fillOval(SIDE - SIDE/OFFSET - DIA, SIDE - SIDE/OFFSET - DIA, DIA, DIA);
 
-        } 
+        }
     }
 
     public class Face3 extends Face2 {
@@ -96,10 +97,10 @@ public class Face extends JComponent {
             Graphics2D g2 = (Graphics2D)g;
 
             g2.setColor(DOT);
-            g2.drawOval(SIDE - SIDE/9 - DIA, SIDE/9, DIA, DIA);
-            g2.fillOval(SIDE - SIDE/9 - DIA, SIDE/9, DIA, DIA);
-            g2.drawOval(SIDE/9, SIDE - SIDE/9 - DIA, DIA, DIA);
-            g2.fillOval(SIDE/9, SIDE - SIDE/9 - DIA, DIA, DIA);
+            g2.drawOval(SIDE - SIDE/OFFSET - DIA, SIDE/OFFSET, DIA, DIA);
+            g2.fillOval(SIDE - SIDE/OFFSET - DIA, SIDE/OFFSET, DIA, DIA);
+            g2.drawOval(SIDE/OFFSET, SIDE - SIDE/OFFSET - DIA, DIA, DIA);
+            g2.fillOval(SIDE/OFFSET, SIDE - SIDE/OFFSET - DIA, DIA, DIA);
         }
     }
 
@@ -124,10 +125,10 @@ public class Face extends JComponent {
             Graphics2D g2 = (Graphics2D)g;
 
             g2.setColor(DOT);
-            g2.drawOval(SIDE/9, SIDE/2 - DIA/2, DIA, DIA);
-            g2.fillOval(SIDE/9, SIDE/2 - DIA/2, DIA, DIA);
-            g2.drawOval(SIDE - SIDE/9 - DIA, SIDE/2 - DIA/2, DIA, DIA);
-            g2.fillOval(SIDE - SIDE/9 - DIA, SIDE/2 - DIA/2, DIA, DIA);
+            g2.drawOval(SIDE/OFFSET, SIDE/2 - DIA/2, DIA, DIA);
+            g2.fillOval(SIDE/OFFSET, SIDE/2 - DIA/2, DIA, DIA);
+            g2.drawOval(SIDE - SIDE/OFFSET - DIA, SIDE/2 - DIA/2, DIA, DIA);
+            g2.fillOval(SIDE - SIDE/OFFSET - DIA, SIDE/2 - DIA/2, DIA, DIA);
 
         }
     }
