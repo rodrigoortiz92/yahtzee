@@ -1,6 +1,8 @@
 
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.geom.Dimension2D;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -8,6 +10,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 /*
