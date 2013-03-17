@@ -45,21 +45,24 @@ public class DiceView extends JPanel implements Observer {
     public void update(Observable o, Object arg){
         DiceModel.DieValues values = (DiceModel.DieValues)arg;
 
+        drawDice(values);
+
         int i = values.getValueCount();
         while (i-- > 0){
-            remove(dice[i]);
-        }
-        validate();
-        i = values.getValueCount();
-        Face temp = new Face();
-        while (i-- > 0){
-            dice[i] = face.getFace(values.valueAt(i));
-
-            EasyGridBagLayout.addToLayout(this, dice[i], i, 0);
             lockButtons[i].setSelected(controller.isLocked(i));
             lockButtons[i].setEnabled(controller.isLockable());
         }
         rollButton.setEnabled(controller.isRollable());
+        validate();
+    }
+
+    private void drawDice(DiceModel.DieValues values){
+        int i = values.getValueCount();
+        while (i-- > 0){
+            remove(dice[i]);
+            dice[i] = face.getFace(values.valueAt(i));
+            EasyGridBagLayout.addToLayout(this, dice[i], i, 0);
+        }
         validate();
     }
 }
