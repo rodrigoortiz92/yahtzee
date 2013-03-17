@@ -15,6 +15,11 @@ public class DiceModel extends Observable {
     private int rolledTimes;
     private boolean locked[];
     private Random rand = new Random(3);
+    private boolean acceptUserInput = false;
+
+    public boolean acceptsUserInput() {
+        return acceptUserInput;
+    }
 
     public class RollNotification {
 
@@ -34,10 +39,11 @@ public class DiceModel extends Observable {
         locked = new boolean[diceCount];
     }
 
-    public void clear() {
+    public void clear(boolean acceptUserInput) {
         rolledTimes = 0;
         Arrays.fill(locked, false);
 
+        this.acceptUserInput = acceptUserInput;
         dice = null;
 
         setChanged();
@@ -91,6 +97,9 @@ public class DiceModel extends Observable {
         }
         rolledTimes++;
 
+        if (!canDiceBeRolled()) {
+            Arrays.fill(locked, false);
+        }
         setChanged();
         notifyObservers(new RollNotification(dice, rolledDice));
     }

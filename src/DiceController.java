@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JToggleButton;
+import javax.swing.Timer;
 
 public class DiceController {
 
@@ -44,7 +45,20 @@ public class DiceController {
         }
 
         public void actionPerformed(ActionEvent a) {
-            DiceController.this.model.roll();
+            final int ANIMATION_TIME = 500;
+
+            DiceController.this.view.animate(ANIMATION_TIME);
+            Timer timer = new Timer(ANIMATION_TIME, new DelayedRoller());
+            timer.setRepeats(false);
+            timer.start();
+        }
+
+        private class DelayedRoller implements ActionListener {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DiceController.this.model.roll();
+            }
         }
     }
 

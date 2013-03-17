@@ -44,7 +44,7 @@ public class GameModel extends Observable implements Observer {
             }
 
             currentPlayer = players.get(index);
-            diceModel.clear();
+            diceModel.clear(currentPlayer.acceptsUiInput());
 
             setChanged();
             notifyObservers(new TurnBeginNotification(currentPlayer));
@@ -83,13 +83,20 @@ public class GameModel extends Observable implements Observer {
             player.addObserver(this);
         }
 
-        if (players.isEmpty())
-            currentPlayer = null;
-        else
-            currentPlayer = players.get(0);
+        currentPlayer = null;
 
         setChanged();
         notifyObservers(new NewGameNotification());
+
+        if (!players.isEmpty()) {
+            currentPlayer = players.get(0);
+        }
+
+        diceModel.clear(currentPlayer.acceptsUiInput());
+        setChanged();
+        notifyObservers(new TurnBeginNotification(currentPlayer));
+
+        currentPlayer.playTurn(diceModel);
     }
 
     public GameModel(DiceModel diceModel) {

@@ -11,7 +11,7 @@ public class Die extends JComponent {
     private final int MIDDLE = SIDE / 2;
     private final int ARC = (12 * 4) / 3;
     private final int DIA = (6 * 4) / 3;
-    private final int OFFSET = (6 * 3) / 2;
+    private final int OFFSET = (6 * 4) / 2;
     private final Color BORDER = Color.black;
     private final Color SURFACE = Color.white;
     private final Color DOT = Color.black;
@@ -20,7 +20,7 @@ public class Die extends JComponent {
 
     public void setValue(int value) {
         this.value = value;
-        
+
         repaint();
     }
 

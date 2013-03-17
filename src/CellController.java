@@ -22,6 +22,11 @@ public class CellController implements MouseListener {
         if (scoreCell instanceof MarkableScoreCell) {
             MarkableScoreCell markable = (MarkableScoreCell) scoreCell;
 
+            if(!markable.getPlayer().acceptsUiInput())
+            {
+                return;
+            }
+
             if (markable.getMarkableScore() == null) {
                 return;
             }
@@ -37,7 +42,7 @@ public class CellController implements MouseListener {
                         JOptionPane.WARNING_MESSAGE, null,
                         new Object[]{yes, no}, no);
 
-                if (result == JOptionPane.NO_OPTION) {
+                if (result == JOptionPane.NO_OPTION || result == JOptionPane.CLOSED_OPTION) {
                     return;
                 }
             }

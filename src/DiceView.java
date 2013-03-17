@@ -4,6 +4,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JButton;
@@ -15,11 +17,10 @@ public class DiceView extends JPanel implements Observer {
 
     private DiceModel model;
     private DiceController controller;
-    private DiceModel.DieValues oldValues;
     private Die dice[];
     private JButton rollButton;
     private JToggleButton lockButtons[];
-    private DiceAnimation animation;
+    private List<DiceAnimation> animations;
 
     public DiceView(DiceModel model) {
         super(new GridBagLayout());
@@ -30,6 +31,7 @@ public class DiceView extends JPanel implements Observer {
         lockButtons = new JToggleButton[model.getDieCount()];
         controller = new DiceController(this, model);
         rollButton = new JButton(controller.getRollAction());
+        animations = new LinkedList<>();
 
         int i = dice.length;
         EasyGridBagLayout.addToLayout(this, rollButton, i, 0);
@@ -53,36 +55,48 @@ public class DiceView extends JPanel implements Observer {
 
     private void update() {
         updateButtons();
-        //determines if this is the first time update() is called, and
-        //chooses approppriate action (populate oldValues OR animate)
+
+        for (DiceAnimation animation : animations) {
+            animation.stop();
+        }
+
+        animations.clear();
+
         DiceModel.DieValues values = model.getDieValues();
 
-        if (values == null) {
-            return;
-        }
-
-        if (oldValues == null) {
-            oldValues = values;
+        if (values != null) {
             drawDice(values);
         }
+    }
 
-        animation = new DiceAnimation(5, 100, model.getDieValues());
+    public void animate(int time) {
+        DiceModel.DieValues values = model.getDieValues();
 
         for (int i = 0; i < model.getDieCount(); ++i) {
+            int old = DiceModel.DIE_MIN_VALUE;
+
+            if (values != null) {
+                old = model.getDieValues().valueAt(i);
+            }
+
+            animations.add(new DiceAnimation(old, i));
+
             lockButtons[i].setSelected(controller.isLocked(i));
             lockButtons[i].setEnabled(false);
         }
-
-        rollButton.setEnabled(controller.isRollable());
     }
 
     private void updateButtons() {
         for (int i = 0; i < model.getDieCount(); ++i) {
-            lockButtons[i].setSelected(controller.isLocked(i));
-            lockButtons[i].setEnabled(controller.isLockable());
+            updateButton(i);
         }
 
-        rollButton.setEnabled(controller.isRollable());
+        rollButton.setEnabled(controller.isRollable() && model.acceptsUserInput());
+    }
+
+    private void updateButton(int i) {
+        lockButtons[i].setSelected(controller.isLocked(i));
+        lockButtons[i].setEnabled(controller.isLockable() && model.acceptsUserInput());
     }
 
     public void update(Observable o, Object arg) {
@@ -102,38 +116,26 @@ public class DiceView extends JPanel implements Observer {
     private class DiceAnimation implements ActionListener {
 
         private Timer timer;
-        private DiceModel.DieValues currValues;
-        private DiceModel.DieValues targetValues;
-        private int round;
-        private int totalRounds;
+        private int value;
+        private int index;
+        private final int DELAY = 100;
 
-        public DiceAnimation(int totalRounds, int delay,
-                DiceModel.DieValues targetValues) {
-            timer = new Timer(delay, this);
-            currValues = oldValues;
-            this.targetValues = targetValues;
-            this.totalRounds = totalRounds;
+        public DiceAnimation(int value, int index) {
+            timer = new Timer(DELAY, this);
+            this.value = value;
+            this.index = index;
+
             timer.setRepeats(true);
-            round = 0;
             timer.start();
         }
 
         public void actionPerformed(ActionEvent a) {
-            if (round == totalRounds) {
-                timer.stop();
-                drawDice(targetValues);
-                updateButtons();
-                return;
-            }
-            int i = currValues.getValueCount();
-            while (i-- > 0) {
-                if (!controller.isLocked(i)) {
-                    currValues.valueAt(i, (currValues.valueAt(i) + 1)
-                            % DiceModel.DIE_MAX_VALUE + DiceModel.DIE_MIN_VALUE);
-                }
-            }
-            round++;
-            drawDice(currValues);
+            value = (value + 1) % DiceModel.DIE_MAX_VALUE + DiceModel.DIE_MIN_VALUE;
+            dice[index].setValue(value);
+        }
+
+        public void stop() {
+            timer.stop();
         }
     }
 }
