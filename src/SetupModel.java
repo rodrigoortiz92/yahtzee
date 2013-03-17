@@ -14,11 +14,21 @@ public class SetupModel extends Observable {
         return playerTypes;
     }
     
-    public void addPlayer(PlayerType type) {
-        notifyObservers();
+    public class PlayerAddedNotification {
     }
     
-    public void removePlayer(PlayerSetupModel playerSetupModel) {
-        notifyObservers();
+    public class PlayerRemovedNotification {
+    }
+    
+    public void addPlayer() {
+        System.out.println("SetupModel_addPlayer");
+        setChanged();
+        notifyObservers(new PlayerAddedNotification());
+    }
+    
+    public void removePlayer() {
+        System.out.println("SetupModel_removePlayer");
+        setChanged();
+        notifyObservers(new PlayerRemovedNotification());
     }
 }
