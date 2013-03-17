@@ -1,5 +1,7 @@
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /*
  * To change this template, choose Tools | Templates
@@ -15,6 +17,12 @@ public class Main {
 
         @Override
         public void run() {
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (UnsupportedLookAndFeelException | ClassNotFoundException |
+                    InstantiationException | IllegalAccessException e) {
+            }
+
             DiceModel diceModel = new DiceModel();
 
             GameModel gameModel = new GameModel(diceModel);
