@@ -44,16 +44,34 @@ public class GameModel extends Observable implements Observer {
             }
 
             currentPlayer = players.get(index);
-            diceModel.clear(currentPlayer.acceptsUiInput());
 
-            setChanged();
-            notifyObservers(new TurnBeginNotification(currentPlayer));
+            boolean found = false;
 
-            currentPlayer.playTurn(diceModel);
+            for (ScoreCell cell : currentPlayer.getScoreCells()) {
+                if (cell instanceof MarkableScoreCell) {
+                    MarkableScoreCell markable = (MarkableScoreCell) cell;
 
-        } else {
-            setChanged();
-            notifyObservers(new ScoreChangeNotification());
+                    if(markable.getScore() == null)
+                    {
+                        found = true;
+                    }
+                }
+            }
+
+            if (found) {
+                diceModel.clear(currentPlayer.acceptsUiInput());
+
+                setChanged();
+                notifyObservers(new TurnBeginNotification(currentPlayer));
+
+                currentPlayer.playTurn(diceModel);
+            }
+            else
+            {
+                setChanged();
+                notifyObservers(new EndGameNotification());
+            }
+
         }
     }
 
@@ -64,7 +82,7 @@ public class GameModel extends Observable implements Observer {
     public class NewGameNotification {
     }
 
-    public class ScoreChangeNotification {
+    public class EndGameNotification {
     }
 
     public List<String> getScoreCellNames() {
