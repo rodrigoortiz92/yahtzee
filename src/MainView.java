@@ -39,5 +39,7 @@ public class MainView extends JFrame {
         EasyGridBagLayout.addToLayout(this, diceView, 0, 1);
 
         pack();
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }
