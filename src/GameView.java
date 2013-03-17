@@ -3,6 +3,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -40,8 +41,9 @@ public class GameView extends JPanel implements Observer {
 
         constraints.gridx = x;
         constraints.gridy = y;
-        constraints.weightx = 0.0;
+        constraints.weightx = 1.0;
         constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.insets = new Insets(-1, -1, 0, 0);
 
         container.add(c, constraints);
     }

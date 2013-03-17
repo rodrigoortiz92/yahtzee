@@ -21,8 +21,13 @@ public class CellView extends JTextField implements Observer {
 
     private ScoreCell scoreCell;
     private CellController controller;
+    private boolean darkened;
+    private final Color DARK_PRESSABLE = new Color(0.7f, 0.7f, 0.7f);
+    private final Color LIGHT_PRESSABLE = new Color(0.9f, 0.9f, 0.9f);
+    private final Color DARK = new Color(0.9f, 0.9f, 0.9f);
+    private final Color LIGHT = new Color(1f, 1f, 1f);
 
-    public CellView(ScoreCell scoreCell) {
+    public CellView(ScoreCell scoreCell, boolean darkened) {
         this.scoreCell = scoreCell;
 
         if (scoreCell != null) {
@@ -30,41 +35,55 @@ public class CellView extends JTextField implements Observer {
             controller = new CellController(this, scoreCell);
         }
 
+        this.darkened = darkened;
         this.addMouseListener(controller);
 
         setColumns(5);
         setEditable(false);
-        setBackground(Color.white);
         setFocusable(false);
+        applyNormalLook();
+    }
 
+    private void applyPressableLook() {
+        setBackground(darkened ? DARK_PRESSABLE : LIGHT_PRESSABLE);
+        setForeground(new Color(0f, 0f, 0f));
+        setFont(getFont().deriveFont(Font.ITALIC));
+
+        Border bevel = BorderFactory.createBevelBorder(BevelBorder.RAISED);
+        Border line = BorderFactory.createLineBorder(Color.black);
+
+        setBorder(BorderFactory.createCompoundBorder(line, bevel));
+    }
+
+    private void applyNormalLook() {
+        setBackground(darkened ? DARK : LIGHT);
+        setForeground(new Color(0f, 0f, 0f));
+        setFont(getFont().deriveFont(Font.PLAIN));
+        Border empty = BorderFactory.createEmptyBorder(2, 2, 2, 2);
+        Border line = BorderFactory.createLineBorder(Color.black);
+
+        setBorder(BorderFactory.createCompoundBorder(line, empty));
     }
 
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof ScoreCell.ScoreChangedNotification) {
-            String text = " ";
-
             if (scoreCell.getScore() != null) {
-                text = String.valueOf(scoreCell.getScore());
+                setText(String.valueOf(scoreCell.getScore()));
             }
 
-            setForeground(new Color(0f, 0f, 0f));
-                setFont(getFont().deriveFont(Font.PLAIN));
+            applyNormalLook();
 
-
-            setText(text);
         }
         if (arg instanceof MarkableScoreCell.MarkableChangeNotification) {
             MarkableScoreCell markableScoreCell = (MarkableScoreCell) scoreCell;
 
             if (markableScoreCell.isMarkable()) {
-                setForeground(new Color(0.5f, 0.5f, 0.5f));
-                setFont(getFont().deriveFont(Font.ITALIC));
+                applyPressableLook();
                 setText(String.valueOf(markableScoreCell.getMarkableScore()));
-            }
-            else
-            {
-                 setText(" ");
+            } else {
+                applyNormalLook();
+                setText(" ");
             }
         }
     }
