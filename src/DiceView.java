@@ -54,20 +54,7 @@ public class DiceView extends JPanel implements Observer {
         DiceModel.DieValues values = model.getDieValues();
 
         if (values != null) {
-            int i = values.getValueCount();
-            while (i-- > 0) {
-                remove(dice[i]);
-            }
-            validate();
-            i = values.getValueCount();
-            Face temp = new Face();
-            while (i-- > 0) {
-                dice[i] = face.getFace(values.valueAt(i));
-
-                EasyGridBagLayout.addToLayout(this, dice[i], i, 0);
-            }
-
-            validate();
+            drawDice(values);
         }
     }
 
@@ -76,5 +63,15 @@ public class DiceView extends JPanel implements Observer {
                 || arg instanceof DiceModel.ResetNotification) {
             update();
         }
+    }
+
+    private void drawDice(DiceModel.DieValues values){
+        int i = values.getValueCount();
+        while (i-- > 0){
+            remove(dice[i]);
+            dice[i] = face.getFace(values.valueAt(i));
+            EasyGridBagLayout.addToLayout(this, dice[i], i, 0);
+        }
+        validate();
     }
 }

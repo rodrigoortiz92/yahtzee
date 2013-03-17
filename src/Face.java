@@ -10,18 +10,21 @@ public class Face extends JComponent {
     private final int SIDE = 32;
     private final int ARC = 8;
     private final int DIA = (int)(SIDE/10);
+    private final Color BORDER = Color.black;
+    private final Color SURFACE = Color.white;
+    private final Color DOT = Color.black;
 
     protected void paintComponent(Graphics g){
 
-
         Graphics2D g2 = (Graphics2D)g;
-        g2.setColor(Color.red);
+        g2.setColor(BORDER);
         g2.drawRoundRect(0, 0, SIDE, SIDE, ARC, ARC);
-        g2.fillRoundRect(0, 0, SIDE, SIDE, ARC, ARC);
+        g2.setColor(SURFACE);
+        g2.fillRoundRect(1, 1, SIDE-1, SIDE-2, ARC, ARC);
     }
 
     public Dimension getPreferredSize(){
-        return new Dimension(SIDE,SIDE);
+        return new Dimension(SIDE,SIDE+1);
     }
 
     public Face getFace(int i){
@@ -50,7 +53,7 @@ public class Face extends JComponent {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D)g;
 
-            g2.setColor(Color.white);
+            g2.setColor(DOT);
             g2.drawOval(SIDE/2 - DIA/2, SIDE/2 - DIA/2, DIA, DIA);
             g2.fillOval(SIDE/2 - DIA/2, SIDE/2 - DIA/2, DIA, DIA);
         }
@@ -63,7 +66,7 @@ public class Face extends JComponent {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D)g;
 
-            g2.setColor(Color.white);
+            g2.setColor(DOT);
             g2.drawOval(SIDE/9, SIDE/9, DIA, DIA);
             g2.fillOval(SIDE/9, SIDE/9, DIA, DIA);
             g2.drawOval(SIDE - SIDE/9 - DIA, SIDE - SIDE/9 - DIA, DIA, DIA);
@@ -79,7 +82,7 @@ public class Face extends JComponent {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D)g;
 
-            g2.setColor(Color.white);
+            g2.setColor(DOT);
             g2.drawOval(SIDE/2 - DIA/2, SIDE/2 - DIA/2, DIA, DIA);
             g2.fillOval(SIDE/2 - DIA/2, SIDE/2 - DIA/2, DIA, DIA);
         }
@@ -92,7 +95,7 @@ public class Face extends JComponent {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D)g;
 
-            g2.setColor(Color.white);
+            g2.setColor(DOT);
             g2.drawOval(SIDE - SIDE/9 - DIA, SIDE/9, DIA, DIA);
             g2.fillOval(SIDE - SIDE/9 - DIA, SIDE/9, DIA, DIA);
             g2.drawOval(SIDE/9, SIDE - SIDE/9 - DIA, DIA, DIA);
@@ -107,7 +110,7 @@ public class Face extends JComponent {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D)g;
 
-            g2.setColor(Color.white);
+            g2.setColor(DOT);
             g2.drawOval(SIDE/2 - DIA/2, SIDE/2 - DIA/2, DIA, DIA);
             g2.fillOval(SIDE/2 - DIA/2, SIDE/2 - DIA/2, DIA, DIA);
         }
@@ -120,7 +123,7 @@ public class Face extends JComponent {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D)g;
 
-            g2.setColor(Color.white);
+            g2.setColor(DOT);
             g2.drawOval(SIDE/9, SIDE/2 - DIA/2, DIA, DIA);
             g2.fillOval(SIDE/9, SIDE/2 - DIA/2, DIA, DIA);
             g2.drawOval(SIDE - SIDE/9 - DIA, SIDE/2 - DIA/2, DIA, DIA);
