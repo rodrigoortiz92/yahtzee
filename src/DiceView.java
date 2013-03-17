@@ -1,3 +1,5 @@
+
+import java.awt.GridBagConstraints;
 import java.util.Observer;
 import java.util.Observable;
 import javax.swing.JPanel;
@@ -7,6 +9,7 @@ import javax.swing.Icon;
 import javax.swing.JToggleButton;
 import javax.swing.BoxLayout;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import javax.swing.JComponent;
 
 public class DiceView extends JPanel implements Observer {
@@ -26,19 +29,26 @@ public class DiceView extends JPanel implements Observer {
         dice = new JComponent[model.getDieCount()];
         lockButtons = new JToggleButton[model.getDieCount()];
         controller = new DiceController(this, model);
-        rollButton = new JButton("roll");
-        rollButton.addActionListener(controller.getRollAction());
+        rollButton = new JButton(controller.getRollAction());
         face = new Face();
 
         int i = dice.length;
         EasyGridBagLayout.addToLayout(this, rollButton, i, 0);
         while (i-- > 0){
             dice[i] = face.getFace(1);
-            lockButtons[i] = new JToggleButton("lock");
-            lockButtons[i].addActionListener(controller.getLockAction(i));
+            lockButtons[i] = new JToggleButton(controller.getLockAction(i));
 
-            EasyGridBagLayout.addToLayout(this, dice[i], i, 0);
-            EasyGridBagLayout.addToLayout(this, lockButtons[i], i, 1);
+            GridBagConstraints c = new GridBagConstraints(i, 0, 1, 1, 1, 1,
+                    GridBagConstraints.NORTH, GridBagConstraints.NONE,
+                    new Insets(5, 5, 5, 5), 0, 0);
+            add(dice[i], c);
+
+            GridBagConstraints c2 = new GridBagConstraints(i, 1, 1, 1, 1, 1,
+                    GridBagConstraints.NORTH, GridBagConstraints.NONE,
+                    new Insets(5, 5, 5, 5), 0, 0);
+            add(lockButtons[i], c2);
+
+
         }
 
         update();
@@ -54,20 +64,7 @@ public class DiceView extends JPanel implements Observer {
         DiceModel.DieValues values = model.getDieValues();
 
         if (values != null) {
-            int i = values.getValueCount();
-            while (i-- > 0) {
-                remove(dice[i]);
-            }
-            validate();
-            i = values.getValueCount();
-            Face temp = new Face();
-            while (i-- > 0) {
-                dice[i] = face.getFace(values.valueAt(i));
-
-                EasyGridBagLayout.addToLayout(this, dice[i], i, 0);
-            }
-
-            validate();
+            drawDice(values);
         }
     }
 
@@ -76,5 +73,18 @@ public class DiceView extends JPanel implements Observer {
                 || arg instanceof DiceModel.ResetNotification) {
             update();
         }
+    }
+
+    private void drawDice(DiceModel.DieValues values){
+        int i = values.getValueCount();
+        while (i-- > 0){
+            remove(dice[i]);
+            dice[i] = face.getFace(values.valueAt(i));
+
+            GridBagConstraints c = new GridBagConstraints(i, 0, 1, 1, 1, 1, GridBagConstraints.NORTH, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0);
+
+            add(dice[i], c);
+        }
+        validate();
     }
 }
