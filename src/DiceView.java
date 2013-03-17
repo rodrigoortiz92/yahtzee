@@ -56,8 +56,6 @@ public class DiceView extends JPanel implements Observer {
             dice[i] = face.getFace(values.valueAt(i));
 
             EasyGridBagLayout.addToLayout(this, dice[i], i, 0);
-            System.out.println(i);
-
             lockButtons[i].setSelected(controller.isLocked(i));
             lockButtons[i].setEnabled(controller.isLockable());
         }
