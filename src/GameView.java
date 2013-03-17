@@ -1,15 +1,19 @@
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -21,6 +25,7 @@ public class GameView extends JPanel implements Observer {
     GameController controller;
     DiceModel diceModel;
     JButton[][] fields;
+    Map<Player, JLabel> playerLabels;
 
     /**
      * Creates new form GameView
@@ -61,11 +66,21 @@ public class GameView extends JPanel implements Observer {
         setLayout(layout);
 
         for (int i = 0; i < scoreCellNames.size(); i++) {
-            addToLayout(this, new JLabel(scoreCellNames.get(i)), 0, i + 1);
+            JLabel label = new JLabel(scoreCellNames.get(i));
+
+            label.setHorizontalTextPosition(SwingConstants.TRAILING);
+
+            addToLayout(this, label, 0, i + 1);
         }
 
+        playerLabels = new HashMap<>();
+
         for (int i = 0; i < players.size(); i++) {
-            addToLayout(this, new JLabel(players.get(i).getName()), i + 1, 0);
+            JLabel label = new JLabel(players.get(i).getName());
+
+            playerLabels.put(players.get(i), label);
+
+            addToLayout(this, label, i + 1, 0);
         }
 
         fields = new JButton[scoreCellNames.size()][players.size()];
@@ -91,6 +106,18 @@ public class GameView extends JPanel implements Observer {
     public void update(Observable o, Object arg) {
         if (arg instanceof GameModel.NewGameNotification) {
             createComponents();
+        } else if (arg instanceof GameModel.TurnBeginNotification) {
+            GameModel.TurnBeginNotification begin = (GameModel.TurnBeginNotification) arg;
+
+            JLabel label = playerLabels.get(begin.player);
+
+            label.setFont(label.getFont().deriveFont(Font.BOLD));
+        } else if (arg instanceof GameModel.TurnEndNotification) {
+            GameModel.TurnEndNotification end = (GameModel.TurnEndNotification) arg;
+
+            JLabel label = playerLabels.get(end.player);
+
+            label.setFont(label.getFont().deriveFont(Font.PLAIN));
         }
     }
 }
