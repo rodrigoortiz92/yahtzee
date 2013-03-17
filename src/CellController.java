@@ -22,10 +22,14 @@ public class CellController implements MouseListener {
         if (scoreCell instanceof MarkableScoreCell) {
             MarkableScoreCell markable = (MarkableScoreCell) scoreCell;
 
-            String yes = "Yes";
-            String no = "No";
+            if (markable.getMarkableScore() == null) {
+                return;
+            }
 
             if (markable.getMarkableScore() == 0) {
+                String yes = "Yes";
+                String no = "No";
+
                 int result = JOptionPane.showOptionDialog(view,
                         "Marking this cell will result in a score of zero in "
                         + "the cell. Do you really want to mark this cell?",
