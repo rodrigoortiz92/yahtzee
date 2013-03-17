@@ -23,13 +23,17 @@ public class Main {
 
             DiceView diceView = new DiceView(diceModel);
 
-            MainView view = new MainView(gameView, diceView);
+            SetupModel setupModel = new SetupModel();
+
+            SetupView setupView = new SetupView(setupModel);
+
+            MainView view = new MainView(gameView, diceView, setupView);
 
             view.setVisible(true);
         }
-        
+
     }
-    
+
     public static void main(String[] args)
     {
         SwingUtilities.invokeLater(new Creator());

@@ -12,10 +12,11 @@ import javax.swing.JMenuItem;
 public class MainView extends JFrame {
 
     MainController controller;
+    SetupView setupView;
 
-    public MainView(GameView gameView, DiceView diceView) {
+    public MainView(GameView gameView, DiceView diceView, SetupView setupView) {
         super("Yahtzee");
-        this.controller = new MainController();
+        this.controller = new MainController(setupView.controller);
 
         JMenuBar menu = new JMenuBar();
 

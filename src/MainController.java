@@ -14,6 +14,11 @@ public class MainController {
 
     private NewGameAction newGameAction = new NewGameAction();
     private ExitAction exitAction = new ExitAction();
+    private SetupController controller;
+    
+    public MainController(SetupController controller){
+        this.controller = controller;
+    }
 
     public NewGameAction getNewGameAction() {
         return newGameAction;
@@ -31,7 +36,8 @@ public class MainController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            throw new UnsupportedOperationException("Not supported yet.");
+            controller.view.setVisible(true);
+            //throw new UnsupportedOperationException("Not supported yet.");
         }
     }
 
