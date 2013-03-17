@@ -79,7 +79,9 @@ public class DiceView extends JPanel implements Observer {
                 old = model.getDieValues().valueAt(i);
             }
 
-            animations.add(new DiceAnimation(old, i));
+            if (!model.isDieLocked(i)) {
+                animations.add(new DiceAnimation(old, i));
+            }
 
             lockButtons[i].setSelected(controller.isLocked(i));
             lockButtons[i].setEnabled(false);
