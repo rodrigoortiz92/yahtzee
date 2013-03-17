@@ -45,6 +45,8 @@ public class Main {
             List<Player> p = Arrays.asList(new HumanPlayer(gameModel, diceModel, "Player"), new AiPlayer(gameModel, diceModel, "Ai"), new AiPlayer(gameModel, diceModel, "Ai"), new AiPlayer(gameModel, diceModel, "Ai"), new AiPlayer(gameModel, diceModel, "Ai"));
 
             gameModel.startNewGame(p);
+
+            view.pack();
         }
     }
 
