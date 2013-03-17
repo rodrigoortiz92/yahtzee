@@ -21,6 +21,7 @@ public class MainController implements WindowListener {
 
     private NewGameAction newGameAction = new NewGameAction();
     private ExitAction exitAction = new ExitAction();
+    private AboutAction aboutAction = new AboutAction();
     private SetupController controller;
     private MainView view;
     private final String WINDOW_X_KEY = "window.x";
@@ -42,6 +43,10 @@ public class MainController implements WindowListener {
 
     public ExitAction getExitAction() {
         return exitAction;
+    }
+
+    public AboutAction getAboutAction() {
+        return aboutAction;
     }
 
     public class NewGameAction extends AbstractAction {
@@ -70,6 +75,26 @@ public class MainController implements WindowListener {
         }
     }
 
+    public class AboutAction extends AbstractAction {
+
+        public AboutAction() {
+            super("About");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String ok = "Ok";
+
+            int result = JOptionPane.showOptionDialog(view,
+                    "Yahtzee\n"
+                    + "\n"
+                    + "by Erkki Mattila, Mikko Paukkonen & Markus Salmijärvi 2013\n",
+                    "About Yahtzee", JOptionPane.YES_NO_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE,
+                    new ImageIcon(getClass().getResource("/images/icon.png")),
+                    new Object[]{ok}, ok);
+        }
+    }
 
     @Override
     public void windowOpened(WindowEvent e) {
