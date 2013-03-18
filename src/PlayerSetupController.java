@@ -1,37 +1,31 @@
-/**
-*
-*@author Erkki Mattila
-*/
-
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
-import java.util.Observer;
-import java.util.Observable;
+import javax.swing.AbstractAction;
 
-public class PlayerSetupController implements ActionListener, ItemListener, Observer{
+public class PlayerSetupController {
 
-    PlayerSetupModel model;
-    PlayerSetupView view;
-    
+    private PlayerSetupModel model;
+    private PlayerSetupView view;
+
+
     public PlayerSetupController(PlayerSetupView view, PlayerSetupModel model) {
         this.view = view;
         this.model = model;
     }
-    
-    public void changeName() {
+
+    public class NameChangedAction extends AbstractAction {
+
+        public void actionPerformed(ActionEvent a){
+
+        }
     }
-    
-    public void changeType() {
-    }
-    
-    public void update(Observable o, Object args){
-    }
-        
-    public void actionPerformed(ActionEvent e) {
-    }
-    
-    public void itemStateChanged(ItemEvent e) {
+
+    public class TypeChangedAction extends AbstractAction {
+
+        public void actionPerformed(ActionEvent a){
+
+        }
     }
 }
