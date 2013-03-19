@@ -11,7 +11,7 @@ public class SetupModel extends Observable {
     }
     
     public void addPlayer(String name, PlayerType type) {
-        players.add(new Player);
+        players.add(PlayerType.createPlayer(name, type));
         setChanged();
         notifyObservers(getPlayers());
     }
