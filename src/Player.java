@@ -1,5 +1,8 @@
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -12,6 +15,7 @@ abstract public class Player extends Observable implements Observer {
     private String name;
     private ScoreColumn scoreColumn;
     private GameModel model;
+    private Map<Integer, Integer> rollFrequencies;
 
     boolean isInTurn() {
        return this == model.getCurrentPlayer();
@@ -32,6 +36,14 @@ abstract public class Player extends Observable implements Observer {
         this.model = model;
         this.name = name;
         this.scoreColumn = column;
+        column.setThings(this, diceModel);
+        this.rollFrequencies = new HashMap<>();
+
+        for (int i = DiceModel.DIE_MIN_VALUE; i <= DiceModel.DIE_MAX_VALUE; ++i) {
+            rollFrequencies.put(i, 0);
+        }
+
+        diceModel.addObserver(this);
     }
 
     @Override
@@ -46,16 +58,41 @@ abstract public class Player extends Observable implements Observer {
                 setChanged();
                 notifyObservers(arg);
             }
-        }else if (arg instanceof GameModel.TurnEndNotification) {
+        } else if (arg instanceof GameModel.TurnEndNotification) {
             GameModel.TurnEndNotification end = (GameModel.TurnEndNotification) arg;
 
             if (end.player == this) {
                 setChanged();
                 notifyObservers(arg);
             }
+        } else if (arg instanceof DiceModel.RollNotification && isInTurn()) {
+            DiceModel.RollNotification roll = (DiceModel.RollNotification) arg;
+
+            for (Integer die : roll.rolledDice) {
+                rollFrequencies.put(die, rollFrequencies.get(die) + 1);
+            }
         }
     }
 
+    public Map<Integer, Integer> getRollFrequencies() {
+        return Collections.unmodifiableMap(rollFrequencies);
+    }
+
+    public Integer getTotalRolls() {
+        Integer total = 0;
+
+        for (Integer kind : rollFrequencies.keySet()) {
+            total += rollFrequencies.get(kind);
+        }
+
+        return total;
+    }
+
+    public int calculateScore() {
+         return scoreColumn.getTotalCell().getScore();
+    }
+
     abstract void playTurn(DiceModel diceModel);
+
     abstract boolean acceptsUiInput();
 }
