@@ -1,6 +1,8 @@
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -44,16 +46,37 @@ public class Main {
 
             MainView view = new MainView(gameView, diceView, setupView);
 
-            view.setVisible(true);
+            EndGameListener listener = new EndGameListener(view, gameModel);
 
+            view.setVisible(true);
 
 
             view.pack();
         }
     }
 
-    public static void main(String[] args)
-    {
+    private static class EndGameListener implements Observer {
+
+        private MainView mainView;
+        private GameModel gameModel;
+
+        public EndGameListener(MainView mainView, GameModel gameModel) {
+            this.mainView = mainView;
+            this.gameModel = gameModel;
+
+            gameModel.addObserver(this);
+        }
+
+        @Override
+        public void update(Observable o, Object arg) {
+            if (arg instanceof GameModel.EndGameNotification) {
+                EndGameView endGameView = new EndGameView(mainView, gameModel);
+                endGameView.setVisible(true);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(new Creator());
     }
 }
