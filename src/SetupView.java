@@ -1,6 +1,7 @@
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import java.awt.GridBagLayout;
 import java.awt.Window;
 import java.util.Observer;
@@ -9,6 +10,7 @@ import java.util.Observable;
 public class SetupView extends JDialog implements Observer {
 
     PlayerAddPane addPane;
+    JPanel PlayerList;
     SetupController controller;
 
     public SetupView(SetupModel model, Window owner) {
