@@ -14,7 +14,7 @@ public class DiceModel extends Observable {
     private DieValues dice = null;
     private int rolledTimes;
     private boolean locked[];
-    private Random rand = new Random(3);
+    private Random rand = new Random();
     private boolean acceptUserInput = false;
 
     public boolean acceptsUserInput() {
