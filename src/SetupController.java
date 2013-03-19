@@ -15,7 +15,7 @@ public class SetupController implements Observer {
     public SetupController(SetupView view, SetupModel model) {
         this.view = view;
         this.model = model;
-        this.model.addObserver(this);
+        model.addObserver(this);
         addPlayerButtonAction = new AddPlayerButtonAction();
     }
 
@@ -25,6 +25,10 @@ public class SetupController implements Observer {
             enabled = true;
         }
         addPane.paneEnabled(enabled);
+    }
+
+    public List<PlayerType> getPlayerTypes(){
+        return model.getPlayerTypes();
     }
 
     public AddPlayerButtonAction getAddPlayerButtonAction(){

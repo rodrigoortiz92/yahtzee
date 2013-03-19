@@ -17,7 +17,7 @@ public class PlayerAddPane extends JPanel {
     private JButton addPlayerButton;
     private SetupController controller;
 
-    public PlayerAddPane(List<PlayerType> types, SetupController controller){
+    public PlayerAddPane(SetupController controller){
         super(new GridBagLayout());
         int i = 1;
         this.controller = controller;
@@ -25,13 +25,12 @@ public class PlayerAddPane extends JPanel {
         addPlayerButton = new JButton(controller.getAddPlayerButtonAction());
         EasyGridBagLayout.addToLayout(this, nameField, 0, 0);
 
-        for (PlayerType type : types) {
+        for (PlayerType type : controller.getPlayerTypes()) {
             JRadioButton button = new JRadioButton(type.getName());
             typeTable.put(button.getModel(), type);
             typeSelectionGroup.add(button);
             EasyGridBagLayout.addToLayout(this, button, i++, 0);
         }
-
         EasyGridBagLayout.addToLayout(this, addPlayerButton, i, 0);
     }
     public String getName(){

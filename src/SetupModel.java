@@ -4,6 +4,7 @@ import java.util.Collections;
 
 public class SetupModel extends Observable {
     private List<PlayerType> playerTypes;
+    private List<GameType> gameTypes;
     private List<GameModel.PlayerDescription> players;
     
     public List<PlayerType> getPlayerTypes() {
@@ -21,6 +22,9 @@ public class SetupModel extends Observable {
         setChanged();
         notifyObservers(getPlayers());
     }
+
+    public List<GameType> getGameTypes(){
+        return gameTypes; 
 
     public boolean isFull(){
         return (players.size() < GameModel.MAX_PLAYER_COUNT);
