@@ -18,6 +18,7 @@ public class PlayerAddPane extends JPanel {
     private SetupController controller;
 
     public PlayerAddPane(List<PlayerType> types, SetupController controller){
+        super(new GridBagLayout());
         int i = 1;
         this.controller = controller;
         typeTable = new Hashtable<>();
