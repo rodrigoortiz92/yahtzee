@@ -10,6 +10,7 @@ public class GameModel extends Observable implements Observer {
     private DiceModel diceModel;
     private List<Player> players;
     private Player currentPlayer;
+    public static final int MAX_PLAYER_COUNT = 10;
 
     public class TurnChangedNotification {
     }

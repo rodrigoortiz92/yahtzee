@@ -21,10 +21,19 @@ public class PlayerView extends JPanel {
         this.playerModel = playerModel;
         controller = new PlayerController(this, model);
 
+        upButton = new JButton("up");
+        downButton = new JButton("down");
+        removeButton = new JButton("remove");
+
+        upButton.actioniActionListener(controller.getUpButtonListener());
+        downButton.actioniActionListener(controller.getDownButtonListener());
+        removeButton.actioniActionListener(
+                controller.getRemoveButtonListener());
+
         EasyGridBagLayout.addToLayout(this, playerModel.getName(), 0, 0);
         EasyGridBagLayout.addToLayout(this, type.getName(), 0, 1);
         EasyGridBagLayout.addToLayout(this, upButton, 0, 2);
         EasyGridBagLayout.addToLayout(this, downButton, 0, 3);
-        EasyGridBagLayout.addToLayout(this, deleteButton, 0, 3);
+        EasyGridBagLayout.addToLayout(this, deleteButton, 0, 5);
     }
 }

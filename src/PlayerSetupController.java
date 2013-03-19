@@ -6,7 +6,7 @@ import javax.swing.AbstractAction;
 
 public class PlayerSetupController {
 
-    private PlayerSetupModel model;
+    private SetupModel model;
     private PlayerSetupView view;
 
 
@@ -15,14 +15,7 @@ public class PlayerSetupController {
         this.model = model;
     }
 
-    public class NameChangedAction extends AbstractAction {
-
-        public void actionPerformed(ActionEvent a){
-
-        }
-    }
-
-    public class TypeChangedAction extends AbstractAction {
+    public class AddPlayerAction extends AbstractAction {
 
         public void actionPerformed(ActionEvent a){
 

@@ -1,34 +1,32 @@
-/**
-*
-*@author Erkki Mattila
-*/
-
 import java.util.Observable;
 import java.util.List;
+import java.util.Collections;
 
 public class SetupModel extends Observable {
-    List<PlayerType> playerTypes;
-    List<PlayerSetupModel> playerSetup;
+    private List<PlayerType> playerTypes;
+    private List<Player> players;
     
     public List<PlayerType> getPlayerTypes() {
         return playerTypes;
     }
     
-    public class PlayerAddedNotification {
-    }
-    
-    public class PlayerRemovedNotification {
-    }
-    
-    public void addPlayer() {
-        System.out.println("SetupModel_addPlayer");
+    public void addPlayer(String name, PlayerType type) {
+        players.add(new Player);
         setChanged();
-        notifyObservers(new PlayerAddedNotification());
+        notifyObservers(getPlayers());
     }
     
-    public void removePlayer() {
-        System.out.println("SetupModel_removePlayer");
+    public void removePlayer(Player player) {
+        players.remove(player);
         setChanged();
-        notifyObservers(new PlayerRemovedNotification());
+        notifyObservers(getPlayers());
     }
+
+    public boolean isFull(){
+        return (players.size() < GameModel.MAX_PLAYER_COUNT);
+    }
+
+    public List<Player> getPlayers(){
+        return Collections.unmodifiableList(players);
+    } 
 }
