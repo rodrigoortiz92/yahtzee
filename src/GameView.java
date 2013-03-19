@@ -1,17 +1,19 @@
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
-import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -23,6 +25,7 @@ public class GameView extends JPanel implements Observer {
     GameController controller;
     DiceModel diceModel;
     JButton[][] fields;
+    Map<Player, JLabel> playerLabels;
 
     /**
      * Creates new form GameView
@@ -33,9 +36,9 @@ public class GameView extends JPanel implements Observer {
         this.diceModel = diceModel;
 
         model.addObserver(this);
+        diceModel.addObserver(this);
 
         createComponents();
-        updateScores();
     }
 
     private void addToLayout(Container container, Component c, int x, int y) {
@@ -43,54 +46,11 @@ public class GameView extends JPanel implements Observer {
 
         constraints.gridx = x;
         constraints.gridy = y;
-        constraints.weightx = 0.0;
+        constraints.weightx = 1.0;
         constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.insets = new Insets(-1, -1, 0, 0);
 
         container.add(c, constraints);
-    }
-
-    private void updateScores() {
-        List<Player> playerColumns = model.getPlayers();
-
-        int x = 0;
-
-        for (Player player : model.getPlayers()) {
-            int y = 0;
-
-            for (ScoreCell cell : player.getScoreCells()) {
-                JButton field = fields[y][x];
-
-                String text = " ";
-
-                if (cell.getScore() != null) {
-                    text = String.valueOf(cell.getScore());
-                } else if (player == model.getCurrentPlayer()) {
-                    if (cell instanceof MarkableScoreCell) {
-                        MarkableScoreCell rollableCell = (MarkableScoreCell) cell;
-                        text = String.valueOf(rollableCell.calculateScore(diceModel.getDieValues()));
-                    }
-                }
-
-                field.setText(text);
-
-                Font currentFont = field.getFont();
-                Color color;
-
-                if (cell.getScore() != null) {
-                    currentFont = currentFont.deriveFont(Font.PLAIN);
-                    color = new Color(0, 0, 0);
-                } else {
-                    currentFont = currentFont.deriveFont(Font.ITALIC);
-                    color = new Color(0.5f, 0.5f, 0.5f);
-                }
-
-                field.setForeground(color);
-                field.setFont(currentFont);
-
-                y++;
-            }
-            x++;
-        }
     }
 
     private void createComponents() {
@@ -106,32 +66,38 @@ public class GameView extends JPanel implements Observer {
         setLayout(layout);
 
         for (int i = 0; i < scoreCellNames.size(); i++) {
-            addToLayout(this, new JLabel(scoreCellNames.get(i)), 0, i + 1);
+            JLabel label = new JLabel(scoreCellNames.get(i));
+
+            label.setHorizontalTextPosition(SwingConstants.TRAILING);
+
+            addToLayout(this, label, 0, i + 1);
         }
 
+        playerLabels = new HashMap<>();
+
         for (int i = 0; i < players.size(); i++) {
-            addToLayout(this, new JLabel(players.get(i).getName()), i + 1, 0);
+            JLabel label = new JLabel(players.get(i).getName());
+
+            playerLabels.put(players.get(i), label);
+
+            addToLayout(this, label, i + 1, 0);
         }
 
         fields = new JButton[scoreCellNames.size()][players.size()];
 
-        for (int i = 0; i < players.size(); i++) {
-            for (int j = 0; j < players.get(i).getScoreCells().size(); j++) {
-                ScoreCell cell = players.get(i).getScoreCells().get(j);
-                JButton field = new JButton();
+        final int MAX_PLAYERS = 10;
 
-                field.setBackground(Color.white);
-                field.setFocusable(false);
+        for (int i = 0; i < MAX_PLAYERS; i++) {
+            for (int j = 0; j < scoreCellNames.size(); j++) {
+                ScoreCell cell = null;
 
-                if (cell instanceof MarkableScoreCell) {
-                    MarkableScoreCell rollableCell = (MarkableScoreCell) cell;
-                    Action action = controller.getMarkAction(rollableCell);
-                    field.setAction(action);
+                if (i < players.size()) {
+                    cell = players.get(i).getScoreCells().get(j);
                 }
 
-                fields[j][i] = field;
+                CellView view = new CellView(cell, (j % 2) == 1);
 
-                addToLayout(this, field, i + 1, j + 1);
+                addToLayout(this, view, i + 1, j + 1);
             }
         }
     }
@@ -140,12 +106,18 @@ public class GameView extends JPanel implements Observer {
     public void update(Observable o, Object arg) {
         if (arg instanceof GameModel.NewGameNotification) {
             createComponents();
-            updateScores();
-        } else if (arg instanceof GameModel.ScoreChangeNotification) {
-            updateScores();
-        } else if (arg instanceof GameModel.TurnChangedNotification) {
-            updateScores();
+        } else if (arg instanceof GameModel.TurnBeginNotification) {
+            GameModel.TurnBeginNotification begin = (GameModel.TurnBeginNotification) arg;
+
+            JLabel label = playerLabels.get(begin.player);
+
+            label.setFont(label.getFont().deriveFont(Font.BOLD));
+        } else if (arg instanceof GameModel.TurnEndNotification) {
+            GameModel.TurnEndNotification end = (GameModel.TurnEndNotification) arg;
+
+            JLabel label = playerLabels.get(end.player);
+
+            label.setFont(label.getFont().deriveFont(Font.PLAIN));
         }
-        updateScores();
     }
 }

@@ -18,7 +18,7 @@ public class GameController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            cell.markScore(GameController.this.diceModel.getDieValues());
+            cell.markScore();
         }
 
         public MarkAction(MarkableScoreCell cell) {

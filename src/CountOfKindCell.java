@@ -8,28 +8,26 @@
  * @author Mikko Paukkonen
  */
 public class CountOfKindCell extends MarkableScoreCell {
+
     int count;
 
     public CountOfKindCell(int count) {
         this.count = count;
-    }    
-    
+    }
+
     @Override
-    public int calculateScore(int[] dieValues) {
+    public int calculateScore(DiceModel.DieValues dieValues) {
         for (int i = 6; i > 0; --i) {
-            int countOfKind = 0;
-            
-            for (int value : dieValues) {
-                if (value == i) {
-                    countOfKind++;
-                }
-            }
-            
-            if (countOfKind >= count) {
+            if (dieValues.countOfValue(i) >= count) {
                 return i * count;
             }
-        }    
-        
+        }
+
         return 0;
+    }
+
+    @Override
+    public Combination getOptimalCombination() {
+       return new Combination(new Requirement(DiceModel.DIE_MAX_VALUE, getDiceModel().getDieCount()));
     }
 }

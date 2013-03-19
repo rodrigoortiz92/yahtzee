@@ -23,7 +23,7 @@ public class ScoreColumn {
         }
     }
 
-    public ScoreColumn(Player player) {
+    public ScoreColumn(Player player, DiceModel diceModel) {
         ScoreCell ones = new SumOfKindCell(1);
         ScoreCell twos = new SumOfKindCell(2);
         ScoreCell threes = new SumOfKindCell(3);
@@ -78,6 +78,7 @@ public class ScoreColumn {
             if (cell instanceof MarkableScoreCell) {
                 MarkableScoreCell rollable = (MarkableScoreCell) cell;
                 rollable.setPlayer(player);
+                rollable.setDiceModel(diceModel);
             }
         }
     }

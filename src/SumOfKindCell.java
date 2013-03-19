@@ -8,15 +8,17 @@ public class SumOfKindCell extends MarkableScoreCell {
 
     private int kind;
 
+     @Override
+    public Combination getOptimalCombination() {
+        return new Combination(
+                new Requirement(kind, getDiceModel().getDieCount())
+                );
+    }
+
+
     @Override
-    public int calculateScore(int[] dieValues) {
-        int countOfKind = 0;
-
-        for (int value : dieValues)
-            if (value == kind)
-                countOfKind++;
-
-        return countOfKind * kind;
+    public int calculateScore(DiceModel.DieValues dieValues) {
+        return dieValues.countOfValue(kind) * kind;
     }
 
     public SumOfKindCell(int kind) {

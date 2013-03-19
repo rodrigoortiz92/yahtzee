@@ -6,7 +6,7 @@ import java.util.Observer;
  *
  * @author Mikko Paukkonen
  */
-public class Player extends Observable implements Observer {
+abstract public class Player extends Observable implements Observer {
 
     private String name;
     private ScoreColumn scoreColumn;
@@ -27,17 +27,34 @@ public class Player extends Observable implements Observer {
         return scoreColumn.getCells();
     }
 
-    public Player(GameModel model, String name) {
+    public Player(GameModel model, DiceModel diceModel, String name) {
         this.model = model;
         this.name = name;
-        this.scoreColumn = new ScoreColumn(this);
+        this.scoreColumn = new ScoreColumn(this, diceModel);
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        if (arg instanceof ScoreCell.CellMarkedNotification) {
+        if (arg instanceof ScoreCell.ScoreChangedNotification) {
             setChanged();
             notifyObservers(new CellMarkedNotification());
+        } else if (arg instanceof GameModel.TurnBeginNotification) {
+            GameModel.TurnBeginNotification begin = (GameModel.TurnBeginNotification) arg;
+
+            if (begin.player == this) {
+                setChanged();
+                notifyObservers(arg);
+            }
+        }else if (arg instanceof GameModel.TurnEndNotification) {
+            GameModel.TurnEndNotification end = (GameModel.TurnEndNotification) arg;
+
+            if (end.player == this) {
+                setChanged();
+                notifyObservers(arg);
+            }
         }
     }
+
+    abstract void playTurn(DiceModel diceModel);
+    abstract boolean acceptsUiInput();
 }

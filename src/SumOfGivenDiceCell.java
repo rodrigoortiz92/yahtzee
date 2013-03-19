@@ -9,6 +9,12 @@
  */
 public class SumOfGivenDiceCell extends MarkableScoreCell {
 
+    @Override
+    public Combination getOptimalCombination() {
+        return new Combination(
+                new Requirement(DiceModel.DIE_MAX_VALUE, 3),
+                new Requirement(DiceModel.DIE_MAX_VALUE - 1, 2));
+    }
     int[] values;
 
     public SumOfGivenDiceCell(int... values) {
@@ -16,17 +22,9 @@ public class SumOfGivenDiceCell extends MarkableScoreCell {
     }
 
     @Override
-    public int calculateScore(int[] dieValues) {
+    public int calculateScore(DiceModel.DieValues dieValues) {
         for (int value : values) {
-            boolean found = false;
-
-            for (int v : dieValues) {
-                if (v == value) {
-                    found = true;
-                }
-            }
-
-            if (!found) {
+            if (dieValues.countOfValue(value) == 0) {
                 return 0;
             }
         }
