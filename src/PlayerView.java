@@ -20,7 +20,7 @@ public class PlayerView extends JPanel {
     public PlayerView(SetupModel model, Player playerModel) {
         super(new GridBagLayout()); 
         this.model = model;
-        this.player = playerModel;
+        this.player = player;
         controller = new PlayerSetupController(model, player); 
         upButton = new JButton("^");
         downButton = new JButton("v");
@@ -31,10 +31,10 @@ public class PlayerView extends JPanel {
         removeButton.addActionListener(
                 controller.getRemoveButtonListener());
 
-        EasyGridBagLayout.addToLayout(this, player.getName(), 0, 0);
-        EasyGridBagLayout.addToLayout(this, type.getName(), 0, 1);
+        EasyGridBagLayout.addToLayout(this, new JLabel(player.name), 0, 0);
+        EasyGridBagLayout.addToLayout(this, new JLabel(type.getName()), 0, 1);
         EasyGridBagLayout.addToLayout(this, upButton, 0, 2);
         EasyGridBagLayout.addToLayout(this, downButton, 0, 3);
-        EasyGridBagLayout.addToLayout(this, deleteButton, 0, 5);
+        EasyGridBagLayout.addToLayout(this, removeButton, 0, 5);
     }
 }

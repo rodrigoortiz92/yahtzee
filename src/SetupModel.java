@@ -11,7 +11,7 @@ public class SetupModel extends Observable {
     }
     
     public void addPlayer(String name, PlayerType type) {
-        players.add(GameModel.PlayerDescription(name, type));
+        players.add(new GameModel.PlayerDescription(name, type));
         setChanged();
         notifyObservers();
     }
@@ -33,10 +33,10 @@ public class SetupModel extends Observable {
     private <T> void moveElement(List<T> list, T element, int distance){
         int i = list.indexOf(element);
         list.remove(element);
-        list.add(distace + i, distance);
+        list.add(distance + i, element);
     }
 
-    public void movePlayerUp(GameModel.PlayerDecription player){
+    public void movePlayerUp(GameModel.PlayerDescription player){
         moveElement(players, player, -1);
     }
 

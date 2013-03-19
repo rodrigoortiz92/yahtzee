@@ -4,11 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import javax.swing.AbstractAction;
 import java.util.Observer;
+import java.util.Observable;
+import java.util.List;
 
 public class PlayerSetupController implements Observer {
 
     private SetupModel model;
-    private PlayerDescription player;
+    private GameModel.PlayerDescription player;
 
     private DownButtonAction downButtonAction;
     private UpButtonAction upButtonAction;
@@ -45,7 +47,7 @@ public class PlayerSetupController implements Observer {
 
     public class DownButtonAction extends AbstractAction {
         public void actionPerformed(ActionEvent a){
-            model.modePlayerDown(player);
+            model.movePlayerDown(player);
         }
     }
 
@@ -55,7 +57,7 @@ public class PlayerSetupController implements Observer {
         }
     }
 
-    public void update(){
+    public void update(Observable o, Object arg){
         List<GameModel.PlayerDescription> players = model.getPlayers();
         int i = players.indexOf(player);
 
