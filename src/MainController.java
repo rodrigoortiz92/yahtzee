@@ -8,6 +8,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Properties;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
@@ -23,11 +25,12 @@ import javax.swing.KeyStroke;
  *
  * @author Mikko Paukkonen <mikko.paukkonen at uta.fi>
  */
-public class MainController implements WindowListener {
+public class MainController {
 
     private NewGameAction newGameAction = new NewGameAction();
     private ExitAction exitAction = new ExitAction();
     private AboutAction aboutAction = new AboutAction();
+    private MainWindowListener mainWindowListener = new MainWindowListener();
     private SetupController controller;
     private MainView view;
     private final String WINDOW_X_KEY = "window.x";
@@ -55,80 +58,8 @@ public class MainController implements WindowListener {
         return aboutAction;
     }
 
-    public class NewGameAction extends AbstractAction {
-
-        public NewGameAction() {
-            super("New Game");
-
-            putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke("F2"));
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            controller.view.setVisible(true);
-            //throw new UnsupportedOperationException("Not supported yet.");
-        }
-    }
-
-    public class ExitAction extends AbstractAction {
-
-        public ExitAction() {
-            super("Exit");
-
-            putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke("alt F4"));
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            WindowEvent event = new WindowEvent(view, WindowEvent.WINDOW_CLOSING);
-            MainController.this.view.dispatchEvent(event);
-        }
-    }
-
-    public class AboutAction extends AbstractAction {
-
-        public AboutAction() {
-            super("About");
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String ok = "Ok";
-
-            int result = JOptionPane.showOptionDialog(view,
-                    "Yahtzee\n"
-                    + "\n"
-                    + "by Erkki Mattila, Mikko Paukkonen & Markus Salmijärvi 2013\n",
-                    "About Yahtzee", JOptionPane.YES_NO_OPTION,
-                    JOptionPane.INFORMATION_MESSAGE,
-                    new ImageIcon(getClass().getResource("/images/icon.png")),
-                    new Object[]{ok}, ok);
-        }
-    }
-
-    @Override
-    public void windowOpened(WindowEvent e) {
-    }
-
-    @Override
-    public void windowClosing(WindowEvent e) {
-        String yes = "Yes";
-        String no = "No";
-
-        int result = JOptionPane.showOptionDialog(view,
-                "Do you really want to quit?",
-                "Confirm exit", JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE, null,
-                new Object[]{yes, no}, no);
-
-        if (result == JOptionPane.NO_OPTION || result == JOptionPane.CLOSED_OPTION) {
-            view.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        } else {
-            view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-            saveProperties();
-        }
-
+    public MainWindowListener getMainWindowListener() {
+        return mainWindowListener;
     }
 
     private void loadProperties() {
@@ -190,23 +121,102 @@ public class MainController implements WindowListener {
         }
     }
 
-    @Override
-    public void windowClosed(WindowEvent e) {
+    public class NewGameAction extends AbstractAction {
+
+        public NewGameAction() {
+            super("New Game");
+
+            putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke("F2"));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            controller.view.setVisible(true);
+            //throw new UnsupportedOperationException("Not supported yet.");
+        }
     }
 
-    @Override
-    public void windowIconified(WindowEvent e) {
+    public class ExitAction extends AbstractAction {
+
+        public ExitAction() {
+            super("Exit");
+
+            putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke("alt F4"));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            WindowEvent event = new WindowEvent(view, WindowEvent.WINDOW_CLOSING);
+            MainController.this.view.dispatchEvent(event);
+        }
     }
 
-    @Override
-    public void windowDeiconified(WindowEvent e) {
+    public class AboutAction extends AbstractAction {
+
+        public AboutAction() {
+            super("About");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String ok = "Ok";
+
+            int result = JOptionPane.showOptionDialog(view,
+                    "Yahtzee\n"
+                    + "\n"
+                    + "by Erkki Mattila, Mikko Paukkonen & Markus Salmijärvi 2013\n",
+                    "About Yahtzee", JOptionPane.YES_NO_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE,
+                    new ImageIcon(getClass().getResource("/images/icon.png")),
+                    new Object[]{ok}, ok);
+        }
     }
 
-    @Override
-    public void windowActivated(WindowEvent e) {
-    }
+    public class MainWindowListener implements WindowListener {
 
-    @Override
-    public void windowDeactivated(WindowEvent e) {
+        @Override
+        public void windowOpened(WindowEvent e) {
+        }
+
+        @Override
+        public void windowClosing(WindowEvent e) {
+            String yes = "Yes";
+            String no = "No";
+
+            int result = JOptionPane.showOptionDialog(view,
+                    "Do you really want to quit?",
+                    "Confirm exit", JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE, null,
+                    new Object[]{yes, no}, no);
+
+            if (result == JOptionPane.NO_OPTION || result == JOptionPane.CLOSED_OPTION) {
+                view.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            } else {
+                view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+                saveProperties();
+            }
+
+        }
+
+        @Override
+        public void windowClosed(WindowEvent e) {
+        }
+
+        @Override
+        public void windowIconified(WindowEvent e) {
+        }
+
+        @Override
+        public void windowDeiconified(WindowEvent e) {
+        }
+
+        @Override
+        public void windowActivated(WindowEvent e) {
+        }
+
+        @Override
+        public void windowDeactivated(WindowEvent e) {
+        }
     }
 }
