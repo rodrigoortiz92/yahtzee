@@ -1,74 +1,75 @@
 
-import java.awt.event.ActionEvent;
-import java.util.Observable;
-import java.util.Observer;
-import javax.swing.AbstractAction;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import javax.swing.JOptionPane;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
  *
  * @author Mikko Paukkonen
  */
-public class EndGameController implements Observer {
+public class EndGameController {
 
-    private NewGameAction newGameAction = new NewGameAction();
-    private ShowStatisticsAction showStatisticsAction = new ShowStatisticsAction();
-    private CloseAction closeAction = new CloseAction();
     private EndGameView view;
     private GameModel model;
+    private PaneValueListener paneValueListener = new PaneValueListener();
+    private final String NEW_GAME = "New Game";
+    private final String CLOSE = "Close";
+    private final String OPEN_STATISTICS = "Show Statistics";
 
     public EndGameController(EndGameView view, GameModel model) {
         this.view = view;
         this.model = model;
-
-        this.model.addObserver(this);
-
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-        if (arg instanceof GameModel.EndGameNotification) {
-            view.setVisible(true);
-            view.setLocationRelativeTo(view.getParent());
-        }
-
-
+    public Object[] getOptions()
+    {
+        return new Object[]
+        {
+            NEW_GAME,
+            CLOSE,
+            OPEN_STATISTICS
+        };
     }
 
-    public NewGameAction getNewGameAction() {
-        return newGameAction;
+    public Object getDefaultOption()
+    {
+        return NEW_GAME;
     }
 
-    public ShowStatisticsAction getShowStatisticsAction() {
-        return showStatisticsAction;
+    public PaneValueListener getPaneValueListener() {
+        return paneValueListener;
     }
 
-    public CloseAction getCloseAction() {
-        return closeAction;
+    private void newGame() {
     }
 
-    public class NewGameAction extends AbstractAction {
+    private void openStatistics() {
+        new StatisticsView(EndGameController.this.view, model).setVisible(true);
+    }
+
+    private void close() {
+        EndGameController.this.view.setVisible(false);
+    }
+
+    public class PaneValueListener implements PropertyChangeListener {
 
         @Override
-        public void actionPerformed(ActionEvent e) {
-        }
-    }
+        public void propertyChange(PropertyChangeEvent evt) {
+            if (evt.getPropertyName().equals(JOptionPane.VALUE_PROPERTY)) {
+                Object value = evt.getNewValue();
 
-    public class ShowStatisticsAction extends AbstractAction {
+                if (value == NEW_GAME) {
+                    newGame();
+                } else if (value == OPEN_STATISTICS) {
+                    openStatistics();
+                } else if (value == CLOSE) {
+                    close();
+                }
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
-        }
-    }
+                JOptionPane optionPane = (JOptionPane) evt.getSource();
 
-    public class CloseAction extends AbstractAction {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            EndGameController.this.view.setVisible(false);
+                optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
+            }
         }
     }
 }
