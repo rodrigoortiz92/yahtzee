@@ -29,4 +29,18 @@ public class SetupModel extends Observable {
     public List<Player> getPlayers(){
         return Collections.unmodifiableList(players);
     } 
+
+    private void moveElement(List<T> list, T element, int distance){
+        int i = list.indexOf(element);
+        list.remove(player);
+        list.add(i + delta, element);
+    }
+
+    public void movePlayerUp(Player player){
+        moveElement(players, player, -1);
+    }
+
+    public void movePlayerDown(Player player){
+        moveElement(players, player, 1);
+    }
 }
