@@ -3,22 +3,63 @@ import java.awt.event.ItemListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import javax.swing.AbstractAction;
+import java.util.Observer;
 
-public class PlayerSetupController {
+public class PlayerSetupController implements Observer {
 
     private SetupModel model;
-    private PlayerSetupView view;
+    private PlayerDescription player;
+
+    private DownButtonAction downButtonAction;
+    private UpButtonAction upButtonAction;
+    private RemoveButtonAction removeButtonAction;
 
 
-    public PlayerSetupController(PlayerSetupView view, PlayerSetupModel model) {
-        this.view = view;
+    public PlayerSetupController(SetupModel model,
+            GameModel.PlayerDescription player) {
+
         this.model = model;
+
+        upButtonAction = new UpButtonAction();
+        downButtonAction = new DownButtonAction();
+        removeButtonAction = new RemoveButtonAction();
     }
 
-    public class AddPlayerAction extends AbstractAction {
+    public UpButtonAction getUpButtonListener() {
+        return upButtonAction;
+    }
 
+    public DownButtonAction getDownButtonListener() {
+        return downButtonAction;
+    }
+
+    public RemoveButtonAction getRemoveButtonListener(){
+        return removeButtonAction;
+    }
+
+    public class UpButtonAction extends AbstractAction {
         public void actionPerformed(ActionEvent a){
-
+            model.movePlayerUp(player);
         }
+    }
+
+    public class DownButtonAction extends AbstractAction {
+        public void actionPerformed(ActionEvent a){
+            model.modePlayerDown(player);
+        }
+    }
+
+    public class RemoveButtonAction extends AbstractAction {
+        public void actionPerformed(ActionEvent a){
+            model.removePlayer(player);
+        }
+    }
+
+    public void update(){
+        List<GameModel.PlayerDescription> players = model.getPlayers();
+        int i = players.indexOf(player);
+
+        downButtonAction.setEnabled(i < players.size() - 1);
+        upButtonAction.setEnabled(i != 0);
     }
 }

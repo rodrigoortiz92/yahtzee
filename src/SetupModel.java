@@ -4,19 +4,19 @@ import java.util.Collections;
 
 public class SetupModel extends Observable {
     private List<PlayerType> playerTypes;
-    private List<Player> players;
+    private List<GameModel.PlayerDescription> players;
     
     public List<PlayerType> getPlayerTypes() {
-        return playerTypes;
+        return Collections.unmodifiableList(playerTypes);
     }
     
     public void addPlayer(String name, PlayerType type) {
-        players.add(PlayerType.createPlayer(name, type));
+        players.add(GameModel.PlayerDescription(name, type));
         setChanged();
-        notifyObservers(getPlayers());
+        notifyObservers();
     }
     
-    public void removePlayer(Player player) {
+    public void removePlayer(GameModel.PlayerDescription player) {
         players.remove(player);
         setChanged();
         notifyObservers(getPlayers());
@@ -26,21 +26,21 @@ public class SetupModel extends Observable {
         return (players.size() < GameModel.MAX_PLAYER_COUNT);
     }
 
-    public List<Player> getPlayers(){
+    public List<GameModel.PlayerDescription> getPlayers(){
         return Collections.unmodifiableList(players);
     } 
 
-    private void moveElement(List<T> list, T element, int distance){
+    private <T> void moveElement(List<T> list, T element, int distance){
         int i = list.indexOf(element);
-        list.remove(player);
-        list.add(i + delta, element);
+        list.remove(element);
+        list.add(distace + i, distance);
     }
 
-    public void movePlayerUp(Player player){
+    public void movePlayerUp(GameModel.PlayerDecription player){
         moveElement(players, player, -1);
     }
 
-    public void movePlayerDown(Player player){
+    public void movePlayerDown(GameModel.PlayerDescription player){
         moveElement(players, player, 1);
     }
 }

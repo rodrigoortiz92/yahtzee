@@ -1,36 +1,37 @@
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import java.awt.GridBagLayout;
 import java.util.Observer;
 import java.util.Observable;
 
 public class PlayerView extends JPanel {
 
-    private Player playerModel;
-    private playerType type;
-    private SetupModel setupModel;
+    private GameModel.PlayerDescription player;
+    private PlayerType type;
+    private SetupModel model;
     private PlayerSetupController controller;
     private JButton upButton;
     private JButton downButton;
     private JButton removeButton;
 
-    public PlayerView(PlayerSetupModel setupModel, Player playerModel) {
+    public PlayerView(SetupModel model, Player playerModel) {
         super(new GridBagLayout()); 
-        this.setupModel = setupModel;
-        this.playerModel = playerModel;
-        controller = new PlayerController(this, model);
+        this.model = model;
+        this.player = playerModel;
+        controller = new PlayerSetupController(model, player); 
+        upButton = new JButton("^");
+        downButton = new JButton("v");
+        removeButton = new JButton("x");
 
-        upButton = new JButton("up");
-        downButton = new JButton("down");
-        removeButton = new JButton("remove");
-
-        upButton.actioniActionListener(controller.getUpButtonListener());
-        downButton.actioniActionListener(controller.getDownButtonListener());
-        removeButton.actioniActionListener(
+        upButton.addActionListener(controller.getUpButtonListener());
+        downButton.addActionListener(controller.getDownButtonListener());
+        removeButton.addActionListener(
                 controller.getRemoveButtonListener());
 
-        EasyGridBagLayout.addToLayout(this, playerModel.getName(), 0, 0);
+        EasyGridBagLayout.addToLayout(this, player.getName(), 0, 0);
         EasyGridBagLayout.addToLayout(this, type.getName(), 0, 1);
         EasyGridBagLayout.addToLayout(this, upButton, 0, 2);
         EasyGridBagLayout.addToLayout(this, downButton, 0, 3);
