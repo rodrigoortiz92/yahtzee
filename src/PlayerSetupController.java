@@ -16,7 +16,6 @@ public class PlayerSetupController implements Observer {
     private UpButtonAction upButtonAction;
     private RemoveButtonAction removeButtonAction;
 
-
     public PlayerSetupController(SetupModel model,
             GameModel.PlayerDescription player) {
 
@@ -27,35 +26,48 @@ public class PlayerSetupController implements Observer {
         removeButtonAction = new RemoveButtonAction();
     }
 
-    public UpButtonAction getUpButtonListener() {
+    public UpButtonAction getUpButtonAction() {
         return upButtonAction;
     }
 
-    public DownButtonAction getDownButtonListener() {
+    public DownButtonAction getDownButtonAction() {
         return downButtonAction;
     }
 
-    public RemoveButtonAction getRemoveButtonListener(){
+    public RemoveButtonAction getRemoveButtonAction(){
         return removeButtonAction;
     }
 
     public class UpButtonAction extends AbstractAction {
+        public UpButtonAction(){
+            super("^");
+        }
+
         public void actionPerformed(ActionEvent a){
             model.movePlayerUp(player);
         }
     }
 
     public class DownButtonAction extends AbstractAction {
+        public DownButtonAction(){
+            super("v");
+        }
+
         public void actionPerformed(ActionEvent a){
             model.movePlayerDown(player);
         }
     }
 
     public class RemoveButtonAction extends AbstractAction {
+        public RemoveButtonAction(){
+            super("x");
+        }
+
         public void actionPerformed(ActionEvent a){
             model.removePlayer(player);
         }
     }
+
 
     public void update(Observable o, Object arg){
         List<GameModel.PlayerDescription> players = model.getPlayers();

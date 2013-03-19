@@ -22,14 +22,9 @@ public class PlayerView extends JPanel {
         this.model = model;
         this.player = player;
         controller = new PlayerSetupController(model, player); 
-        upButton = new JButton("^");
-        downButton = new JButton("v");
-        removeButton = new JButton("x");
-
-        upButton.addActionListener(controller.getUpButtonListener());
-        downButton.addActionListener(controller.getDownButtonListener());
-        removeButton.addActionListener(
-                controller.getRemoveButtonListener());
+        upButton = new JButton(controller.getUpButtonAction());
+        downButton = new JButton(controller.getDownButtonAction());
+        removeButton = new JButton(controller.getRemoveButtonAction());
 
         EasyGridBagLayout.addToLayout(this, new JLabel(player.name), 0, 0);
         EasyGridBagLayout.addToLayout(this, new JLabel(type.getName()), 0, 1);
