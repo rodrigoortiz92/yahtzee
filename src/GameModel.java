@@ -30,7 +30,7 @@ public class GameModel extends Observable implements Observer {
         }
     }
 
-    public class PlayerDescription {
+    public static class PlayerDescription {
 
         public String name;
         public PlayerType type;
