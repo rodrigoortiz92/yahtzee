@@ -10,7 +10,6 @@ import javax.swing.Action;
 public class GameController {
 
     GameModel model;
-    DiceModel diceModel;
 
     public class MarkAction extends AbstractAction {
 
@@ -26,9 +25,8 @@ public class GameController {
         }
     }
 
-    public GameController(GameModel model, DiceModel diceModel) {
+    public GameController(GameModel model) {
         this.model = model;
-        this.diceModel = diceModel;
     }
 
     public Action getMarkAction(MarkableScoreCell cell) {

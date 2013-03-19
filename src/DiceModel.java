@@ -10,7 +10,7 @@ public class DiceModel extends Observable {
     public static final int DIE_MIN_VALUE = 1;
     public static final int DIE_MAX_VALUE = 6;
     private static final int rollsPerTurn = 3;
-    private static final int diceCount = 5;
+    private int diceCount;
     private DieValues dice = null;
     private int rolledTimes;
     private boolean locked[];
@@ -35,7 +35,8 @@ public class DiceModel extends Observable {
     public class ResetNotification {
     }
 
-    public DiceModel() {
+    public DiceModel(int dieCount) {
+        this.diceCount = dieCount;
         locked = new boolean[diceCount];
     }
 

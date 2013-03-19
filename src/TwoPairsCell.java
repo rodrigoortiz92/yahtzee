@@ -38,4 +38,9 @@ public class TwoPairsCell extends MarkableScoreCell {
 
         return score;
     }
+
+    @Override
+    public Integer getMaximumScore() {
+        return DiceModel.DIE_MAX_VALUE * 2 + (DiceModel.DIE_MAX_VALUE - 1) * 2;
+    }
 }

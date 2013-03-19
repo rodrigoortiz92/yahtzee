@@ -10,8 +10,8 @@ import javax.swing.Timer;
  */
 public class AiPlayer extends Player {
 
-    public AiPlayer(GameModel model, DiceModel diceModel, String name) {
-        super(model, diceModel, name);
+    public AiPlayer(GameModel model, DiceModel diceModel, ScoreColumn column, String name) {
+        super(model, diceModel, column, name);
     }
 
     private boolean[] determineLocks(DiceModel.DieValues values, MarkableScoreCell cell) {

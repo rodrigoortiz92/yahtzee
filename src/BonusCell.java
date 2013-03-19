@@ -35,4 +35,9 @@ public class BonusCell extends ScoreCell implements Observer{
         setChanged();
         notifyObservers(new ScoreChangedNotification());
     }
+
+    @Override
+    public Integer getMaximumScore() {
+        return bonus;
+    }
 }

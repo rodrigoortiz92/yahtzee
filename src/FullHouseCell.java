@@ -18,6 +18,11 @@ public class FullHouseCell extends MarkableScoreCell {
                 );
     }
 
+    @Override
+    public Integer getMaximumScore() {
+        return DiceModel.DIE_MAX_VALUE * 3 + (DiceModel.DIE_MAX_VALUE - 1) * 2;
+    }
+
     private class Pair {
 
         int kind;

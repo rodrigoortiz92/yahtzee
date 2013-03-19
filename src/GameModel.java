@@ -9,7 +9,12 @@ public class GameModel extends Observable implements Observer {
 
     private DiceModel diceModel;
     private List<Player> players;
-    private Player currentPlayer;
+    private Player currentPlayer = null;
+    private GameType gameType;
+
+    public DiceModel getDiceModel() {
+        return diceModel;
+    }
 
     public class TurnEndNotification {
 
@@ -29,7 +34,7 @@ public class GameModel extends Observable implements Observer {
         }
     }
 
-    public class PlayerDescription {
+    public static class PlayerDescription {
 
         public String name;
         public PlayerType type;
@@ -43,46 +48,7 @@ public class GameModel extends Observable implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof Player.CellMarkedNotification) {
-            setChanged();
-            notifyObservers(new TurnEndNotification(currentPlayer));
-
-            int index = players.indexOf(currentPlayer);
-
-            if (index == players.size() - 1) {
-                index = 0;
-            } else {
-                index++;
-            }
-
-            currentPlayer = players.get(index);
-
-            boolean found = false;
-
-            for (ScoreCell cell : currentPlayer.getScoreCells()) {
-                if (cell instanceof MarkableScoreCell) {
-                    MarkableScoreCell markable = (MarkableScoreCell) cell;
-
-                    if(markable.getScore() == null)
-                    {
-                        found = true;
-                    }
-                }
-            }
-
-            if (found) {
-                diceModel.clear(currentPlayer.acceptsUiInput());
-
-                setChanged();
-                notifyObservers(new TurnBeginNotification(currentPlayer));
-
-                currentPlayer.playTurn(diceModel);
-            }
-            else
-            {
-                setChanged();
-                notifyObservers(new EndGameNotification());
-            }
-
+            pickNextPlayer();
         }
     }
 
@@ -97,39 +63,77 @@ public class GameModel extends Observable implements Observer {
     }
 
     public List<String> getScoreCellNames() {
-        return new ScoreColumn(null, null).getCellNames();
+        return gameType.createScoreColumn().getCellNames();
     }
 
     public List<Player> getPlayers() {
         return Collections.unmodifiableList(players);
     }
 
-    public void startNewGame(List<Player> players) {
-        this.players.clear();
-        this.players.addAll(players);
-
-        for (Player player : players) {
-            player.addObserver(this);
+    private void pickNextPlayer() {
+        if (players.isEmpty()) {
+            currentPlayer = null;
+            return;
         }
 
-        currentPlayer = null;
+        int index;
 
-        setChanged();
-        notifyObservers(new NewGameNotification());
+        if (currentPlayer != null) {
+            setChanged();
+            notifyObservers(new TurnEndNotification(currentPlayer));
 
-        if (!players.isEmpty()) {
-            currentPlayer = players.get(0);
+            index = players.indexOf(currentPlayer);
+            index = (index + 1) % players.size();
+        } else {
+            index = 0;
         }
 
-        diceModel.clear(currentPlayer.acceptsUiInput());
-        setChanged();
-        notifyObservers(new TurnBeginNotification(currentPlayer));
+        currentPlayer = players.get(index);
 
-        currentPlayer.playTurn(diceModel);
+        boolean found = false;
+
+        for (ScoreCell cell : currentPlayer.getScoreCells()) {
+            if (cell instanceof MarkableScoreCell) {
+                MarkableScoreCell markable = (MarkableScoreCell) cell;
+
+                if (markable.getScore() == null) {
+                    found = true;
+                }
+            }
+        }
+
+        if (found) {
+            getDiceModel().clear(currentPlayer.acceptsUiInput());
+
+            setChanged();
+            notifyObservers(new TurnBeginNotification(currentPlayer));
+
+            currentPlayer.playTurn(getDiceModel());
+        } else {
+            setChanged();
+            notifyObservers(new EndGameNotification());
+        }
     }
 
-    public GameModel(DiceModel diceModel) {
-        this.diceModel = diceModel;
+    public GameModel(List<PlayerDescription> descriptions, GameType gameType) {
+        this.diceModel = new DiceModel(gameType.getDieCount());
         this.players = new LinkedList<>();
+        this.gameType = gameType;
+
+        for (PlayerDescription desc : descriptions) {
+            ScoreColumn column = gameType.createScoreColumn();
+            Player player = desc.type.createPlayer(this, diceModel, column, desc.name);
+            player.addObserver(this);
+
+            players.add(player);
+        }
+
+        pickNextPlayer();
+    }
+
+    public Integer getMaximumScore() {
+        ScoreColumn column = gameType.createScoreColumn();
+        column.setThings(null, diceModel);
+        return column.getTotalCell().getMaximumScore();
     }
 }

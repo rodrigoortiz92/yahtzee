@@ -9,8 +9,8 @@
  */
 public class HumanPlayer extends Player {
 
-    public HumanPlayer(GameModel model, DiceModel diceModel, String name) {
-        super(model,diceModel, name);
+    public HumanPlayer(GameModel model, DiceModel diceModel, ScoreColumn column, String name) {
+        super(model, diceModel, column, name);
     }
 
     @Override

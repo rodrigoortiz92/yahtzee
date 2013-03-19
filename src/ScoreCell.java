@@ -11,4 +11,5 @@ public abstract class ScoreCell extends Observable {
     }
 
     abstract public Integer getScore();
+    abstract public Integer getMaximumScore();
 }

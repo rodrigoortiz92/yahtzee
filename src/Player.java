@@ -28,10 +28,10 @@ abstract public class Player extends Observable implements Observer {
         return scoreColumn.getCells();
     }
 
-    public Player(GameModel model, DiceModel diceModel, String name) {
+    public Player(GameModel model, DiceModel diceModel, ScoreColumn column, String name) {
         this.model = model;
         this.name = name;
-        this.scoreColumn = new ScoreColumn(this, diceModel);
+        this.scoreColumn = column;
     }
 
     @Override

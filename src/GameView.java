@@ -23,20 +23,17 @@ public class GameView extends JPanel implements Observer {
 
     GameModel model;
     GameController controller;
-    DiceModel diceModel;
     JButton[][] fields;
     Map<Player, JLabel> playerLabels;
 
     /**
      * Creates new form GameView
      */
-    public GameView(GameModel model, DiceModel diceModel) {
+    public GameView(GameModel model) {
         this.model = model;
-        this.controller = new GameController(model, diceModel);
-        this.diceModel = diceModel;
+        this.controller = new GameController(model);
 
         model.addObserver(this);
-        diceModel.addObserver(this);
 
         createComponents();
     }

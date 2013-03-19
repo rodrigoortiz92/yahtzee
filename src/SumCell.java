@@ -49,4 +49,19 @@ public class SumCell extends ScoreCell implements Observer{
         setChanged();
         notifyObservers(new ScoreChangedNotification());
     }
+
+    @Override
+    public Integer getMaximumScore() {
+        Integer sum = 0;
+
+        for(ScoreCell cell : cells)
+        {
+            if(cell.getMaximumScore() == null)
+                return null;
+
+            sum += cell.getMaximumScore();
+        }
+
+        return sum;
+    }
 }

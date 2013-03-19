@@ -24,4 +24,9 @@ public class SumOfKindCell extends MarkableScoreCell {
     public SumOfKindCell(int kind) {
         this.kind = kind;
     }
+
+    @Override
+    public Integer getMaximumScore() {
+        return kind * getDiceModel().getDieCount();
+    }
 }

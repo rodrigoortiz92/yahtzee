@@ -37,4 +37,15 @@ public class SumOfGivenDiceCell extends MarkableScoreCell {
 
         return score;
     }
+
+    @Override
+    public Integer getMaximumScore() {
+        int score = 0;
+
+        for (int value : values) {
+            score += value;
+        }
+
+        return score;
+    }
 }

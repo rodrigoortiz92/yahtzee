@@ -1,6 +1,5 @@
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -26,13 +25,18 @@ public class Main {
                     InstantiationException | IllegalAccessException e) {
             }
 
-            DiceModel diceModel = new DiceModel();
+            List<GameModel.PlayerDescription> p = new LinkedList<>();
 
-            GameModel gameModel = new GameModel(diceModel);
+            p.add(new GameModel.PlayerDescription("Ai 1", new AiPlayerType()));
+            p.add(new GameModel.PlayerDescription("Ai 2", new AiPlayerType()));
+            p.add(new GameModel.PlayerDescription("Ai 3", new AiPlayerType()));
+            p.add(new GameModel.PlayerDescription("Ai 4", new AiPlayerType()));
 
-            GameView gameView = new GameView(gameModel, diceModel);
+            GameModel gameModel = new GameModel(p, new NormalGameType());
 
-            DiceView diceView = new DiceView(diceModel);
+            GameView gameView = new GameView(gameModel);
+
+            DiceView diceView = new DiceView(gameModel.getDiceModel());
 
             SetupModel setupModel = new SetupModel();
 
@@ -42,9 +46,7 @@ public class Main {
 
             view.setVisible(true);
 
-            List<Player> p = Arrays.asList(new HumanPlayer(gameModel, diceModel, "Player"), new AiPlayer(gameModel, diceModel, "Ai"), new AiPlayer(gameModel, diceModel, "Ai"), new AiPlayer(gameModel, diceModel, "Ai"), new AiPlayer(gameModel, diceModel, "Ai"));
 
-            gameModel.startNewGame(p);
 
             view.pack();
         }

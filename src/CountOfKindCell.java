@@ -30,4 +30,9 @@ public class CountOfKindCell extends MarkableScoreCell {
     public Combination getOptimalCombination() {
        return new Combination(new Requirement(DiceModel.DIE_MAX_VALUE, getDiceModel().getDieCount()));
     }
+
+    @Override
+    public Integer getMaximumScore() {
+        return DiceModel.DIE_MAX_VALUE * count;
+    }
 }

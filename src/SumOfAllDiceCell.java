@@ -25,4 +25,9 @@ public class SumOfAllDiceCell extends MarkableScoreCell {
 
         return score;
     }
+
+    @Override
+    public Integer getMaximumScore() {
+       return DiceModel.DIE_MAX_VALUE * getDiceModel().getDieCount();
+    }
 }
