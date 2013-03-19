@@ -29,6 +29,17 @@ public class GameModel extends Observable implements Observer {
         }
     }
 
+    public class PlayerDescription {
+
+        public String name;
+        public PlayerType type;
+
+        public PlayerDescription(String name, PlayerType type) {
+            this.name = name;
+            this.type = type;
+        }
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof Player.CellMarkedNotification) {
