@@ -22,9 +22,9 @@ public class CellView extends JTextField implements Observer {
     private ScoreCell scoreCell;
     private CellController controller;
     private boolean darkened;
-    private final Color DARK_PRESSABLE = new Color(0.7f, 0.7f, 0.7f);
+    private final Color DARK_PRESSABLE = new Color(0.85f, 0.85f, 0.85f);
     private final Color LIGHT_PRESSABLE = new Color(0.9f, 0.9f, 0.9f);
-    private final Color DARK = new Color(0.9f, 0.9f, 0.9f);
+    private final Color DARK = new Color(0.95f, 0.95f, 0.95f);
     private final Color LIGHT = new Color(1f, 1f, 1f);
 
     public CellView(ScoreCell scoreCell, boolean darkened) {
