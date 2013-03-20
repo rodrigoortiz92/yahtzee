@@ -10,19 +10,17 @@ import javax.swing.JButton;
 
 public class SetupView extends JDialog implements Observer {
 
-    PlayerAddPane addPane;
     JPanel PlayerList;
     SetupController controller;
     JButton startButton;
-    PlayerAddPane addPane = new PlayerAddPane(
+    PlayerAddPane addPane = new PlayerAddPane(controller);
 
     public SetupView(SetupModel model, Window owner) {
         super(owner);
         setLayout(new GridBagLayout());
         startButton = new JButton();
 
-        this.model = model;
-        controller = new SetupController(this, this.model);
+        controller = new SetupController(this, model);
 
         pack();
     }

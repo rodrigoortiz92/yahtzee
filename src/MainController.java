@@ -28,7 +28,7 @@ public class MainController implements WindowListener {
     private NewGameAction newGameAction = new NewGameAction();
     private ExitAction exitAction = new ExitAction();
     private AboutAction aboutAction = new AboutAction();
-    private SetupController controller;
+    private SetupModel setupModel;
     private MainView view;
     private final String WINDOW_X_KEY = "window.x";
     private final String WINDOW_Y_KEY = "window.y";
@@ -36,9 +36,9 @@ public class MainController implements WindowListener {
     private final String WINDOW_HEIGHT_KEY = "window.height";
     private final String PROPERTY_FILE = "properties";
 
-    public MainController(MainView view, SetupController controller) {
+    public MainController(MainView view, SetupModel setupModel) {
         this.view = view;
-        this.controller = controller;
+        this.setupModel = setupModel;
 
         loadProperties();
     }
@@ -65,8 +65,8 @@ public class MainController implements WindowListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            controller.view.setVisible(true);
-            //throw new UnsupportedOperationException("Not supported yet.");
+            SetupView view = new SetupView(setupModel, MainController.this.view);
+            view.setVisible(true);
         }
     }
 

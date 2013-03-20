@@ -15,11 +15,10 @@ import javax.swing.JMenuItem;
 public class MainView extends JFrame {
 
     MainController controller;
-    SetupView setupView;
 
-    public MainView(GameView gameView, DiceView diceView, SetupView setupView) {
+    public MainView(GameView gameView, DiceView diceView, SetupModel setupModel) {
         super("Yahtzee");
-        this.controller = new MainController(this, setupView.controller);
+        this.controller = new MainController(this, setupModel);
         addWindowListener(controller);
 
         setIconImage(new ImageIcon(getClass().getResource("/images/icon.png")).getImage());
