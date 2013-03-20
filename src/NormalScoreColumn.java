@@ -12,6 +12,7 @@ public class NormalScoreColumn extends ScoreColumn {
     ScoreCell yahtzee;
     ScoreCell bonus;
     ScoreCell total;
+    ScoreCell topTotal;
 
     public NormalScoreColumn() {
         super();
@@ -23,9 +24,9 @@ public class NormalScoreColumn extends ScoreColumn {
         ScoreCell fives = new SumOfKindCell(5);
         ScoreCell sixes = new SumOfKindCell(6);
 
-        ScoreCell topSum = new SumCell(ones, twos, threes, fours, fives, sixes);
+        topTotal = new SumCell(ones, twos, threes, fours, fives, sixes);
 
-        bonus = new BonusCell(topSum, 63, 50);
+        bonus = new BonusCell(topTotal, 63, 50);
 
         ScoreCell pair = new PairCell();
         ScoreCell twoPairs = new TwoPairsCell();
@@ -40,7 +41,7 @@ public class NormalScoreColumn extends ScoreColumn {
         SumCell bottomSum = new SumCell(pair, twoPairs, threeOfKind, fourOfKind,
                 smallStraight, largeStraight, fullHouse, chance, yahtzee);
 
-        total = new SumCell(topSum, bonus, bottomSum);
+        total = new SumCell(topTotal, bonus, bottomSum);
 
         addPair(ones, "Ones");
         addPair(twos, "Twos");
@@ -48,7 +49,7 @@ public class NormalScoreColumn extends ScoreColumn {
         addPair(fours, "Fours");
         addPair(fives, "Fives");
         addPair(sixes, "Sixes");
-        addPair(topSum, "Top total");
+        addPair(topTotal, "Top total");
         addPair(bonus, "Bonus");
         addPair(pair, "Pair");
         addPair(twoPairs, "Two pairs");
@@ -71,6 +72,11 @@ public class NormalScoreColumn extends ScoreColumn {
     @Override
     public ScoreCell getTotalCell() {
         return total;
+    }
+
+    @Override
+    public ScoreCell getTopTotalCell() {
+        return topTotal;
     }
 
     @Override

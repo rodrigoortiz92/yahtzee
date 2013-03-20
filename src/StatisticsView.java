@@ -1,5 +1,7 @@
 
+import java.awt.Component;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -8,8 +10,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import javax.swing.Box;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  *
@@ -18,15 +26,17 @@ import javax.swing.JLabel;
 public class StatisticsView extends JDialog {
 
     GameModel model;
+    StatisticsController controller = new StatisticsController(this);
+    Component statisticsPanel;
 
-    private abstract class Row {
+    private abstract class Column {
 
         public abstract String getTitle();
 
         public abstract String getData(Player player);
     }
 
-    private class NameRow extends Row {
+    private class NameColumn extends Column {
 
         @Override
         public String getTitle() {
@@ -39,7 +49,7 @@ public class StatisticsView extends JDialog {
         }
     }
 
-    private class ScoreRow extends Row {
+    private class ScoreColumn extends Column {
 
         @Override
         public String getTitle() {
@@ -52,7 +62,20 @@ public class StatisticsView extends JDialog {
         }
     }
 
-    private class BestCellRow extends Row {
+    private class TopScoreColumn extends Column {
+
+        @Override
+        public String getTitle() {
+            return "Top total";
+        }
+
+        @Override
+        public String getData(Player player) {
+            return String.valueOf(player.calculateTopScore());
+        }
+    }
+
+    private class BestCellColumn extends Column {
 
         @Override
         public String getTitle() {
@@ -95,7 +118,7 @@ public class StatisticsView extends JDialog {
         }
     }
 
-    private class MaximumRow extends Row {
+    private class MaximumColumn extends Column {
 
         @Override
         public String getTitle() {
@@ -108,7 +131,7 @@ public class StatisticsView extends JDialog {
         }
     }
 
-    private class ScorePercentageRow extends Row {
+    private class ScorePercentageColumn extends Column {
 
         @Override
         public String getTitle() {
@@ -124,7 +147,33 @@ public class StatisticsView extends JDialog {
         }
     }
 
-    private class DieFrequencyRow extends Row {
+    private class GotBonusColumn extends Column {
+
+        @Override
+        public String getTitle() {
+            return "Got Bonus?";
+        }
+
+        @Override
+        public String getData(Player player) {
+            return player.hasBonus() ? "Yes" : "No";
+        }
+    }
+
+    private class GotYahtzeeColumn extends Column {
+
+        @Override
+        public String getTitle() {
+            return "Got Yahtzee?";
+        }
+
+        @Override
+        public String getData(Player player) {
+            return player.hasYahtzee() ? "Yes" : "No";
+        }
+    }
+
+    private class DieFrequencyColumn extends Column {
 
         private Integer kind;
         private final String[] titles = {
@@ -136,7 +185,7 @@ public class StatisticsView extends JDialog {
             "Sixes"
         };
 
-        public DieFrequencyRow(int kind) {
+        public DieFrequencyColumn(int kind) {
             this.kind = kind;
         }
 
@@ -153,12 +202,118 @@ public class StatisticsView extends JDialog {
         }
     }
 
-    private class PlayerScoreComparator implements Comparator<Player> {
+    private Component createTablePanel(Comparator<Player> comp) {
+        List<Player> players = new LinkedList<>(model.getPlayers());
 
-        @Override
-        public int compare(Player o1, Player o2) {
-            return -Integer.compare(o1.calculateScore(), o2.calculateScore());
+        Collections.sort(players, comp);
+
+        List<Column> columns = new LinkedList<>();
+
+        columns.add(new NameColumn());
+        columns.add(new ScoreColumn());
+        columns.add(new MaximumColumn());
+        columns.add(new ScorePercentageColumn());
+        columns.add(new TopScoreColumn());
+        columns.add(new BestCellColumn());
+        columns.add(new GotYahtzeeColumn());
+        columns.add(new GotBonusColumn());
+
+        for (int i = DiceModel.DIE_MIN_VALUE; i <= DiceModel.DIE_MAX_VALUE; ++i) {
+            columns.add(new DieFrequencyColumn(i));
         }
+
+        JPanel tablePanel = new JPanel();
+        tablePanel.setLayout(new GridBagLayout());
+
+        int x = 0;
+
+        for (Column column : columns) {
+            GridBagConstraints c = new GridBagConstraints(x, 0, 1, 1, 1, 0,
+                    GridBagConstraints.FIRST_LINE_START,
+                    GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0);
+
+            JLabel label = new JLabel(column.getTitle());
+
+            label.setFont(label.getFont().deriveFont(Font.BOLD));
+
+            tablePanel.add(label, c);
+
+            x++;
+        }
+
+        for (int y = 0; y < players.size(); ++y) {
+            Player player = players.get(y);
+
+            x = 0;
+
+            for (Column row : columns) {
+                GridBagConstraints c = new GridBagConstraints(x, y + 1, 1, 1, 1, 0,
+                        GridBagConstraints.FIRST_LINE_START,
+                        GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 12), 0, 0);
+
+                JLabel label = new JLabel(row.getData(player));
+
+                if (x == 0) {
+                    label.setFont(label.getFont().deriveFont(Font.BOLD));
+                }
+
+                tablePanel.add(label, c);
+
+                x++;
+            }
+        }
+
+        return tablePanel;
+    }
+
+    private Component createBottomPanel() {
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new GridBagLayout());
+
+        GridBagConstraints labelConstraints = new GridBagConstraints(0, 0, 1, 1, 0, 0,
+                GridBagConstraints.LINE_START,
+                GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0);
+
+        bottomPanel.add(new JLabel("Sort by"), labelConstraints);
+
+        GridBagConstraints boxConstraints = new GridBagConstraints(1, 0, 1, 1, 0, 0,
+                GridBagConstraints.FIRST_LINE_START,
+                GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0);
+
+        JComboBox<StatisticsController.SortOption> sortSelection =
+                new JComboBox(controller.getSortOptions());
+        sortSelection.addActionListener(controller.getSortOptionListener());
+
+        bottomPanel.add(sortSelection, boxConstraints);
+
+        GridBagConstraints glueConstraints = new GridBagConstraints(2, 0, 1, 1, 1, 1,
+                GridBagConstraints.FIRST_LINE_START,
+                GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0);
+
+        bottomPanel.add(Box.createHorizontalGlue(), glueConstraints);
+
+        GridBagConstraints buttonConstraints = new GridBagConstraints(3, 0, 1, 1, 0, 0,
+                GridBagConstraints.FIRST_LINE_START,
+                GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0);
+
+        bottomPanel.add(new JButton(controller.getCloseAction()), buttonConstraints);
+
+        return bottomPanel;
+    }
+
+    public void sort(Comparator<Player> comp) {
+        Container container = (Container) statisticsPanel;
+        getContentPane().remove(statisticsPanel);
+
+        GridBagConstraints tablePanelConstraints = new GridBagConstraints(0, 0, 1, 1, 1, 1,
+                GridBagConstraints.FIRST_LINE_START,
+                GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0);
+
+        statisticsPanel = createTablePanel(comp);
+
+        getContentPane().add(statisticsPanel, tablePanelConstraints);
+
+        validate();
     }
 
     public StatisticsView(Window view, GameModel model) {
@@ -167,60 +322,24 @@ public class StatisticsView extends JDialog {
 
         this.model = model;
 
-        List<Player> players = new LinkedList<>(model.getPlayers());
-
-        Collections.sort(players, new PlayerScoreComparator());
-
         Container content = getContentPane();
         content.setLayout(new GridBagLayout());
 
-        List<Row> rows = new LinkedList<>();
+        GridBagConstraints tablePanelConstraints = new GridBagConstraints(0, 0, 1, 1, 1, 1,
+                GridBagConstraints.FIRST_LINE_START,
+                GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0);
 
-        rows.add(new NameRow());
-        rows.add(new ScoreRow());
-        rows.add(new BestCellRow());
+        statisticsPanel = createTablePanel(new StatisticsController.PlayerScoreComparator());
 
-        for (int i = DiceModel.DIE_MIN_VALUE; i <= DiceModel.DIE_MAX_VALUE; ++i) {
-            rows.add(new DieFrequencyRow(i));
-        }
+        content.add(statisticsPanel, tablePanelConstraints);
 
-        rows.add(new ScorePercentageRow());
-        rows.add(new MaximumRow());
-
-        int y = 0;
-
-        for (Row row : rows) {
-            GridBagConstraints c = new GridBagConstraints(0, y, 1, 1, 1, 0,
-                    GridBagConstraints.FIRST_LINE_START,
-                    GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0);
-
-            JLabel label = new JLabel(row.getTitle());
-
-            content.add(label, c);
-
-            y++;
-        }
-
-
-        for (int x = 0; x < players.size(); ++x) {
-            Player player = players.get(x);
-
-            y = 0;
-
-            for (Row row : rows) {
-                GridBagConstraints c = new GridBagConstraints(x + 1, y, 1, 1, 1, 0,
-                        GridBagConstraints.FIRST_LINE_START,
-                        GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0);
-
-                JLabel label = new JLabel(row.getData(player));
-
-                content.add(label, c);
-
-                y++;
-            }
-        }
+        GridBagConstraints bottomPanelContraints = new GridBagConstraints(0, 1, 1, 1, 1, 1,
+                GridBagConstraints.LAST_LINE_START,
+                GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2), 0, 0);
+        content.add(createBottomPanel(), bottomPanelContraints);
 
         pack();
+        setMinimumSize(getSize());
         setLocationRelativeTo(view);
     }
 }

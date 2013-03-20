@@ -48,6 +48,8 @@ abstract public class ScoreColumn {
 
     abstract public ScoreCell getYahtzeeCell();
 
+    abstract public ScoreCell getTopTotalCell();
+
     public List<String> getCellNames() {
         List<String> names = new ArrayList<>(pairs.size());
 

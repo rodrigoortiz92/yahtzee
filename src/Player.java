@@ -89,7 +89,27 @@ abstract public class Player extends Observable implements Observer {
     }
 
     public int calculateScore() {
-         return scoreColumn.getTotalCell().getScore();
+        return scoreColumn.getTotalCell().getScore();
+    }
+
+    public boolean hasBonus() {
+        if (scoreColumn.getBonusCell().getScore() != null) {
+            return (scoreColumn.getBonusCell().getScore() > 0);
+        }
+
+        return false;
+    }
+
+    boolean hasYahtzee() {
+        if (scoreColumn.getYahtzeeCell().getScore() != null) {
+            return (scoreColumn.getYahtzeeCell().getScore() > 0);
+        }
+
+        return false;
+    }
+
+    public int calculateTopScore() {
+        return scoreColumn.getTopTotalCell().getScore();
     }
 
     abstract void playTurn(DiceModel diceModel);
