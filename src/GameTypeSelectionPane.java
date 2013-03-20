@@ -7,14 +7,14 @@ import javax.swing.JCheckBox;
 
 public class GameTypeSelectionPane extends JPanel {
     private JCheckBox transferRolls;
-    private JComboBox gameTypes;
+    private JComboBox<TypeDescription> gameTypes;
     private Hashtable<TypeDescription, GameType> typeTable;
 
     public GameTypeSelectionPane(List<GameType> types){
         super(new GridBagLayout());
         typeTable = new Hashtable<>();
         transferRolls = new JCheckBox();
-        gameTypes = new JComboBox();
+        gameTypes = new JComboBox<>();
 
         for (GameType type : types){
             TypeDescription description = new TypeDescription(type.getName());
