@@ -7,14 +7,14 @@
  *
  * @author Mikko Paukkonen <mikko.paukkonen at uta.fi>
  */
-public class NormalScoreColumn extends ScoreColumn {
+public class MaxiScoreColumn extends ScoreColumn {
 
     ScoreCell yahtzee;
     ScoreCell bonus;
     ScoreCell total;
     ScoreCell topTotal;
 
-    public NormalScoreColumn() {
+    public MaxiScoreColumn() {
         super();
 
         ScoreCell ones = new SumOfKindCell(1);
@@ -26,20 +26,26 @@ public class NormalScoreColumn extends ScoreColumn {
 
         topTotal = new SumCell(ones, twos, threes, fours, fives, sixes);
 
-        bonus = new BonusCell(topTotal, 63, 50);
+        bonus = new BonusCell(topTotal, 84, 100);
 
-        ScoreCell pair = new PairCell();
-        ScoreCell twoPairs = new TwoPairsCell();
-        ScoreCell threeOfKind = new CountOfKindCell(3);
-        ScoreCell fourOfKind = new CountOfKindCell(4);
+        ScoreCell pair = new CountPatternCell(2);
+        ScoreCell twoPairs = new CountPatternCell(2, 2);
+        ScoreCell threePairs = new CountPatternCell(2, 2, 2);
+        ScoreCell threeOfKind = new CountPatternCell(3);
+        ScoreCell fourOfKind = new CountPatternCell(4);
+        ScoreCell fiveOfKind = new CountPatternCell(5);
         ScoreCell smallStraight = new SumOfGivenDiceCell(1, 2, 3, 4, 5);
         ScoreCell largeStraight = new SumOfGivenDiceCell(2, 3, 4, 5, 6);
-        ScoreCell fullHouse = new CountPatternCell(3, 2);
+        ScoreCell fullStraight = new SumOfGivenDiceCell(1, 2, 3, 4, 5, 6);
+        ScoreCell house = new CountPatternCell(3, 2);
+        ScoreCell fullHouse = new CountPatternCell(3, 3);
+        ScoreCell tower = new CountPatternCell(4, 2);
         ScoreCell chance = new SumOfAllDiceCell();
-        yahtzee = new YahtzeeCell(50);
+        yahtzee = new YahtzeeCell(100);
 
-        SumCell bottomSum = new SumCell(pair, twoPairs, threeOfKind, fourOfKind,
-                smallStraight, largeStraight, fullHouse, chance, yahtzee);
+        SumCell bottomSum = new SumCell(pair, twoPairs, threePairs, threeOfKind, fourOfKind,
+                fiveOfKind, smallStraight, largeStraight, fullStraight, house,
+                fullHouse, tower, chance, yahtzee);
 
         total = new SumCell(topTotal, bonus, bottomSum);
 
@@ -53,11 +59,16 @@ public class NormalScoreColumn extends ScoreColumn {
         addPair(bonus, "Bonus");
         addPair(pair, "Pair");
         addPair(twoPairs, "Two pairs");
+        addPair(threePairs, "Three pairs");
         addPair(threeOfKind, "Three of a kind");
         addPair(fourOfKind, "Four of a kind");
+        addPair(fiveOfKind, "Five of a kind");
         addPair(smallStraight, "Small straight");
         addPair(largeStraight, "Large straight");
+        addPair(fullStraight, "Full straight");
+        addPair(house, "House");
         addPair(fullHouse, "Full house");
+        addPair(tower, "Tower");
         addPair(chance, "Chance");
         addPair(yahtzee, "Yahtzee");
         addPair(bottomSum, "Bottom total");

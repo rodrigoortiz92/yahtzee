@@ -1,4 +1,7 @@
 
+import java.util.Arrays;
+import java.util.Collections;
+
 /**
  * Cell type that calculates the sum of dice of given kind.
  *
@@ -6,27 +9,43 @@
  */
 public class SumOfKindCell extends MarkableScoreCell {
 
-    private int kind;
+    private int[] kinds;
 
-     @Override
+    @Override
     public Combination getOptimalCombination() {
         return new Combination(
-                new Requirement(kind, getDiceModel().getDieCount())
-                );
+                new Requirement(getMaximumKind(), getDiceModel().getDieCount()));
     }
-
 
     @Override
     public int calculateScore(DiceModel.DieValues dieValues) {
-        return dieValues.countOfValue(kind) * kind;
+        int score = 0;
+
+        for (Integer kind : kinds) {
+            score += dieValues.countOfValue(kind) * kind;
+        }
+
+        return score;
     }
 
-    public SumOfKindCell(int kind) {
-        this.kind = kind;
+    public SumOfKindCell(int... kinds) {
+        this.kinds = kinds;
     }
 
     @Override
     public Integer getMaximumScore() {
-        return kind * getDiceModel().getDieCount();
+        return getMaximumKind() * getDiceModel().getDieCount();
+    }
+
+    private Integer getMaximumKind() {
+        Integer max = null;
+
+        for (int kind : kinds) {
+            if (max == null || kind > max) {
+                max = kind;
+            }
+        }
+
+        return max;
     }
 }

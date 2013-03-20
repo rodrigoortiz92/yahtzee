@@ -59,6 +59,16 @@ public class DiceModel extends Observable {
         return dice;
     }
 
+    public List<Integer> getKinds() {
+        List<Integer> kinds = new LinkedList<>();
+
+        for (int i = DiceModel.DIE_MAX_VALUE; i >= DiceModel.DIE_MIN_VALUE; --i) {
+            kinds.add(i);
+        }
+
+        return kinds;
+    }
+
     public boolean canDiceBeLocked() {
         return canDiceBeRolled() && (rolledTimes > 0);
     }
