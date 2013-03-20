@@ -14,8 +14,7 @@ public class SetupView extends JDialog implements Observer {
     SetupController controller;
     JButton startButton;
     JButton cancelButton;
-    PlayerAddPane addPane;
-    GameTypeSelectionPane gameTypeSelectionPane;
+    PlayerAddPane addPane = new PlayerAddPane(controller);
 
     public SetupView(SetupModel model, Window owner) {
         super(owner);
@@ -23,15 +22,8 @@ public class SetupView extends JDialog implements Observer {
         setLayout(new GridBagLayout());
         startButton = new JButton(controller.getStartButtonAction());
         cancelButton = new JButton(controller.getCancelButtonAction());
-        
-        addPane = new PlayerAddPane(controller);
-        gameTypeSelectionPane = new GameTypeSelectionPane(model.getGameTypes());
 
-        EasyGridBagLayout.addToLayout(this, gameTypeSelectionPane, 0, 0);
-        EasyGridBagLayout.addToLayout(this, PlayerList, 0, 1);
-        EasyGridBagLayout.addToLayout(this, addPane, 1, 1);
-        EasyGridBagLayout.addToLayout(this, startButton, 0, 2);
-        EasyGridBagLayout.addToLayout(this, cancelButton, 1, 2);
+        controller = new SetupController(this, model);
 
         pack();
     }
