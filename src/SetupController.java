@@ -9,8 +9,9 @@ public class SetupController implements Observer {
 
     private SetupView view;
     private SetupModel model;
-    private PlayerAddPane addPane;
     private AddPlayerButtonAction addPlayerButtonAction;
+    private CancelButtonAction cancelButtonAction;
+    private StartButtonAction startButtonAction;
 
     public SetupController(SetupView view, SetupModel model) {
         this.view = view;
@@ -24,7 +25,7 @@ public class SetupController implements Observer {
         if (model.getPlayers().size() < GameModel.MAX_PLAYER_COUNT){
             enabled = true;
         }
-        addPane.paneEnabled(enabled);
+        view.setAddPlayerEnabled(enabled);
     }
 
     public List<PlayerType> getPlayerTypes(){
@@ -33,6 +34,34 @@ public class SetupController implements Observer {
 
     public AddPlayerButtonAction getAddPlayerButtonAction(){
         return addPlayerButtonAction;
+    }
+
+    public StartButtonAction getStartButtonAction(){
+        return startButtonAction;
+    }
+
+    public CancelButtonAction getCancelButtonAction(){
+        return cancelButtonAction;
+    }
+
+    public class StartButtonAction extends AbstractAction {
+        public StartButtonAction(){
+            super("Start game");
+        }
+
+        public void actionPerformed(ActionEvent a){
+
+        }
+    }
+
+    public class CancelButtonAction extends AbstractAction {
+        public CancelButtonAction(){
+            super("Cancel");
+        }
+
+        public void actionPerformed(ActionEvent a){
+
+        }
     }
 
     public class AddPlayerButtonAction extends AbstractAction {
@@ -45,7 +74,7 @@ public class SetupController implements Observer {
             List<GameModel.PlayerDescription> players = model.getPlayers();
 
             for (GameModel.PlayerDescription player : players){
-                if (player.name == addPane.getName()){
+                if (player.name == view.getNewPlayerName()){
                     unique = false;
                     break;
                 }
@@ -53,6 +82,8 @@ public class SetupController implements Observer {
             if (!unique){
                 System.exit(1);
             }
+            System.out.println(view.getNewPlayerName());
+            model.addPlayer(view.getNewPlayerName(), view.getNewPlayerType());
         }
     }
 }

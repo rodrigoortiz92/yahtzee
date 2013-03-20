@@ -10,23 +10,46 @@ import javax.swing.JButton;
 
 public class SetupView extends JDialog implements Observer {
 
-    JPanel PlayerList;
-    SetupController controller;
-    JButton startButton;
-    PlayerAddPane addPane;
+    private JPanel playerList;
+    private SetupController controller;
+    private JButton startButton;
+    private JButton cancelButton;
+    private PlayerAddPane addPane;
+    private GameTypeSelectionPane gameTypeSelectionPane;
 
     public SetupView(SetupModel model, Window owner) {
         super(owner);
-        setLayout(new GridBagLayout());
         controller = new SetupController(this, model);
         addPane = new PlayerAddPane(controller);
+        setLayout(new GridBagLayout());
+        startButton = new JButton(controller.getStartButtonAction());
+        cancelButton = new JButton(controller.getCancelButtonAction());
+        gameTypeSelectionPane = new GameTypeSelectionPane(model.getGameTypes());
+        playerList = new JPanel();
+
         startButton = new JButton();
 
-        controller = new SetupController(this, model);
+        EasyGridBagLayout.addToLayout(this, gameTypeSelectionPane, 0, 0);
+        EasyGridBagLayout.addToLayout(this, playerList, 0, 1);
+        EasyGridBagLayout.addToLayout(this, addPane, 1, 1);
+        EasyGridBagLayout.addToLayout(this, startButton, 0, 2);
+        EasyGridBagLayout.addToLayout(this, cancelButton, 1, 2);
 
         pack();
     }
 
     public void update(Observable o, Object args){
+    }
+
+    public String getNewPlayerName(){
+        return addPane.getName();
+    }
+
+    public PlayerType getNewPlayerType(){
+        return addPane.getType();
+    }
+
+    public void setAddPlayerEnabled(boolean enabled){
+        addPane.paneEnabled(enabled);
     }
 }

@@ -40,6 +40,10 @@ public class PlayerAddPane extends JPanel {
         return nameField.getText();
     }
 
+    public PlayerType getType(){
+        return typeTable.get(typeSelectionGroup.getSelection());
+    }
+
     public void paneEnabled(boolean enabled){
         nameField.setEnabled(enabled);
         addPlayerButton.setEnabled(enabled);
