@@ -23,83 +23,93 @@ public class FullHouseCell extends MarkableScoreCell {
         return DiceModel.DIE_MAX_VALUE * 3 + (DiceModel.DIE_MAX_VALUE - 1) * 2;
     }
 
-    private class Pair {
+    private boolean match(List<Integer> values, int count, List<Integer> kinds, List<Integer> allMatches) {
+        List<Integer> matches;
 
-        int kind;
-        int count;
+        for (Integer kind : kinds) {
+            matches = new LinkedList<>();
 
-        public Pair(int kind, int count) {
-            this.kind = kind;
-            this.count = count;
-        }
-    }
+            for (Integer value : values) {
+                if (kind == value && matches.size() < count) {
+                    matches.add(value);
+                }
+            }
 
-    private List<Pair> countOfDice(DiceModel.DieValues dieValues) {
-        List<Pair> list = new LinkedList<>();
-
-        for(int i = DiceModel.DIE_MIN_VALUE; i <= DiceModel.DIE_MAX_VALUE; ++i)
-        {
-            int count = dieValues.countOfValue(i);
-
-            if(count > 0)
-                list.add(new Pair(i, count));
-        }
-
-        return list;
-    }
-
-    private void filter(List<Pair> values, int min) {
-        List<Pair> r = new LinkedList<>();
-
-        for (Pair pair : values) {
-            if (pair.count < min) {
-                r.add(pair);
+            if (matches.size() == count) {
+                values.removeAll(matches);
+                kinds.remove(kind);
+                allMatches.addAll(matches);
+                return true;
             }
         }
 
-        values.removeAll(r);
-
+        return false;
     }
 
-    private int clamp(int value, int min, int max) {
-        if (value < min) {
-            value = min;
+    public int sum(List<Integer> dice) {
+        int sum = 0;
+
+        for (Integer i : dice) {
+            sum += i;
         }
-        if (value > max) {
-            value = max;
-        }
 
-        return value;
-
-    }
-
-    private class Comp implements Comparator<Pair> {
-
-        @Override
-        public int compare(Pair o1, Pair o2) {
-            Integer s1 = clamp(o1.count, 2, 3) * o1.kind;
-            Integer s2 = clamp(o2.count, 2, 3) * o2.kind;
-
-            return s1.compareTo(s2);
-        }
+        return sum;
     }
 
     @Override
     public int calculateScore(DiceModel.DieValues dieValues) {
-        List<Pair> counts = countOfDice(dieValues);
+        List<Integer> dice = new LinkedList<>();
 
-        filter(counts, 2);
-
-        Collections.sort(counts, new Comp());
-        Collections.reverse(counts);
-
-        if (counts.size() >= 2) {
-            Pair threeDice = counts.get(0);
-            Pair twoDice = counts.get(1);
-
-            return threeDice.kind * 3 + twoDice.kind * 2;
+        for (int i = 0; i < dieValues.getValueCount(); ++i) {
+            dice.add(dieValues.valueAt(i));
         }
 
+        List<Integer> kinds = new LinkedList<>();
+
+        for (int i = DiceModel.DIE_MAX_VALUE; i >= DiceModel.DIE_MIN_VALUE; --i) {
+            kinds.add(i);
+        }
+
+        List<Integer> allMatches = new LinkedList<>();
+
+        boolean matched;
+        matched = match(dice, 3, kinds, allMatches);
+        matched &= match(kinds, 2, kinds, allMatches);
+
+        if (matched) {
+            return sum(allMatches);
+        }
+
+        return 0;
+    }
+
+    private interface Matcher
+    {
+        public boolean matches(Integer a, Integer b);
+    }
+
+    private class MaximumMatcher implements Matcher
+    {
+
+        @Override
+        public boolean matches(Integer a, Integer b) {
+            return true;
+        }
+
+    }
+
+    private class ScoreMatcher implements Matcher
+    {
+
+        @Override
+        public boolean matches(Integer a, Integer b) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+    }
+
+    private int doMatching()
+    {
         return 0;
     }
 }
