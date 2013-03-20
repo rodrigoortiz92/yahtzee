@@ -20,14 +20,12 @@ public class SetupView extends JDialog implements Observer {
     public SetupView(SetupModel model, Window owner) {
         super(owner);
         controller = new SetupController(this, model);
+        addPane = new PlayerAddPane(controller);
         setLayout(new GridBagLayout());
         startButton = new JButton(controller.getStartButtonAction());
         cancelButton = new JButton(controller.getCancelButtonAction());
-        addPane = new PlayerAddPane(controller);
         gameTypeSelectionPane = new GameTypeSelectionPane(model.getGameTypes());
         playerList = new JPanel();
-
-
 
         startButton = new JButton();
 
@@ -41,5 +39,17 @@ public class SetupView extends JDialog implements Observer {
     }
 
     public void update(Observable o, Object args){
+    }
+
+    public String getNewPlayerName(){
+        return addPane.getName();
+    }
+
+    public PlayerType getNewPlayerType(){
+        return addPane.getType();
+    }
+
+    public void setAddPlayerEnabled(boolean enabled){
+        addPane.paneEnabled(enabled);
     }
 }

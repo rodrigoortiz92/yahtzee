@@ -9,7 +9,6 @@ public class SetupController implements Observer {
 
     private SetupView view;
     private SetupModel model;
-    private PlayerAddPane addPane;
     private AddPlayerButtonAction addPlayerButtonAction;
     private CancelButtonAction cancelButtonAction;
     private StartButtonAction startButtonAction;
@@ -26,7 +25,7 @@ public class SetupController implements Observer {
         if (model.getPlayers().size() < GameModel.MAX_PLAYER_COUNT){
             enabled = true;
         }
-        addPane.paneEnabled(enabled);
+        view.setAddPlayerEnabled(enabled);
     }
 
     public List<PlayerType> getPlayerTypes(){
@@ -75,7 +74,7 @@ public class SetupController implements Observer {
             List<GameModel.PlayerDescription> players = model.getPlayers();
 
             for (GameModel.PlayerDescription player : players){
-                if (player.name == addPane.getName()){
+                if (player.name == view.getNewPlayerName()){
                     unique = false;
                     break;
                 }
@@ -83,7 +82,7 @@ public class SetupController implements Observer {
             if (!unique){
                 System.exit(1);
             }
-            model.addPlayer(addPane.getName(), addPane.getType());
+            model.addPlayer(view.getNewPlayerName(), view.getNewPlayerType());
         }
     }
 }
