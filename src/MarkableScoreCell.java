@@ -34,6 +34,13 @@ abstract public class MarkableScoreCell extends ScoreCell implements Observer {
     }
 
     public class MarkableChangeNotification {
+        Integer markableScore;
+
+        public MarkableChangeNotification(Integer markableScore) {
+            this.markableScore = markableScore;
+        }
+
+
     }
 
     protected abstract int calculateScore(DiceModel.DieValues dieValues);
@@ -49,7 +56,7 @@ abstract public class MarkableScoreCell extends ScoreCell implements Observer {
         if (score == null && getPlayer() != null && getPlayer().isInTurn()) {
             score = new Integer(calculateScore(diceModel.getDieValues()));
             setChanged();
-            notifyObservers(new MarkableChangeNotification());
+            notifyObservers(new MarkableChangeNotification(null));
             setChanged();
             notifyObservers(new ScoreChangedNotification());
 
@@ -93,18 +100,18 @@ abstract public class MarkableScoreCell extends ScoreCell implements Observer {
     }
 
     public void setPlayer(Player player) {
-        if (this.getPlayer() != null) {
-            deleteObserver(this.getPlayer());
+        if (this.player != null) {
+            this.player.deleteObserver(this);
+            deleteObserver(this.player);
         }
 
         this.player = player;
 
-        if (this.getPlayer() != null) {
-            addObserver(this.getPlayer());
+        if (this.player != null) {
+            this.player.addObserver(this);
+            addObserver(this.player);
         }
     }
-
-
 
     public void setDiceModel(DiceModel diceModel) {
         if (this.diceModel != null) {
@@ -124,15 +131,23 @@ abstract public class MarkableScoreCell extends ScoreCell implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (score == null || arg instanceof GameModel.TurnEndNotification) {
-            setChanged();
-            notifyObservers(new MarkableChangeNotification());
-        } else if (arg instanceof GameModel.TurnBeginNotification && isMarkable()) {
-            setChanged();
-            notifyObservers(new MarkableChangeNotification());
+        if (arg instanceof GameModel.TurnEndNotification) {
+            GameModel.TurnEndNotification end = (GameModel.TurnEndNotification) arg;
+
+            if (end.player == player && score == null) {
+                setChanged();
+                notifyObservers(new MarkableChangeNotification(null));
+            }
+        } else if (arg instanceof GameModel.TurnBeginNotification) {
+            GameModel.TurnBeginNotification begin = (GameModel.TurnBeginNotification) arg;
+
+            if (begin.player == player && score == null) {
+                setChanged();
+                notifyObservers(new MarkableChangeNotification(getMarkableScore()));
+            }
         } else if (o instanceof DiceModel && isMarkable()) {
             setChanged();
-            notifyObservers(new MarkableChangeNotification());
+            notifyObservers(new MarkableChangeNotification(getMarkableScore()));
         }
     }
 }

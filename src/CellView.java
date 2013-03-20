@@ -76,11 +76,12 @@ public class CellView extends JTextField implements Observer {
 
         }
         if (arg instanceof MarkableScoreCell.MarkableChangeNotification) {
+            MarkableScoreCell.MarkableChangeNotification n = (MarkableScoreCell.MarkableChangeNotification) arg;
             MarkableScoreCell markableScoreCell = (MarkableScoreCell) scoreCell;
 
-            if (markableScoreCell.isMarkable()) {
+            if (n.markableScore != null) {
                 applyPressableLook();
-                setText(String.valueOf(markableScoreCell.getMarkableScore()));
+                setText(String.valueOf(n.markableScore));
             } else {
                 applyNormalLook();
                 setText(" ");

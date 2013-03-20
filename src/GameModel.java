@@ -124,6 +124,7 @@ public class GameModel extends Observable implements Observer {
             ScoreColumn column = gameType.createScoreColumn();
             Player player = desc.type.createPlayer(this, diceModel, column, desc.name);
             player.addObserver(this);
+            this.addObserver(player);
 
             players.add(player);
         }
