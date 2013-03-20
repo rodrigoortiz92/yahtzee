@@ -82,6 +82,7 @@ public class SetupController implements Observer {
             if (!unique){
                 System.exit(1);
             }
+            System.out.println(view.getNewPlayerName());
             model.addPlayer(view.getNewPlayerName(), view.getNewPlayerType());
         }
     }

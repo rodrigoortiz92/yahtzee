@@ -20,7 +20,6 @@ public class SetupModel extends Observable {
     
     public void addPlayer(String name, PlayerType type) {
         players.add(new GameModel.PlayerDescription(name, type));
-        setChanged();
         notifyObservers();
     }
     
