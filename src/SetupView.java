@@ -13,11 +13,13 @@ public class SetupView extends JDialog implements Observer {
     JPanel PlayerList;
     SetupController controller;
     JButton startButton;
-    PlayerAddPane addPane = new PlayerAddPane(controller);
+    PlayerAddPane addPane;
 
     public SetupView(SetupModel model, Window owner) {
         super(owner);
         setLayout(new GridBagLayout());
+        controller = new SetupController(this, model);
+        addPane = new PlayerAddPane(controller);
         startButton = new JButton();
 
         controller = new SetupController(this, model);

@@ -40,7 +40,14 @@ public class Main {
 
             DiceView diceView = new DiceView(gameModel.getDiceModel());
 
-            SetupModel setupModel = new SetupModel();
+            List<PlayerType> playerTypes = new LinkedList<>();
+            playerTypes.add(new HumanPlayerType());
+            playerTypes.add(new AiPlayerType());
+
+            List<GameType> gameTypes = new LinkedList<>();
+            gameTypes.add(new NormalGameType());
+
+            SetupModel setupModel = new SetupModel(playerTypes, gameTypes);
 
             MainView view = new MainView(gameView, diceView, setupModel);
 

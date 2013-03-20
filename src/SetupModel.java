@@ -7,6 +7,11 @@ public class SetupModel extends Observable {
     private List<GameType> gameTypes;
     private List<GameModel.PlayerDescription> players;
     
+    public SetupModel(List<PlayerType> playerTypes, List<GameType> gameTypes) {
+        this.playerTypes = playerTypes;
+        this.gameTypes = gameTypes;
+    }
+
     public List<PlayerType> getPlayerTypes() {
         return Collections.unmodifiableList(playerTypes);
     }
