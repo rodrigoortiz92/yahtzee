@@ -22,8 +22,10 @@ public class PlayerAddPane extends JPanel {
         super(new GridBagLayout());
         int i = 1;
         this.controller = controller;
+        typeSelectionGroup = new ButtonGroup();
         typeTable = new Hashtable<>();
         addPlayerButton = new JButton(controller.getAddPlayerButtonAction());
+        nameField = new JTextField(10);
         EasyGridBagLayout.addToLayout(this, nameField, 0, 0);
 
         for (PlayerType type : controller.getPlayerTypes()) {

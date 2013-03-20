@@ -10,11 +10,12 @@ import javax.swing.JButton;
 
 public class SetupView extends JDialog implements Observer {
 
-    JPanel PlayerList;
-    SetupController controller;
-    JButton startButton;
-    JButton cancelButton;
-    PlayerAddPane addPane = new PlayerAddPane(controller);
+    private JPanel playerList;
+    private SetupController controller;
+    private JButton startButton;
+    private JButton cancelButton;
+    private PlayerAddPane addPane;
+    private GameTypeSelectionPane gameTypeSelectionPane;
 
     public SetupView(SetupModel model, Window owner) {
         super(owner);
@@ -22,8 +23,19 @@ public class SetupView extends JDialog implements Observer {
         setLayout(new GridBagLayout());
         startButton = new JButton(controller.getStartButtonAction());
         cancelButton = new JButton(controller.getCancelButtonAction());
+        addPane = new PlayerAddPane(controller);
+        gameTypeSelectionPane = new GameTypeSelectionPane(model.getGameTypes());
+        playerList = new JPanel();
 
-        controller = new SetupController(this, model);
+
+
+        startButton = new JButton();
+
+        EasyGridBagLayout.addToLayout(this, gameTypeSelectionPane, 0, 0);
+        EasyGridBagLayout.addToLayout(this, playerList, 0, 1);
+        EasyGridBagLayout.addToLayout(this, addPane, 1, 1);
+        EasyGridBagLayout.addToLayout(this, startButton, 0, 2);
+        EasyGridBagLayout.addToLayout(this, cancelButton, 1, 2);
 
         pack();
     }

@@ -1,5 +1,6 @@
 import java.util.Observable;
 import java.util.List;
+import java.util.LinkedList;
 import java.util.Collections;
 
 public class SetupModel extends Observable {
@@ -7,6 +8,12 @@ public class SetupModel extends Observable {
     private List<GameType> gameTypes;
     private List<GameModel.PlayerDescription> players;
     
+    public SetupModel(List<PlayerType> playerTypes, List<GameType> gameTypes) {
+        this.playerTypes = playerTypes;
+        this.gameTypes = gameTypes;
+        players = new LinkedList<>();
+    }
+
     public List<PlayerType> getPlayerTypes() {
         return Collections.unmodifiableList(playerTypes);
     }

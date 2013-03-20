@@ -83,6 +83,7 @@ public class SetupController implements Observer {
             if (!unique){
                 System.exit(1);
             }
+            model.addPlayer(addPane.getName(), addPane.getType());
         }
     }
 }
