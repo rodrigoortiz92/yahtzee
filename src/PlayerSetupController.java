@@ -1,37 +1,79 @@
-/**
-*
-*@author Erkki Mattila
-*/
-
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
+import javax.swing.AbstractAction;
 import java.util.Observer;
 import java.util.Observable;
+import java.util.List;
 
-public class PlayerSetupController implements ActionListener, ItemListener, Observer{
+public class PlayerSetupController implements Observer {
 
-    PlayerSetupModel model;
-    PlayerSetupView view;
-    
-    public PlayerSetupController(PlayerSetupView view, PlayerSetupModel model) {
-        this.view = view;
+    private SetupModel model;
+    private GameModel.PlayerDescription player;
+
+    private DownButtonAction downButtonAction;
+    private UpButtonAction upButtonAction;
+    private RemoveButtonAction removeButtonAction;
+
+    public PlayerSetupController(SetupModel model,
+            GameModel.PlayerDescription player) {
+
         this.model = model;
+
+        upButtonAction = new UpButtonAction();
+        downButtonAction = new DownButtonAction();
+        removeButtonAction = new RemoveButtonAction();
     }
-    
-    public void changeName() {
+
+    public UpButtonAction getUpButtonAction() {
+        return upButtonAction;
     }
-    
-    public void changeType() {
+
+    public DownButtonAction getDownButtonAction() {
+        return downButtonAction;
     }
-    
-    public void update(Observable o, Object args){
+
+    public RemoveButtonAction getRemoveButtonAction(){
+        return removeButtonAction;
     }
-        
-    public void actionPerformed(ActionEvent e) {
+
+    public class UpButtonAction extends AbstractAction {
+        public UpButtonAction(){
+            super("^");
+        }
+
+        public void actionPerformed(ActionEvent a){
+            model.movePlayerUp(player);
+        }
     }
-    
-    public void itemStateChanged(ItemEvent e) {
+
+    public class DownButtonAction extends AbstractAction {
+        public DownButtonAction(){
+            super("v");
+        }
+
+        public void actionPerformed(ActionEvent a){
+            model.movePlayerDown(player);
+        }
+    }
+
+    public class RemoveButtonAction extends AbstractAction {
+        public RemoveButtonAction(){
+            super("x");
+        }
+
+        public void actionPerformed(ActionEvent a){
+            model.removePlayer(player);
+        }
+    }
+
+
+    public void update(Observable o, Object arg){
+        List<GameModel.PlayerDescription> players = model.getPlayers();
+        int i = players.indexOf(player);
+
+        downButtonAction.setEnabled(i < players.size() - 1);
+        upButtonAction.setEnabled(i != 0);
     }
 }

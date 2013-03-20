@@ -11,6 +11,7 @@ public class GameModel extends Observable implements Observer {
     private List<Player> players;
     private Player currentPlayer = null;
     private GameType gameType;
+    public static final int MAX_PLAYER_COUNT = 10;
 
     public DiceModel getDiceModel() {
         return diceModel;

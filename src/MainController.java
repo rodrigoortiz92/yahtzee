@@ -31,7 +31,7 @@ public class MainController {
     private ExitAction exitAction = new ExitAction();
     private AboutAction aboutAction = new AboutAction();
     private MainWindowListener mainWindowListener = new MainWindowListener();
-    private SetupController controller;
+    private SetupModel setupModel;
     private MainView view;
     private final String WINDOW_X_KEY = "window.x";
     private final String WINDOW_Y_KEY = "window.y";
@@ -39,9 +39,9 @@ public class MainController {
     private final String WINDOW_HEIGHT_KEY = "window.height";
     private final String PROPERTY_FILE = "properties";
 
-    public MainController(MainView view, SetupController controller) {
+    public MainController(MainView view, SetupModel setupModel) {
         this.view = view;
-        this.controller = controller;
+        this.setupModel = setupModel;
 
         loadProperties();
     }
@@ -60,6 +60,57 @@ public class MainController {
 
     public MainWindowListener getMainWindowListener() {
         return mainWindowListener;
+    }
+
+    public class NewGameAction extends AbstractAction {
+
+        public NewGameAction() {
+            super("New Game");
+
+            putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke("F2"));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            SetupView view = new SetupView(setupModel, MainController.this.view);
+            view.setVisible(true);
+        }
+    }
+
+    public class ExitAction extends AbstractAction {
+
+        public ExitAction() {
+            super("Exit");
+
+            putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke("alt F4"));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            WindowEvent event = new WindowEvent(view, WindowEvent.WINDOW_CLOSING);
+            MainController.this.view.dispatchEvent(event);
+        }
+    }
+
+    public class AboutAction extends AbstractAction {
+
+        public AboutAction() {
+            super("About");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String ok = "Ok";
+
+            int result = JOptionPane.showOptionDialog(view,
+                    "Yahtzee\n"
+                    + "\n"
+                    + "by Erkki Mattila, Mikko Paukkonen & Markus Salmijärvi 2013\n",
+                    "About Yahtzee", JOptionPane.YES_NO_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE,
+                    new ImageIcon(getClass().getResource("/images/icon.png")),
+                    new Object[]{ok}, ok);
+        }
     }
 
     private void loadProperties() {
@@ -118,57 +169,6 @@ public class MainController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    public class NewGameAction extends AbstractAction {
-
-        public NewGameAction() {
-            super("New Game");
-
-            putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke("F2"));
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            controller.view.setVisible(true);
-            //throw new UnsupportedOperationException("Not supported yet.");
-        }
-    }
-
-    public class ExitAction extends AbstractAction {
-
-        public ExitAction() {
-            super("Exit");
-
-            putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke("alt F4"));
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            WindowEvent event = new WindowEvent(view, WindowEvent.WINDOW_CLOSING);
-            MainController.this.view.dispatchEvent(event);
-        }
-    }
-
-    public class AboutAction extends AbstractAction {
-
-        public AboutAction() {
-            super("About");
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String ok = "Ok";
-
-            int result = JOptionPane.showOptionDialog(view,
-                    "Yahtzee\n"
-                    + "\n"
-                    + "by Erkki Mattila, Mikko Paukkonen & Markus Salmijärvi 2013\n",
-                    "About Yahtzee", JOptionPane.YES_NO_OPTION,
-                    JOptionPane.INFORMATION_MESSAGE,
-                    new ImageIcon(getClass().getResource("/images/icon.png")),
-                    new Object[]{ok}, ok);
         }
     }
 
