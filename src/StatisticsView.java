@@ -58,7 +58,30 @@ public class StatisticsView extends JDialog {
 
         @Override
         public String getData(Player player) {
-            return String.valueOf(player.calculateScore());
+            int score = player.calculateScore();
+            int max = StatisticsView.this.model.getMaximumScore();
+
+            double f = (double) score / (double) max;
+
+            return String.format("%d / %d", score, max);
+        }
+    }
+
+    private class PercentageColumn extends Column {
+
+        @Override
+        public String getTitle() {
+            return "% of total";
+        }
+
+        @Override
+        public String getData(Player player) {
+            int score = player.calculateScore();
+            int max = StatisticsView.this.model.getMaximumScore();
+
+            double f = (double) score / (double) max;
+
+            return String.format("%.3f %%", f * 100.0);
         }
     }
 
@@ -71,7 +94,8 @@ public class StatisticsView extends JDialog {
 
         @Override
         public String getData(Player player) {
-            return String.valueOf(player.calculateTopScore());
+            int score = player.calculateTopScore();
+            return String.valueOf(score);
         }
     }
 
@@ -79,7 +103,7 @@ public class StatisticsView extends JDialog {
 
         @Override
         public String getTitle() {
-            return "Highest scoring cell";
+            return "Best cell";
         }
 
         @Override
@@ -118,40 +142,11 @@ public class StatisticsView extends JDialog {
         }
     }
 
-    private class MaximumColumn extends Column {
-
-        @Override
-        public String getTitle() {
-            return "Maximum";
-        }
-
-        @Override
-        public String getData(Player player) {
-            return String.valueOf(StatisticsView.this.model.getMaximumScore());
-        }
-    }
-
-    private class ScorePercentageColumn extends Column {
-
-        @Override
-        public String getTitle() {
-            return "Percentage";
-        }
-
-        @Override
-        public String getData(Player player) {
-            double f = (double) player.calculateScore();
-            f /= (double) StatisticsView.this.model.getMaximumScore();
-
-            return String.format("%.3f %%", f * 100.0);
-        }
-    }
-
     private class GotBonusColumn extends Column {
 
         @Override
         public String getTitle() {
-            return "Got Bonus?";
+            return "Bonus";
         }
 
         @Override
@@ -164,7 +159,7 @@ public class StatisticsView extends JDialog {
 
         @Override
         public String getTitle() {
-            return "Got Yahtzee?";
+            return "Yahtzee";
         }
 
         @Override
@@ -211,8 +206,7 @@ public class StatisticsView extends JDialog {
 
         columns.add(new NameColumn());
         columns.add(new ScoreColumn());
-        columns.add(new MaximumColumn());
-        columns.add(new ScorePercentageColumn());
+
         columns.add(new TopScoreColumn());
         columns.add(new BestCellColumn());
         columns.add(new GotYahtzeeColumn());
@@ -253,9 +247,15 @@ public class StatisticsView extends JDialog {
 
                 JLabel label = new JLabel(row.getData(player));
 
+                Font font = label.getFont();
+
                 if (x == 0) {
-                    label.setFont(label.getFont().deriveFont(Font.BOLD));
+                    font = font.deriveFont(Font.BOLD);
+                } else {
+                    font = font.deriveFont(Font.PLAIN);
                 }
+
+                label.setFont(font);
 
                 tablePanel.add(label, c);
 
