@@ -25,6 +25,7 @@ public class SetupModel extends Observable {
 
     public List<GameType> getGameTypes(){
         return gameTypes; 
+    }
 
     public boolean isFull(){
         return (players.size() < GameModel.MAX_PLAYER_COUNT);
