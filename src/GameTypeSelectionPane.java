@@ -1,39 +1,52 @@
+
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
 import java.util.List;
 import java.util.Hashtable;
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 
-public class GameTypeSelectionPane extends JPanel {
-    private JCheckBox transferRolls;
-    private JComboBox<TypeDescription> gameTypes;
+public class GameTypeSelectionPane extends TitledPanel {
+
+
     private Hashtable<TypeDescription, GameType> typeTable;
 
-    public GameTypeSelectionPane(List<GameType> types){
-        super(new GridBagLayout());
+    public GameTypeSelectionPane(List<GameType> types) {
+        super("Game");
+
+        setLayout(new GridBagLayout());
+
         typeTable = new Hashtable<>();
-        transferRolls = new JCheckBox();
+        transferRolls = new JCheckBox("Remaining rolls transfer to the next turn");
         gameTypes = new JComboBox<>();
 
-        for (GameType type : types){
+        for (GameType type : types) {
             TypeDescription description = new TypeDescription(type.getName());
             typeTable.put(description, type);
             gameTypes.addItem(description);
         }
-        EasyGridBagLayout.addToLayout(this, gameTypes, 0, 0);
-        EasyGridBagLayout.addToLayout(this, transferRolls, 1, 0);
+
+        add(new JLabel("Game type"),
+                new GridBagConstraints(0, 0, 1, 1, 1, 0,
+                GridBagConstraints.FIRST_LINE_START,
+                GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2),
+                0, 0));
+
+        add(gameTypes,
+                new GridBagConstraints(1, 0, 1, 1, 1, 0,
+                GridBagConstraints.FIRST_LINE_START,
+                GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2),
+                0, 0));
+
+        add(transferRolls,
+                new GridBagConstraints(0, 1, 2, 1, 1, 0,
+                GridBagConstraints.FIRST_LINE_START,
+                GridBagConstraints.HORIZONTAL, new Insets(2, 2, 2, 2),
+                0, 0));
     }
 
-    public class TypeDescription {
-        public String name;
 
-        public TypeDescription(String name){
-            this.name = name;
-        }
-
-        public String toString(){
-            return name;
-        }
-    }
 }

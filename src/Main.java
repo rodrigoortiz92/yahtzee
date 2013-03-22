@@ -11,13 +11,13 @@ import javax.swing.UnsupportedLookAndFeelException;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Mikko Paukkonen <mikko.paukkonen at uta.fi>
  */
 public class Main {
-    private static class Creator implements Runnable{
+
+    private static class Creator implements Runnable {
 
         @Override
         public void run() {
@@ -36,25 +36,24 @@ public class Main {
 
             GameModel gameModel = new GameModel(p, new NormalGameType());
 
-            GameView gameView = new GameView(gameModel);
-
-            DiceView diceView = new DiceView(gameModel.getDiceModel());
-
             List<PlayerType> playerTypes = new LinkedList<>();
             playerTypes.add(new HumanPlayerType());
             playerTypes.add(new AiPlayerType());
 
             List<GameType> gameTypes = new LinkedList<>();
             gameTypes.add(new NormalGameType());
+            gameTypes.add(new MaxiGameType());
+            gameTypes.add(new SevenGameType());
 
-            SetupModel setupModel = new SetupModel(playerTypes, gameTypes);
+            MainModel mainModel = new MainModel(gameModel);
 
-            MainView view = new MainView(gameView, diceView, setupModel);
+            SetupModel setupModel = new SetupModel(playerTypes, gameTypes, mainModel);
+
+            MainView view = new MainView(mainModel, setupModel);
 
             EndGameListener listener = new EndGameListener(view, gameModel);
 
             view.setVisible(true);
-
 
             view.pack();
         }

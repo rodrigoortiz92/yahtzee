@@ -1,5 +1,7 @@
-import java.awt.event.ActionListener;
+
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import javax.swing.AbstractAction;
 import java.util.Observer;
 import java.util.Observable;
@@ -9,81 +11,154 @@ public class SetupController implements Observer {
 
     private SetupView view;
     private SetupModel model;
-    private AddPlayerButtonAction addPlayerButtonAction;
-    private CancelButtonAction cancelButtonAction;
-    private StartButtonAction startButtonAction;
+    private AddPlayerAction addPlayerAction = new AddPlayerAction();
+    private CancelAction cancelAction = new CancelAction();
+    private StartAction startAction = new StartAction();
+    private GameTypeOptionListener gameTypeOptionListener =
+            new GameTypeOptionListener();
+
+    
 
     public SetupController(SetupView view, SetupModel model) {
         this.view = view;
         this.model = model;
         model.addObserver(this);
-        addPlayerButtonAction = new AddPlayerButtonAction();
+        addPlayerAction = new AddPlayerAction();
     }
 
-    public void update (Observable o, Object arg){
+    public void update(Observable o, Object arg) {
         boolean enabled = false;
-        if (model.getPlayers().size() < GameModel.MAX_PLAYER_COUNT){
+        if (model.getPlayers().size() < GameModel.MAX_PLAYER_COUNT) {
             enabled = true;
         }
         view.setAddPlayerEnabled(enabled);
     }
 
-    public List<PlayerType> getPlayerTypes(){
+    public List<PlayerType> getPlayerTypes() {
         return model.getPlayerTypes();
     }
 
-    public AddPlayerButtonAction getAddPlayerButtonAction(){
-        return addPlayerButtonAction;
+    public AddPlayerAction getAddPlayerAction() {
+        return addPlayerAction;
     }
 
-    public StartButtonAction getStartButtonAction(){
-        return startButtonAction;
+    public StartAction getStartAction() {
+        return startAction;
     }
 
-    public CancelButtonAction getCancelButtonAction(){
-        return cancelButtonAction;
+    public CancelAction getCancelAction() {
+        return cancelAction;
     }
 
-    public class StartButtonAction extends AbstractAction {
-        public StartButtonAction(){
+    public GameTypeOptionListener getGameTypeOptionListener() {
+        return gameTypeOptionListener;
+    }
+
+    public class StartAction extends AbstractAction {
+
+        public StartAction() {
             super("Start game");
         }
 
-        public void actionPerformed(ActionEvent a){
+        public void actionPerformed(ActionEvent a) {
 
         }
     }
 
-    public class CancelButtonAction extends AbstractAction {
-        public CancelButtonAction(){
+    public class CancelAction extends AbstractAction {
+
+        public CancelAction() {
             super("Cancel");
         }
 
-        public void actionPerformed(ActionEvent a){
-
+        public void actionPerformed(ActionEvent a) {
+            SetupController.this.view.dispose();
         }
     }
 
-    public class AddPlayerButtonAction extends AbstractAction {
-        public AddPlayerButtonAction(){
+    public class AddPlayerAction extends AbstractAction {
+
+        public AddPlayerAction() {
             super("Add player");
         }
 
-        public void actionPerformed(ActionEvent a){
-            boolean unique = true;
-            List<GameModel.PlayerDescription> players = model.getPlayers();
+        public void actionPerformed(ActionEvent a) {
+            if (!model.addPlayer(view.getNewPlayerName(), view.getNewPlayerType())) {
+                //JOptionPane
+            }
+        }
+    }
 
-            for (GameModel.PlayerDescription player : players){
-                if (player.name == view.getNewPlayerName()){
-                    unique = false;
-                    break;
-                }
+    public class GameTypeOptionListener implements ItemListener
+    {
+
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            Object item = e.getItem();
+
+            if(item instanceof )
+        }
+
+    }
+
+    public PlayerActions getPlayerActions(GameModel.PlayerDescription player) {
+        return new PlayerActions(player);
+    }
+
+    public class PlayerActions {
+
+        private GameModel.PlayerDescription player;
+        private MoveUpAction moveUpAction = new MoveUpAction();
+        private MoveDownAction moveDownAction = new MoveDownAction();
+        private RemoveAction removeAction = new RemoveAction();
+
+        public PlayerActions(GameModel.PlayerDescription player) {
+            this.player = player;
+        }
+
+        public MoveUpAction getUpButtonAction() {
+            return moveUpAction;
+        }
+
+        public MoveDownAction getDownButtonAction() {
+            return moveDownAction;
+        }
+
+        public RemoveAction getRemoveButtonAction() {
+            return removeAction;
+        }
+
+        public class MoveUpAction extends AbstractAction {
+
+            public MoveUpAction() {
+                super("^");
             }
-            if (!unique){
-                System.exit(1);
+
+            public void actionPerformed(ActionEvent a) {
+                model.movePlayerUp(player);
             }
-            System.out.println(view.getNewPlayerName());
-            model.addPlayer(view.getNewPlayerName(), view.getNewPlayerType());
+        }
+
+        public class MoveDownAction extends AbstractAction {
+
+            public MoveDownAction() {
+                super("v");
+            }
+
+            public void actionPerformed(ActionEvent a) {
+                model.movePlayerDown(player);
+            }
+        }
+
+        public class RemoveAction extends AbstractAction {
+
+            public RemoveAction() {
+                super("x");
+            }
+
+            public void actionPerformed(ActionEvent a) {
+                model.removePlayer(player);
+            }
         }
     }
 }

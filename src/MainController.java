@@ -32,6 +32,7 @@ public class MainController {
     private AboutAction aboutAction = new AboutAction();
     private MainWindowListener mainWindowListener = new MainWindowListener();
     private SetupModel setupModel;
+    private MainModel model;
     private MainView view;
     private final String WINDOW_X_KEY = "window.x";
     private final String WINDOW_Y_KEY = "window.y";
@@ -39,8 +40,9 @@ public class MainController {
     private final String WINDOW_HEIGHT_KEY = "window.height";
     private final String PROPERTY_FILE = "properties";
 
-    public MainController(MainView view, SetupModel setupModel) {
+    public MainController(MainView view, MainModel model, SetupModel setupModel) {
         this.view = view;
+        this.model = model;
         this.setupModel = setupModel;
 
         loadProperties();
