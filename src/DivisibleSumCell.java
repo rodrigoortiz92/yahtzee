@@ -1,7 +1,4 @@
-/**
- *
- * @author Mikko Paukkonen <mikko.paukkonen at uta.fi>
- */
+
 public class DivisibleSumCell extends MarkableScoreCell {
 
     int divisor;

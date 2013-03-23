@@ -4,10 +4,6 @@ import java.awt.event.ActionListener;
 import java.util.Arrays;
 import javax.swing.Timer;
 
-/**
- *
- * @author Mikko Paukkonen
- */
 public class AiPlayer extends Player {
 
     public AiPlayer(GameModel model, DiceModel diceModel, ScoreColumn column, String name) {

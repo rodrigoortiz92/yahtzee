@@ -17,10 +17,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-/**
- *
- * @author Mikko Paukkonen <mikko.paukkonen at uta.fi>
- */
 public class MainController implements Observer{
 
     private NewGameAction newGameAction = new NewGameAction();

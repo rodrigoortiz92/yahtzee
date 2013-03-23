@@ -2,15 +2,6 @@
 import java.util.Observable;
 import java.util.Observer;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author Mikko Paukkonen <mikko.paukkonen at uta.fi>
- */
 public class SumCell extends ScoreCell implements Observer{
     ScoreCell[] cells;
 
@@ -25,18 +16,18 @@ public class SumCell extends ScoreCell implements Observer{
 
     @Override
     public Integer getScore() {
-        Integer sum = 0; 
-        
+        Integer sum = 0;
+
         for(ScoreCell cell : cells)
         {
             if(cell.getScore() == null)
                 return null;
-            
+
             sum += cell.getScore();
         }
-        
+
         return sum;
-    }   
+    }
 
     @Override
     public void update(Observable o, Object arg) {

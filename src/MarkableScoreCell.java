@@ -2,10 +2,6 @@
 import java.util.Observable;
 import java.util.Observer;
 
-/**
- *
- * @author Mikko Paukkonen <mikko.paukkonen at uta.fi>
- */
 abstract public class MarkableScoreCell extends ScoreCell implements Observer {
 
     private Integer score = null;

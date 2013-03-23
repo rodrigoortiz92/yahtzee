@@ -7,14 +7,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- *
- * @author Mikko Paukkonen <mikko.paukkonen at uta.fi>
- */
 public class Main {
 
     private static class Creator implements Runnable {
@@ -51,7 +43,7 @@ public class Main {
             SetupViewFactory setupViewFactory =
                     new SetupViewFactory(addPlayerView,
                     setupModel, addPlayerModel);
-            
+
             MainView view = new MainView(mainModel, setupViewFactory);
 
             setupViewFactory.setOwner(view);

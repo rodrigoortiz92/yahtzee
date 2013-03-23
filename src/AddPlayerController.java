@@ -1,17 +1,10 @@
 
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
-import javax.swing.InputVerifier;
-import javax.swing.JComponent;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-/**
- *
- * @author Mikko Paukkonen
- */
 public class AddPlayerController {
 
     private AddPlayerView view;

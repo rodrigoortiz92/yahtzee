@@ -2,10 +2,6 @@
 import java.util.Observable;
 import java.util.Observer;
 
-/**
- *
- * @author Mikko Paukkonen <mikko.paukkonen at uta.fi>
- */
 public class BonusCell extends ScoreCell implements Observer{
     ScoreCell cell;
     int cutoff;

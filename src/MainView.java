@@ -11,10 +11,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-/**
- *
- * @author Mikko Paukkonen <mikko.paukkonen at uta.fi>
- */
 public class MainView extends JFrame implements Observer {
 
     MainController controller;

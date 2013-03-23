@@ -3,10 +3,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Mikko Paukkonen
- */
 public class EndGameController {
 
     private EndGameView view;

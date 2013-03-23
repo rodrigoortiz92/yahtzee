@@ -1,7 +1,7 @@
-import java.awt.GridBagLayout;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
-import java.awt.Component;
+import java.awt.GridBagLayout;
 
 public class EasyGridBagLayout extends GridBagLayout {
 

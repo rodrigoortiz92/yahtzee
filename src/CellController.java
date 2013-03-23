@@ -3,10 +3,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Mikko Paukkonen
- */
 public class CellController implements MouseListener {
 
     CellView view;

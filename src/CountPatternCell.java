@@ -1,13 +1,7 @@
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- *
- * @author Mikko Paukkonen
- */
 public class CountPatternCell extends MarkableScoreCell {
 
     Integer[] counts;

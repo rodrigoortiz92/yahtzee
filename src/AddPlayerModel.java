@@ -1,12 +1,7 @@
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
 
-/**
- *
- * @author Mikko Paukkonen
- */
 public class AddPlayerModel extends Observable {
     private String name;
     private PlayerType playerType;

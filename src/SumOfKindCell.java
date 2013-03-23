@@ -2,11 +2,6 @@
 import java.util.Arrays;
 import java.util.Collections;
 
-/**
- * Cell type that calculates the sum of dice of given kind.
- *
- * @author Mikko Paukkonen
- */
 public class SumOfKindCell extends MarkableScoreCell {
 
     private int[] kinds;

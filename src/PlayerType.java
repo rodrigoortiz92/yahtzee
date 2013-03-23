@@ -1,7 +1,3 @@
-/**
-*
-*@author Erkki Mattila
-*/
 
 public abstract class PlayerType {
 

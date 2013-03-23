@@ -7,16 +7,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- *
- * @author Mikko Paukkonen
- */
 public class CellView extends JTextField implements Observer {
 
     private ScoreCell scoreCell;

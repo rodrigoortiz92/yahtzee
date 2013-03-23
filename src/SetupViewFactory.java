@@ -1,10 +1,6 @@
 
 import java.awt.Window;
 
-/**
- *
- * @author Mikko Paukkonen
- */
 public class SetupViewFactory {
 
     private AddPlayerView addPlayerView;

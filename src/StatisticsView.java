@@ -11,18 +11,12 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.Box;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-/**
- *
- * @author Mikko Paukkonen
- */
 public class StatisticsView extends JDialog {
 
     GameModel model;

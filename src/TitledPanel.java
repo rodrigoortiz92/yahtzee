@@ -5,11 +5,6 @@ import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
-/**
- * A titled and bordered panel.
- *
- * @author Mikko Paukkonen
- */
 public class TitledPanel extends JPanel {
 
     public TitledPanel(String title) {

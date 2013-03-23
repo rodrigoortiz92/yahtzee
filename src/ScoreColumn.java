@@ -4,11 +4,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Stores the score cells of a player and associates a name with each cell.
- *
- * @author Mikko Paukkonen
- */
 abstract public class ScoreColumn {
 
     private List<CellNamePair> pairs;
