@@ -4,6 +4,7 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,6 @@ public class GameView extends JPanel implements Observer {
 
     GameModel model;
     GameController controller;
-    JButton[][] fields;
     Map<Player, JLabel> playerLabels;
 
     /**
@@ -56,47 +56,45 @@ public class GameView extends JPanel implements Observer {
         List<Player> players = model.getPlayers();
         List<String> scoreCellNames = model.getScoreCellNames();
 
-        int rows = scoreCellNames.size() + 1;
-        int columns = players.size() + 1;
-
-        GridBagLayout layout = new GridBagLayout();
+        GridLayout layout = new GridLayout(0, GameModel.MAX_PLAYER_COUNT + 1, -1, -1);
         setLayout(layout);
+
+        add(new JLabel(""));
+
+        playerLabels = new HashMap<>();
+
+        for (int i = 0; i < GameModel.MAX_PLAYER_COUNT; i++) {
+            JLabel label = new JLabel(" ");
+
+            if (i < players.size()) {
+                label.setText(players.get(i).getName());
+                playerLabels.put(players.get(i), label);
+            }
+
+            add(label);
+        }
 
         for (int i = 0; i < scoreCellNames.size(); i++) {
             JLabel label = new JLabel(scoreCellNames.get(i));
 
             label.setHorizontalTextPosition(SwingConstants.TRAILING);
 
-            addToLayout(this, label, 0, i + 1);
-        }
+            add(label);
 
-        playerLabels = new HashMap<>();
+            for (int j = 0; j < GameModel.MAX_PLAYER_COUNT; j++) {
 
-        for (int i = 0; i < players.size(); i++) {
-            JLabel label = new JLabel(players.get(i).getName());
-
-            playerLabels.put(players.get(i), label);
-
-            addToLayout(this, label, i + 1, 0);
-        }
-
-        fields = new JButton[scoreCellNames.size()][players.size()];
-
-        final int MAX_PLAYERS = 10;
-
-        for (int i = 0; i < MAX_PLAYERS; i++) {
-            for (int j = 0; j < scoreCellNames.size(); j++) {
                 ScoreCell cell = null;
 
-                if (i < players.size()) {
-                    cell = players.get(i).getScoreCells().get(j);
+                if (j < players.size()) {
+                    cell = players.get(j).getScoreCells().get(i);
                 }
 
-                CellView view = new CellView(cell, (j % 2) == 1);
+                CellView view = new CellView(cell, (i % 2) == 1);
 
-                addToLayout(this, view, i + 1, j + 1);
+                add(view);
             }
         }
+
     }
 
     @Override

@@ -11,7 +11,9 @@ public class GameModel extends Observable implements Observer {
     private List<Player> players;
     private Player currentPlayer = null;
     private GameType gameType;
+    private boolean transferRolls;
     public static final int MAX_PLAYER_COUNT = 10;
+    public static final int ROLLS_PER_TURN = 3;
 
     public DiceModel getDiceModel() {
         return diceModel;
@@ -80,6 +82,10 @@ public class GameModel extends Observable implements Observer {
         int index;
 
         if (currentPlayer != null) {
+            if (transferRolls) {
+                currentPlayer.setStoredRolls(diceModel.getRollsLeft());
+            }
+
             setChanged();
             notifyObservers(new TurnEndNotification(currentPlayer));
 
@@ -104,7 +110,13 @@ public class GameModel extends Observable implements Observer {
         }
 
         if (found) {
-            getDiceModel().clear(currentPlayer.acceptsUiInput());
+            if (transferRolls) {
+                getDiceModel().clear(currentPlayer.acceptsUiInput(),
+                        ROLLS_PER_TURN + currentPlayer.getStoredRolls());
+            } else {
+                getDiceModel().clear(currentPlayer.acceptsUiInput(),
+                        ROLLS_PER_TURN);
+            }
 
             setChanged();
             notifyObservers(new TurnBeginNotification(currentPlayer));
@@ -116,10 +128,12 @@ public class GameModel extends Observable implements Observer {
         }
     }
 
-    public GameModel(List<PlayerDescription> descriptions, GameType gameType) {
+    public GameModel(List<PlayerDescription> descriptions, GameType gameType,
+            boolean transferRolls) {
         this.diceModel = new DiceModel(gameType.getDieCount());
         this.players = new LinkedList<>();
         this.gameType = gameType;
+        this.transferRolls = transferRolls;
 
         for (PlayerDescription desc : descriptions) {
             ScoreColumn column = gameType.createScoreColumn();

@@ -9,10 +9,10 @@ public class DiceModel extends Observable {
 
     public static final int DIE_MIN_VALUE = 1;
     public static final int DIE_MAX_VALUE = 6;
-    private static final int rollsPerTurn = 3;
     private int diceCount;
     private DieValues dice = null;
-    private int rolledTimes;
+    private boolean canLock;
+    private int rollsLeft;
     private boolean locked[];
     private Random rand = new Random();
     private boolean acceptUserInput = false;
@@ -38,10 +38,11 @@ public class DiceModel extends Observable {
     public DiceModel(int dieCount) {
         this.diceCount = dieCount;
         locked = new boolean[diceCount];
+        this.canLock = false;
     }
 
-    public void clear(boolean acceptUserInput) {
-        rolledTimes = 0;
+    public void clear(boolean acceptUserInput, int rolls) {
+        rollsLeft = rolls;
         Arrays.fill(locked, false);
 
         this.acceptUserInput = acceptUserInput;
@@ -70,11 +71,15 @@ public class DiceModel extends Observable {
     }
 
     public boolean canDiceBeLocked() {
-        return canDiceBeRolled() && (rolledTimes > 0);
+        return canDiceBeRolled() && canLock;
     }
 
     public boolean canDiceBeRolled() {
-        return (rolledTimes < rollsPerTurn);
+        return (rollsLeft > 0);
+    }
+
+    public int getRollsLeft() {
+        return rollsLeft;
     }
 
     public void setDieLock(int i, boolean state) {
@@ -88,6 +93,10 @@ public class DiceModel extends Observable {
     }
 
     public void roll() {
+        if (rollsLeft == 0) {
+            return;
+        }
+
         if (dice == null) {
             dice = new DieValues(diceCount);
         }
@@ -106,7 +115,8 @@ public class DiceModel extends Observable {
             }
             i++;
         }
-        rolledTimes++;
+
+        rollsLeft--;
 
         if (!canDiceBeRolled()) {
             Arrays.fill(locked, false);

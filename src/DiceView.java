@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.Timer;
@@ -19,6 +20,7 @@ public class DiceView extends JPanel implements Observer {
     private DiceController controller;
     private Die dice[];
     private JButton rollButton;
+    private JLabel rollLabel;
     private JToggleButton lockButtons[];
     private List<DiceAnimation> animations;
 
@@ -31,10 +33,16 @@ public class DiceView extends JPanel implements Observer {
         lockButtons = new JToggleButton[model.getDieCount()];
         controller = new DiceController(this, model);
         rollButton = new JButton(controller.getRollAction());
+        rollLabel = new JLabel();
         animations = new LinkedList<>();
 
         int i = dice.length;
         EasyGridBagLayout.addToLayout(this, rollButton, i, 0);
+
+        add(rollLabel, new GridBagConstraints(i, 1, 1, 1, 1, 1,
+                    GridBagConstraints.NORTH, GridBagConstraints.NONE,
+                    new Insets(5, 5, 5, 5), 0, 0));
+
         while (i-- > 0) {
             dice[i] = new Die();
             lockButtons[i] = new JToggleButton(controller.getLockAction(i));
@@ -67,6 +75,8 @@ public class DiceView extends JPanel implements Observer {
         if (values != null) {
             drawDice(values);
         }
+
+        rollLabel.setText(String.format("Rolls: %d", model.getRollsLeft()));
     }
 
     public void animate(int time) {

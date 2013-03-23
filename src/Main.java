@@ -11,13 +11,13 @@ import javax.swing.UnsupportedLookAndFeelException;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Mikko Paukkonen <mikko.paukkonen at uta.fi>
  */
 public class Main {
-    private static class Creator implements Runnable{
+
+    private static class Creator implements Runnable {
 
         @Override
         public void run() {
@@ -29,16 +29,7 @@ public class Main {
 
             List<GameModel.PlayerDescription> p = new LinkedList<>();
 
-            p.add(new GameModel.PlayerDescription("Ai 1", new AiPlayerType()));
-            p.add(new GameModel.PlayerDescription("Ai 2", new AiPlayerType()));
-            p.add(new GameModel.PlayerDescription("Ai 3", new AiPlayerType()));
-            p.add(new GameModel.PlayerDescription("Ai 4", new AiPlayerType()));
-
-            GameModel gameModel = new GameModel(p, new NormalGameType());
-
-            GameView gameView = new GameView(gameModel);
-
-            DiceView diceView = new DiceView(gameModel.getDiceModel());
+            GameModel gameModel = new GameModel(p, new NormalGameType(), false);
 
             List<PlayerType> playerTypes = new LinkedList<>();
             playerTypes.add(new HumanPlayerType());
@@ -46,38 +37,28 @@ public class Main {
 
             List<GameType> gameTypes = new LinkedList<>();
             gameTypes.add(new NormalGameType());
+            gameTypes.add(new MaxiGameType());
+            gameTypes.add(new SevenGameType());
 
-            SetupModel setupModel = new SetupModel(playerTypes, gameTypes);
+            MainModel mainModel = new MainModel(gameModel);
 
-            MainView view = new MainView(gameView, diceView, setupModel);
+            SetupModel setupModel = new SetupModel(playerTypes, gameTypes, mainModel);
 
-            EndGameListener listener = new EndGameListener(view, gameModel);
+            AddPlayerModel addPlayerModel = new AddPlayerModel(setupModel);
+
+            AddPlayerView addPlayerView = new AddPlayerView(addPlayerModel);
+
+            SetupViewFactory setupViewFactory =
+                    new SetupViewFactory(addPlayerView,
+                    setupModel, addPlayerModel);
+            
+            MainView view = new MainView(mainModel, setupViewFactory);
+
+            setupViewFactory.setOwner(view);
 
             view.setVisible(true);
 
-
-            view.pack();
-        }
-    }
-
-    private static class EndGameListener implements Observer {
-
-        private MainView mainView;
-        private GameModel gameModel;
-
-        public EndGameListener(MainView mainView, GameModel gameModel) {
-            this.mainView = mainView;
-            this.gameModel = gameModel;
-
-            gameModel.addObserver(this);
-        }
-
-        @Override
-        public void update(Observable o, Object arg) {
-            if (arg instanceof GameModel.EndGameNotification) {
-                EndGameView endGameView = new EndGameView(mainView, gameModel);
-                endGameView.setVisible(true);
-            }
+            mainModel.setGameModel(gameModel);
         }
     }
 

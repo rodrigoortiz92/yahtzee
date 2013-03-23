@@ -16,9 +16,18 @@ abstract public class Player extends Observable implements Observer {
     private ScoreColumn scoreColumn;
     private GameModel model;
     private Map<Integer, Integer> rollFrequencies;
+    private int storedRolls = 0;
 
     boolean isInTurn() {
        return this == model.getCurrentPlayer();
+    }
+
+    public int getStoredRolls() {
+        return storedRolls;
+    }
+
+    public void setStoredRolls(int storedRolls) {
+        this.storedRolls = storedRolls;
     }
 
     public class CellMarkedNotification {

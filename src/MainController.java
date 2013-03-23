@@ -17,21 +17,18 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
  *
  * @author Mikko Paukkonen <mikko.paukkonen at uta.fi>
  */
-public class MainController {
+public class MainController implements Observer{
 
     private NewGameAction newGameAction = new NewGameAction();
     private ExitAction exitAction = new ExitAction();
     private AboutAction aboutAction = new AboutAction();
     private MainWindowListener mainWindowListener = new MainWindowListener();
-    private SetupModel setupModel;
+    private SetupViewFactory setupViewFactory;
+    private MainModel model;
     private MainView view;
     private final String WINDOW_X_KEY = "window.x";
     private final String WINDOW_Y_KEY = "window.y";
@@ -39,11 +36,15 @@ public class MainController {
     private final String WINDOW_HEIGHT_KEY = "window.height";
     private final String PROPERTY_FILE = "properties";
 
-    public MainController(MainView view, SetupModel setupModel) {
+    public MainController(MainView view, MainModel model,
+            SetupViewFactory setupViewFactory) {
         this.view = view;
-        this.setupModel = setupModel;
+        this.model = model;
+        this.setupViewFactory = setupViewFactory;
 
         loadProperties();
+
+        model.addObserver(this);
     }
 
     public NewGameAction getNewGameAction() {
@@ -72,7 +73,7 @@ public class MainController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            SetupView view = new SetupView(setupModel, MainController.this.view);
+            SetupView view = setupViewFactory.createEmpty();
             view.setVisible(true);
         }
     }
@@ -105,7 +106,9 @@ public class MainController {
             int result = JOptionPane.showOptionDialog(view,
                     "Yahtzee\n"
                     + "\n"
-                    + "by Erkki Mattila, Mikko Paukkonen & Markus Salmijärvi 2013\n",
+                    + "by Team Alpakka\n"
+                    + "\n"
+                    + "Erkki Mattila, Mikko Paukkonen & Markus Salmijärvi 2013\n",
                     "About Yahtzee", JOptionPane.YES_NO_OPTION,
                     JOptionPane.INFORMATION_MESSAGE,
                     new ImageIcon(getClass().getResource("/images/icon.png")),
@@ -217,6 +220,27 @@ public class MainController {
 
         @Override
         public void windowDeactivated(WindowEvent e) {
+        }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        new EndGameListener();
+    }
+
+    private class EndGameListener implements Observer {
+        public EndGameListener() {
+            model.getGameModel().addObserver(this);
+        }
+
+        @Override
+        public void update(Observable o, Object arg) {
+            if (arg instanceof GameModel.EndGameNotification) {
+                EndGameView endGameView =
+                        new EndGameView(view, model.getGameModel(),
+                        setupViewFactory);
+                endGameView.setVisible(true);
+            }
         }
     }
 }

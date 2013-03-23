@@ -27,11 +27,12 @@ public class EndGameView extends JDialog {
         }
     }
 
-    public EndGameView(MainView mainView, GameModel model) {
+    public EndGameView(MainView mainView, GameModel model,
+            SetupViewFactory setupViewFactory) {
         super(mainView, true);
         setTitle("Game Over");
 
-        controller = new EndGameController(this, model);
+        controller = new EndGameController(this, model, setupViewFactory);
 
         List<Player> players = new LinkedList<>(model.getPlayers());
 

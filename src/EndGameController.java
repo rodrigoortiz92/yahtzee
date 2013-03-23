@@ -11,28 +11,28 @@ public class EndGameController {
 
     private EndGameView view;
     private GameModel model;
+    private SetupViewFactory setupViewFactory;
     private PaneValueListener paneValueListener = new PaneValueListener();
     private final String NEW_GAME = "New Game";
     private final String CLOSE = "Close";
     private final String OPEN_STATISTICS = "Show Statistics";
 
-    public EndGameController(EndGameView view, GameModel model) {
+    public EndGameController(EndGameView view, GameModel model,
+            SetupViewFactory setupViewFactory) {
         this.view = view;
         this.model = model;
+        this.setupViewFactory = setupViewFactory;
     }
 
-    public Object[] getOptions()
-    {
-        return new Object[]
-        {
-            NEW_GAME,
-            CLOSE,
-            OPEN_STATISTICS
-        };
+    public Object[] getOptions() {
+        return new Object[]{
+                    NEW_GAME,
+                    CLOSE,
+                    OPEN_STATISTICS
+                };
     }
 
-    public Object getDefaultOption()
-    {
+    public Object getDefaultOption() {
         return NEW_GAME;
     }
 
@@ -41,6 +41,8 @@ public class EndGameController {
     }
 
     private void newGame() {
+        EndGameController.this.view.dispose();
+        setupViewFactory.create().setVisible(true);
     }
 
     private void openStatistics() {
@@ -48,7 +50,7 @@ public class EndGameController {
     }
 
     private void close() {
-        EndGameController.this.view.setVisible(false);
+        EndGameController.this.view.dispose();
     }
 
     public class PaneValueListener implements PropertyChangeListener {
