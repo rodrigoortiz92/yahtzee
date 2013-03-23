@@ -69,6 +69,10 @@ public class GameView extends JPanel implements Observer {
             if (i < players.size()) {
                 label.setText(players.get(i).getName());
                 playerLabels.put(players.get(i), label);
+
+                if (players.get(i).isInTurn()) {
+                    label.setFont(label.getFont().deriveFont(Font.BOLD));
+                }
             }
 
             add(label);
